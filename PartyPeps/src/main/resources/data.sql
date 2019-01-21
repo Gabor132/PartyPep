@@ -1,0 +1,9 @@
+INSERT INTO USERS(username, password) VALUES('John', 'askldjal');
+INSERT INTO USERS(username, password) VALUES('Dani', 'askldjal');
+INSERT INTO USERS(username, password) VALUES('Banani', 'askldjal');
+INSERT INTO USERS(username, password) VALUES('Vasile', 'askldjal');
+INSERT INTO USERS(username, password) VALUES('Costel', 'askldjal');
+INSERT INTO USERS(username, password) VALUES('Jeanina', 'askldjal');
+INSERT INTO USERS(username, password) VALUES('Pascalake', 'askldjal');
+INSERT INTO USERS(username, password) VALUES('Babuta', 'askldjal');
+INSERT INTO USERS(username, password) VALUES('Tricolor', 'askldjal');
