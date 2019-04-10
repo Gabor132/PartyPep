@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+
+    <display-name>PartyPeps - Services</display-name>
+    <description>The main backend application for PartyPeps</description>
+    <session-config>
+        <session-timeout>120</session-timeout>
+    </session-config>
+    <context-param>
+        <param-name>debug</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>Dragos</param-name>
+        <param-value>gabordragos@gmail.com</param-value>
+    </context-param>
+    <!--
+        Servlet setups
+    -->
+    <servlet>
+        <servlet-mapping>
+            <servlet-name>Dispatcher</servlet-name>
+            <url-pattern>/</url-pattern>
+            <init-param>
+                <param-name>debug</param-name>
+                <param-value>true</param-value>
+            </init-param>
+            <load-on-startup>5</load-on-startup>
+        </servlet-mapping>
+    </servlet>
+    <servlet>
+        <servlet-mapping>
+            <servlet-name>Users</servlet-name>
+            <url-pattern>/users</url-pattern>
+            <load-on-startup>9</load-on-startup>
+        </servlet-mapping>
+    </servlet>
+</web-app>
+
+</web-app>
