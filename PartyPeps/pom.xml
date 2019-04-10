@@ -10,12 +10,14 @@
 	</parent>
 	<groupId>com.gabor</groupId>
 	<artifactId>PartyPeps</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>PartyPeps</name>
+	<packaging>war</packaging>
 	<description>Startup project for party peps</description>
 
 	<properties>
 		<java.version>1.8</java.version>
+		<spring.security.version></spring.security.version>
 		<spring-boot-admin.version>2.1.1</spring-boot-admin.version>
 	</properties>
 
@@ -29,7 +31,6 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -44,7 +45,6 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		
 	</dependencies>
@@ -67,7 +67,40 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webXml>WEB-INF/web.xml</webXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+				<configuration>
+					<finalName>PartyPeps</finalName>
+					<outputDirectory>C:\Users\dragos.gabor\Desktop</outputDirectory>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
+	<!--
+	-
+	- Future automated deployment code
+	-
+	<distributionManagement>
+		<repository>
+			<id>partypeps.internal.repo</id>
+			<name>PartyPeps Internal Repository</name>
+			<url>C:\Users\dragos.gabor\tomcat8\webapps\partypeps</url>
+		</repository>
+	</distributionManagement>
+	-->
 </project>
