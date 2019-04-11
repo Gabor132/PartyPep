@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
-    <output url="file://$MODULE_DIR$/PartyPeps/target/classes" />
-    <output-test url="file://$MODULE_DIR$/PartyPeps/target/test-classes" />
-    <content url="file://$MODULE_DIR$/PartyPeps">
-      <sourceFolder url="file://$MODULE_DIR$/PartyPeps/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/PartyPeps/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/PartyPeps/src/test/java" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/PartyPeps/target" />
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -59,7 +59,7 @@
     <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: de.codecentric:spring-boot-admin-server-ui:2.1.1" level="project" />
     <orderEntry type="library" name="Maven: de.codecentric:spring-boot-admin-server-cloud:2.1.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.postgresql:postgresql:42.2.5" level="project" />
+    <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.2.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-starter-test:2.1.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.1.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.1.2.RELEASE" level="project" />
@@ -120,6 +120,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.1.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.1.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:5.1.4.RELEASE" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.h2database:h2:1.4.197" level="project" />
+    <orderEntry type="library" name="Maven: com.h2database:h2:1.4.197" level="project" />
   </component>
 </module>
