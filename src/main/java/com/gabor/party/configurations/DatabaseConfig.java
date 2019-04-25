@@ -1,7 +1,5 @@
 package com.gabor.party.configurations;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-import org.apache.logging.log4j.simple.SimpleLogger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

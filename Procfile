@@ -1,1 +1,1 @@
-web: java -war -Dspring.profiles.active=IT target/PartyPeps-0.0.1.war
+web: java $JAVA_OPTS -jar -Dspring.profiles.active=IT target/endorsed/webapp-runner.jar --port $PORT target/*.jar
