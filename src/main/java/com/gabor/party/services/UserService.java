@@ -2,15 +2,13 @@ package com.gabor.party.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.gabor.party.main.models.dto.AbstractDTO;
 import com.gabor.party.main.models.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.gabor.party.main.models.User;
+import com.gabor.party.main.models.dao.User;
 import com.gabor.party.main.mappers.UserMapper;
 import com.gabor.party.repositories.UserRepository;
 

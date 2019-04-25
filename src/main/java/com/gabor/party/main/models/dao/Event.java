@@ -1,4 +1,4 @@
-package com.gabor.party.main.models;
+package com.gabor.party.main.models.dao;
 
 import java.util.Date;
 import java.util.List;
@@ -21,6 +21,7 @@ public class Event {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
 	private long id;
 
 	@Column(name = "NAME")

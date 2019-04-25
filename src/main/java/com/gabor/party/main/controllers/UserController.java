@@ -4,13 +4,13 @@ import java.util.List;
 
 import com.gabor.party.main.models.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gabor.party.main.models.User;
 import com.gabor.party.services.UserService;
+
+import javax.persistence.EntityManagerFactory;
 
 /**
  * This is the main controller for all services related with the User data

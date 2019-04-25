@@ -1,18 +1,12 @@
-package com.gabor.party.main.models;
+package com.gabor.party.main.models.dao;
 
+import com.gabor.party.main.models.dao.Event;
+import com.gabor.party.main.models.dao.Group;
+
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "USERS")
@@ -20,7 +14,8 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "ID")
+	private long id;
 
 	@Column(name = "USERNAME")
 	private String name;
@@ -36,11 +31,11 @@ public class User {
 	@JoinTable(name = "INVITATIONS", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "EVENT_ID", referencedColumnName = "ID"))
 	private List<Event> invitations;
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -61,6 +56,9 @@ public class User {
 	}
 
 	public List<Group> getGroups() {
+		if(groups == null){
+			groups = new ArrayList<>();
+		}
 		return groups;
 	}
 
@@ -69,6 +67,9 @@ public class User {
 	}
 
 	public List<Event> getInvitations() {
+		if(invitations == null){
+			invitations = new ArrayList<>();
+		}
 		return invitations;
 	}
 
@@ -76,4 +77,8 @@ public class User {
 		this.invitations = invitations;
 	}
 
+	@Override
+	public String toString(){
+		return this.name;
+	}
 }

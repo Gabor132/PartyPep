@@ -37,16 +37,15 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
 		</dependency>
-		
 	</dependencies>
 
 	<dependencyManagement>
@@ -81,11 +80,8 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-				<configuration>
-					<finalName>PartyPeps</finalName>
-				</configuration>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.19.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -109,17 +105,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<!--
-	-
-	- Future automated deployment code
-	-
-	<distributionManagement>
-		<repository>
-			<id>partypeps.internal.repo</id>
-			<name>PartyPeps Internal Repository</name>
-			<url>C:\Users\dragos.gabor\tomcat8\webapps\partypeps</url>
-		</repository>
-	</distributionManagement>
-	-->
 </project>

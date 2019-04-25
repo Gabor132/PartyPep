@@ -1,4 +1,4 @@
-package com.gabor.party.main.models;
+package com.gabor.party.main.models.dao;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,12 +9,13 @@ public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     public Long id;
 
     @Column(name = "NAME")
     public String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany
     @JoinTable(name = "USERS_GROUPS", joinColumns = @JoinColumn(name = "GROUP_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))
     public List<User> groupUsers;
 

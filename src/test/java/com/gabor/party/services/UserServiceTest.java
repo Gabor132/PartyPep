@@ -1,99 +1,97 @@
 package com.gabor.party.services;
 
-import com.gabor.party.main.models.User;
+import com.gabor.party.configurations.RepositoryConfiguration;
+import com.gabor.party.main.models.dao.User;
+import com.gabor.party.main.models.dto.AbstractDTO;
 import com.gabor.party.main.models.dto.UserDTO;
 import com.gabor.party.repositories.UserRepository;
+import main.configurations.DatabaseTestConfig;
+import main.configurations.EntityManagerFactoryTestConfig;
+import main.configurations.PartyPepsTestConfiguration;
+import main.configurations.RepositoryTestConfiguration;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes={
+        DatabaseTestConfig.class,
+        EntityManagerFactoryTestConfig.class,
+        RepositoryConfiguration.class,
+        PartyPepsTestConfiguration.class
+})
+@ContextConfiguration(classes = PartyPepsTestConfiguration.class)
 public class UserServiceTest {
 
     @Autowired
-    public UserService userService;
-    @Autowired
-    public UserRepository userRepository;
+    public AbstractService userService;
+
+    private static Logger logger = Logger.getLogger(UserServiceTest.class.toString());
 
     private static List<User> mockUsersForTest = new LinkedList<>();
-    private static List<User> invalidUsers = new LinkedList<>();
-
-    /**
-     * This methods is currently used just to disable the unit tests till I find a way
-     * to access the database without @Autowired annotation (probably will create direct connection
-     * to in memory DB
-     * TODO
-     * @return
-     */
-    private boolean checkBasicNecesities(){
-        return ! (userRepository == null || userService == null);
-    }
 
     @Before
     public void setUp(){
-        User user1 = new User();
-        user1.setName("UserToInsert");
-        user1.setPassword("password");
-        User user2 = new User();
-        user2.setName("User2");
-        user2.setPassword("User2");
-        User user3 = new User();
-        user2.setName("User2");
-        user2.setPassword("User2");
-        User user4 = new User();
-        user2.setName("User2");
-        user2.setPassword("User2");
-        User user5 = new User();
-        user2.setName("User2");
-        user2.setPassword("User2");
-        User user6 = new User();
-        user2.setName("User2");
-        user2.setPassword("User2");
-        mockUsersForTest.add(user1);
-        mockUsersForTest.add(user2);
-        mockUsersForTest.add(user3);
-        mockUsersForTest.add(user4);
-        mockUsersForTest.add(user5);
-        mockUsersForTest.add(user6);
+        int i = 10;
+        while(i > 0) {
+            i--;
+            User user = new User();
+            user.setName("Banana" + i);
+            user.setPassword("Banana" + i);
+            user.setInvitations(new ArrayList<>());
+            user.setGroups(new ArrayList<>());
+            mockUsersForTest.add(user);
+        }
     }
 
     @After
     public void tearDown(){
-        if (! checkBasicNecesities()){
-            return;
-        }
-        for(User user : mockUsersForTest){
-            userRepository.delete(user);
-            user.setId(null);
-        }
+
     }
 
     @Test
     public void insertAllUsersTest(){
-        if(! checkBasicNecesities()){
-            return;
-        }
-        List<Long> ids = new LinkedList<>();
         for(User user : mockUsersForTest){
-            ids.add(userService.insert(new UserDTO(user)));
-        }
-        for(Long id : ids){
-            assertTrue(userRepository.existsById(id));
+            UserDTO userDto = new UserDTO(user);
+            userService.insert(userDto);
         }
     }
 
     @Test
     public void findAllUsersTest(){
-        if(! checkBasicNecesities()){
-            return;
+        List<UserDTO> users = (List<UserDTO>) userService.findAll();
+        if (users.size() == 0){
+            Assert.fail();
         }
-        List<UserDTO> users = userService.findAll();
-        assertEquals(mockUsersForTest.size(), users.size());
+    }
+
+    @Test
+    public void findByUserIdTest() {
+        UserDTO user = (UserDTO) userService.findById(1L);
+        Assert.assertNotNull(user);
+    }
+
+    @Test
+    public void deleteUserTest() {
+    }
+
+    @Test
+    public void updateUserTest() {
     }
 }

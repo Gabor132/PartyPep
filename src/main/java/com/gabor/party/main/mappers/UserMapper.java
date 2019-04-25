@@ -1,6 +1,6 @@
 package com.gabor.party.main.mappers;
 
-import com.gabor.party.main.models.User;
+import com.gabor.party.main.models.dao.User;
 import com.gabor.party.main.models.dto.UserDTO;
 
 import java.util.List;
@@ -27,6 +27,7 @@ public class UserMapper {
         User user = new User();
         user.setId(userDTO.id);
         user.setName(userDTO.name);
+        user.setPassword(userDTO.password);
         return user;
     }
 

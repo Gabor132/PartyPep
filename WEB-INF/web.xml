@@ -38,6 +38,13 @@
             <load-on-startup>9</load-on-startup>
         </servlet-mapping>
     </servlet>
+    <servlet>
+        <servlet-mapping>
+            <servlet-name>Groups</servlet-name>
+            <url-pattern>/groups</url-pattern>
+            <load-on-startup>9</load-on-startup>
+        </servlet-mapping>
+    </servlet>
 </web-app>
 
 </web-app>
