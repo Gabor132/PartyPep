@@ -1,0 +1,1 @@
+web: java -war -Dspring.profiles.active=IT target/PartyPeps-0.0.1.war
