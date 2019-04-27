@@ -23,7 +23,7 @@ public class GroupService implements AbstractService{
     UserService userService;
 
     @Override
-    public List<? extends AbstractDTO> findAll() {
+    public List<GroupDTO> findAll() {
         List<Group> groups = (List<Group>) groupRepository.findAll();
         return GroupMapper.mapGroupsOut(groups);
     }

@@ -13,12 +13,10 @@ import java.util.List;
 public class GroupController {
 
     @Autowired
-    GroupService groupService;
+    public GroupService groupService;
 
     @RequestMapping("/groups/all")
-    public List<GroupDTO> getAllGroups(){
-        return (List<GroupDTO>) groupService.findAll();
-    }
+    public List<GroupDTO> getAllGroups(){ return groupService.findAll(); }
 
     @RequestMapping("/groups/{id}")
     public GroupDTO getGroupById(@RequestParam Long id){

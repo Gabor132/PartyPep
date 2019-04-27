@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
@@ -6,6 +6,7 @@
 
     <display-name>PartyPeps - Services</display-name>
     <description>The main backend application for PartyPeps</description>
+
     <session-config>
         <session-timeout>120</session-timeout>
     </session-config>
@@ -19,10 +20,11 @@
     </context-param>
     <!--
         Servlet setups
-    -->
+
     <servlet>
         <servlet-mapping>
             <servlet-name>Dispatcher</servlet-name>
+            <servlet-class>com.gabor.party.main.controllers.IndexController</servlet-class>
             <url-pattern>/</url-pattern>
             <init-param>
                 <param-name>debug</param-name>
@@ -34,6 +36,7 @@
     <servlet>
         <servlet-mapping>
             <servlet-name>Users</servlet-name>
+            <servlet-class>com.gabor.party.main.controllers.UserController</servlet-class>
             <url-pattern>/users</url-pattern>
             <load-on-startup>9</load-on-startup>
         </servlet-mapping>
@@ -41,8 +44,10 @@
     <servlet>
         <servlet-mapping>
             <servlet-name>Groups</servlet-name>
+            <servlet-class>com.gabor.party.main.controllers.GroupController</servlet-class>
             <url-pattern>/groups</url-pattern>
             <load-on-startup>9</load-on-startup>
         </servlet-mapping>
     </servlet>
+    -->
 </web-app>
