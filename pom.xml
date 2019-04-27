@@ -12,7 +12,7 @@
 	<artifactId>PartyPeps</artifactId>
 	<version>0.0.1</version>
 	<name>PartyPeps</name>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<description>Startup project for party peps</description>
 
 	<properties>
