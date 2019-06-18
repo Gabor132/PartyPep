@@ -1,0 +1,90 @@
+package com.gabor.party.services;
+
+import com.gabor.party.configurations.RepositoryConfiguration;
+import com.gabor.party.main.models.dao.User;
+import com.gabor.party.main.models.dto.UserDTO;
+import common.dto.AbstractDTO;
+import common.service.AbstractService;
+import main.configurations.DatabaseTestConfig;
+import main.configurations.EntityManagerFactoryTestConfig;
+import main.configurations.PartyPepsTestConfiguration;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Logger;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = {
+        DatabaseTestConfig.class,
+        EntityManagerFactoryTestConfig.class,
+        RepositoryConfiguration.class,
+        PartyPepsTestConfiguration.class
+})
+@ContextConfiguration(classes = PartyPepsTestConfiguration.class)
+public class UserServiceTest {
+
+    private static Logger logger = Logger.getLogger(UserServiceTest.class.toString());
+    private static List<User> mockUsersForTest = new LinkedList<>();
+    @Autowired
+    public AbstractService userService;
+
+    @Before
+    public void setUp() {
+        int i = 10;
+        while (i > 0) {
+            i--;
+            User user = new User();
+            user.setName("Banana" + i);
+            user.setPassword("Banana" + i);
+            user.setInvitations(new ArrayList<>());
+            user.setGroups(new ArrayList<>());
+            mockUsersForTest.add(user);
+        }
+    }
+
+    @After
+    public void tearDown() {
+
+    }
+
+    @Test
+    public void insertAllUsersTest() {
+        for (User user : mockUsersForTest) {
+            UserDTO userDto = new UserDTO(user);
+            userService.insert(userDto);
+        }
+    }
+
+    @Test
+    public void findAllUsersTest() {
+        List<? extends AbstractDTO> userDTOs = userService.findAll();
+        if (userDTOs.size() == 0) {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void findByUserIdTest() {
+        UserDTO user = (UserDTO) userService.findById(1L);
+        Assert.assertNotNull(user);
+    }
+
+    @Test
+    public void deleteUserTest() {
+    }
+
+    @Test
+    public void updateUserTest() {
+    }
+}

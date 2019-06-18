@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <display-name>PartyPeps - Services</display-name>
+    <description>The main backend application for PartyPeps</description>
+
+    <session-config>
+        <session-timeout>120</session-timeout>
+    </session-config>
+    <context-param>
+        <param-name>debug</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>Dragos</param-name>
+        <param-value>gabordragos@gmail.com</param-value>
+    </context-param>
+    <servlet>
+        <servlet-mapping>
+            <servlet-name>Dispatcher</servlet-name>
+            <servlet-class>com.gabor.party.main.controllers.IndexController</servlet-class>
+            <url-pattern>/</url-pattern>
+            <init-param>
+                <param-name>debug</param-name>
+                <param-value>true</param-value>
+            </init-param>
+            <load-on-startup>5</load-on-startup>
+        </servlet-mapping>
+    </servlet>
+    <servlet>
+        <servlet-mapping>
+            <servlet-name>Users</servlet-name>
+            <servlet-class>com.gabor.party.main.controllers.UserController</servlet-class>
+            <url-pattern>/users</url-pattern>
+            <load-on-startup>9</load-on-startup>
+        </servlet-mapping>
+    </servlet>
+    <servlet>
+        <servlet-mapping>
+            <servlet-name>Groups</servlet-name>
+            <servlet-class>com.gabor.party.main.controllers.GroupController</servlet-class>
+            <url-pattern>/groups</url-pattern>
+            <load-on-startup>9</load-on-startup>
+        </servlet-mapping>
+    </servlet>
+    <servlet>
+        <servlet-mapping>
+            <servlet-name>Messages</servlet-name>
+            <servlet-class>com.gabor.party.main.controllers.MessageController</servlet-class>
+            <url-pattern>/messages</url-pattern>
+            <load-on-startup>9</load-on-startup>
+        </servlet-mapping>
+    </servlet>
+</web-app>
