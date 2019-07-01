@@ -1,5 +1,6 @@
 package main.configurations;
 
+import common.DatabasePropertiesHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,11 +31,13 @@ public class EntityManagerFactoryTestConfig {
         LocalContainerEntityManagerFactoryBean entityManager
                 = new LocalContainerEntityManagerFactoryBean();
         entityManager.setDataSource(dataSource);
-        entityManager.setPackagesToScan(new String[] { "com.gabor.party.main.models.dao" });
+        entityManager.setPackagesToScan("com.gabor.party.main.models.dao");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManager.setJpaVendorAdapter(vendorAdapter);
         entityManager.setJpaProperties(additionalProperties());
-        entityManager.setPersistenceUnitName("postgresql-persistence-unit");
+        Properties prop = DatabasePropertiesHelper.getJDBCProperties(true, "DEV");
+        String persistanceUnitName = prop.getProperty("postgres.persistance.unit");
+        entityManager.setPersistenceUnitName(persistanceUnitName);
         return entityManager;
     }
 
