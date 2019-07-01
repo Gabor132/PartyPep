@@ -10,3 +10,8 @@
 
 # Scrum Board
 Trello: https://trello.com/b/ANK14c63/partypeps
+
+# Setup
+IDE: Eclipse
+
+Database: PostgreSQL
