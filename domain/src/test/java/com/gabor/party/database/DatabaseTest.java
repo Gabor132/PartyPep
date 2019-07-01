@@ -13,9 +13,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.WebApplicationInitializer;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -32,7 +34,9 @@ import java.util.logging.Logger;
         RepositoryConfiguration.class,
         PartyPepsTestConfiguration.class
 })
-public class DatabaseTest {
+public class DatabaseTest implements WebApplicationInitializer {
+
+
 
     private final static Logger logger = Logger.getLogger(DatabaseTest.class.toString());
     @Resource
@@ -62,7 +66,6 @@ public class DatabaseTest {
         user.setGroups(new ArrayList<>());
         user.setInvitations(new ArrayList<>());
         user = userRepository.save(user);
-        Assert.assertNotNull(user.getId());
         Assert.assertNotEquals(user.getId(), 0.0);
     }
 
@@ -70,5 +73,10 @@ public class DatabaseTest {
     public void databaseBasicSelectAll() {
         List<User> users = userRepository.findAll();
         Assert.assertTrue(users.size() > 0);
+    }
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        servletContext.setInitParameter("spring.profiles.active", "IT");
     }
 }

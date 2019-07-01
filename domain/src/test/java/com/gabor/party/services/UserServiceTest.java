@@ -18,7 +18,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.WebApplicationInitializer;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +35,7 @@ import java.util.logging.Logger;
         PartyPepsTestConfiguration.class
 })
 @ContextConfiguration(classes = PartyPepsTestConfiguration.class)
-public class UserServiceTest {
+public class UserServiceTest  implements WebApplicationInitializer {
 
     private static Logger logger = Logger.getLogger(UserServiceTest.class.toString());
     private static List<User> mockUsersForTest = new LinkedList<>();
@@ -86,5 +89,10 @@ public class UserServiceTest {
 
     @Test
     public void updateUserTest() {
+    }
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        servletContext.setInitParameter("spring.profiles.active", "IT");
     }
 }
