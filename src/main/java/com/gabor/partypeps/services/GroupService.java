@@ -31,6 +31,10 @@ public class GroupService extends AbstractService {
     @Autowired
     UserService userService;
 
+    /**
+     * Function used to retrieve all the Group Entities from the database
+     * @return
+     */
     @Override
     public List<GroupDTO> findAll() {
         List<Group> groups = groupRepository.findAll();
@@ -38,10 +42,10 @@ public class GroupService extends AbstractService {
     }
 
     /**
-     * TODO: Check if group is present first
+     * Function to retrieve a Group entity from the database with a specific ID
      *
      * @param id
-     * @return
+     * @return AbstractDTO (data transfer object to be used in the REST call response)
      */
     @Override
     public AbstractDTO findById(Long id) {
@@ -49,6 +53,11 @@ public class GroupService extends AbstractService {
         return new GroupDTO(group);
     }
 
+    /**
+     * Function to insert a new DTO Group object into the database
+     * @param dto
+     * @return long as the newly added group's ID
+     */
     @Override
     public long insert(AbstractDTO dto) {
 
@@ -66,10 +75,10 @@ public class GroupService extends AbstractService {
     }
 
     /**
-     * TODO
+     * Function to delete a Group entity from the database using it's ID
      *
      * @param id
-     * @return
+     * @return boolean to determine if the delete as taken place
      */
     @Override
     public boolean delete(Long id) {
@@ -77,7 +86,7 @@ public class GroupService extends AbstractService {
     }
 
     /**
-     * TODO
+     * TODO - Method to update a Group Entity
      *
      * @param dto
      * @return
