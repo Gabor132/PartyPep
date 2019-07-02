@@ -17,11 +17,6 @@ public class MessageController extends AbstractController<Message> {
     @Autowired
     public MessageService messageService;
 
-    @Override
-    public AbstractService<MessageDTO> getService() {
-        return messageService;
-    }
-
     @RequestMapping(value = "/all", name = "getAllMesssages", method = RequestMethod.GET)
     public List<MessageDTO> getAllMessages() {
         return messageService.findAll();
@@ -35,5 +30,10 @@ public class MessageController extends AbstractController<Message> {
     @DeleteMapping(path = "/remove/{id}")
     public boolean removeMessage(@PathVariable Long id) {
         return messageService.delete(id);
+    }
+
+    @Override
+    public AbstractService getService() {
+        return messageService;
     }
 }

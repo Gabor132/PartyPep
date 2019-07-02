@@ -1,5 +1,7 @@
 package com.gabor.partypeps.services;
 
+import com.gabor.partypeps.mappers.AbstractMapper;
+import com.gabor.partypeps.models.dao.AbstractEntity;
 import com.gabor.partypeps.models.dto.AbstractDTO;
 import com.gabor.partypeps.mappers.GroupMapper;
 import com.gabor.partypeps.models.dao.Group;
@@ -9,6 +11,7 @@ import com.gabor.partypeps.models.dto.UserDTO;
 import com.gabor.partypeps.repositories.GroupRepository;
 import com.gabor.partypeps.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,56 +19,30 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GroupService extends AbstractService {
+public class GroupService extends AbstractService<Group, GroupDTO> {
 
 
-    public static GroupMapper groupMapper = new GroupMapper();
+    private static GroupMapper groupMapper = new GroupMapper();
 
 
     @Autowired
-    GroupRepository groupRepository;
+    public GroupRepository groupRepository;
 
     @Autowired
-    UserRepository userRepository;
+    public UserRepository userRepository;
 
     @Autowired
-    UserService userService;
-
-    /**
-     * Function used to retrieve all the Group Entities from the database
-     * @return
-     */
-    @Override
-    public List<GroupDTO> findAll() {
-        List<Group> groups = groupRepository.findAll();
-        return groupMapper.mapListOfDTO(groups);
-    }
-
-    /**
-     * Function to retrieve a Group entity from the database with a specific ID
-     *
-     * @param id
-     * @return AbstractDTO (data transfer object to be used in the REST call response)
-     */
-    @Override
-    public AbstractDTO findById(Long id) {
-        Group group = (Group) groupRepository.findById(id).get();
-        return new GroupDTO(group);
-    }
+    public UserService userService;
 
     /**
      * Function to insert a new DTO Group object into the database
-     * @param dto
+     * @param dto GroupDTO
      * @return long as the newly added group's ID
      */
     @Override
-    public long insert(AbstractDTO dto) {
-
-        GroupDTO groupDTO = (GroupDTO) dto;
-        List<GroupDTO> list = new ArrayList<GroupDTO>();
-        list.add(groupDTO);
-        Group group = groupMapper.mapToDAO(groupDTO);
-        for(Long userId : groupDTO.userIds){
+    public long insert(GroupDTO dto) {
+        Group group = groupMapper.mapToDAO(dto);
+        for(Long userId : dto.userIds){
             Optional<User> user = userRepository.findById(userId);
             if(user.isPresent()){
                 group.getGroupUsers().add(user.get());
@@ -75,34 +52,23 @@ public class GroupService extends AbstractService {
     }
 
     /**
-     * Function to delete a Group entity from the database using it's ID
+     * TODO - Function to update a Group Entity
      *
-     * @param id
-     * @return boolean to determine if the delete as taken place
+     * @param dto GroupDTO
+     * @return boolean - to show if the update has succeeded of not
      */
     @Override
-    public boolean delete(Long id) {
-        return genericDelete(id, groupRepository);
-    }
-
-    /**
-     * TODO - Method to update a Group Entity
-     *
-     * @param dto
-     * @return
-     */
-    @Override
-    public boolean update(AbstractDTO dto) {
+    public boolean update(GroupDTO dto) {
         return false;
     }
 
     /**
      * Function that using an User's id, will return all the groups to which he belongs to
-     * @param id
-     * @return
+     * @param id Long
+     * @return List<GroupDTO>
      */
     public List<GroupDTO> findGroupsOfUser(Long id) {
-        UserDTO user = (UserDTO) userService.findById(id);
+        UserDTO user = userService.findById(id);
         List<Group> groups = new ArrayList<>();
         for(Long groupId : user.groupIds){
             Optional<Group> group = groupRepository.findById(groupId);
@@ -111,5 +77,15 @@ public class GroupService extends AbstractService {
             }
         }
         return groupMapper.mapListOfDTO(groups);
+    }
+
+    @Override
+    public JpaRepository<Group, Long> getRepository() {
+        return groupRepository;
+    }
+
+    @Override
+    public AbstractMapper<Group, GroupDTO> getMapper() {
+        return groupMapper;
     }
 }

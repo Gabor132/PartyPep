@@ -27,10 +27,6 @@ public class UserController extends AbstractController<User> {
     @Autowired
     public MessageService messageService;
 
-    public AbstractService getService() {
-        return userService;
-    }
-
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<UserDTO> getAllUsers() {
         return userService.findAll();
@@ -52,4 +48,8 @@ public class UserController extends AbstractController<User> {
         return userService.delete(id);
     }
 
+    @Override
+    public AbstractService getService() {
+        return userService;
+    }
 }
