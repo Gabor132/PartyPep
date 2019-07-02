@@ -1,6 +1,7 @@
 package com.gabor.partypeps.configurations;
 
 import com.gabor.partypeps.database.DatabasePropertiesHelper;
+import com.gabor.partypeps.enums.ProfilesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +35,8 @@ public class EntityManagerFactoryConfig {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManager.setJpaVendorAdapter(vendorAdapter);
         entityManager.setJpaProperties(additionalProperties());
-        Properties prop = DatabasePropertiesHelper.getJDBCProperties(true, "DEV");
-        String persistanceUnitName = prop.getProperty("postgres.persistance.unit");
+        Properties prop = DatabasePropertiesHelper.getJDBCProperties(true, ProfilesEnum.DEV);
+        String persistanceUnitName = prop.getProperty("persistance.unit");
         entityManager.setPersistenceUnitName(persistanceUnitName);
         return entityManager;
     }
@@ -50,8 +51,8 @@ public class EntityManagerFactoryConfig {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManager.setJpaVendorAdapter(vendorAdapter);
         entityManager.setJpaProperties(additionalProperties());
-        Properties prop = DatabasePropertiesHelper.getJDBCProperties(true, "IT");
-        String persistanceUnitName = prop.getProperty("postgres.persistance.unit");
+        Properties prop = DatabasePropertiesHelper.getJDBCProperties(true, ProfilesEnum.IT);
+        String persistanceUnitName = prop.getProperty("persistance.unit");
         entityManager.setPersistenceUnitName(persistanceUnitName);
         return entityManager;
     }
@@ -66,8 +67,8 @@ public class EntityManagerFactoryConfig {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManager.setJpaVendorAdapter(vendorAdapter);
         entityManager.setJpaProperties(additionalProperties());
-        Properties prop = DatabasePropertiesHelper.getJDBCProperties(true, "PROD");
-        String persistanceUnitName = prop.getProperty("postgres.persistance.unit");
+        Properties prop = DatabasePropertiesHelper.getJDBCProperties(true, ProfilesEnum.PROD);
+        String persistanceUnitName = prop.getProperty("persistance.unit");
         entityManager.setPersistenceUnitName(persistanceUnitName);
         return entityManager;
     }

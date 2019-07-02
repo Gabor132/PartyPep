@@ -32,20 +32,13 @@ public interface AbstractDatabaseConfiguration {
 
     static void setupDataSource(DriverManagerDataSource dataSource, Properties properties) {
         boolean isFromENV = Boolean.parseBoolean(properties.getProperty(fromENVKey));
-        String driver = properties.getProperty(driverKey);
-        String username = properties.getProperty(usernameKey);
-        String password = properties.getProperty(passwordKey);
-        String url = properties.getProperty(urlKey);
-        if (isFromENV) {
-            dataSource.setDriverClassName(System.getenv(driver));
-            dataSource.setUsername(System.getenv(username));
-            dataSource.setPassword(System.getenv(password));
-            dataSource.setUrl(System.getenv(url));
-        } else {
-            dataSource.setDriverClassName(driver);
-            dataSource.setUsername(username);
-            dataSource.setPassword(password);
-            dataSource.setUrl(url);
-        }
+        dataSource.setDriverClassName(getProperty(driverKey, properties, isFromENV));
+        dataSource.setUsername(getProperty(usernameKey, properties, isFromENV));
+        dataSource.setPassword(getProperty(passwordKey, properties, isFromENV));
+        dataSource.setUrl(getProperty(urlKey, properties, isFromENV));
+    }
+
+    static String getProperty(String key, Properties properties, boolean isFromEnv) {
+        return isFromEnv ? System.getenv(properties.getProperty(key)) : properties.getProperty(key);
     }
 }
