@@ -11,7 +11,7 @@ import javax.persistence.PersistenceContextType;
 public class PersistanceTestConfig {
 
     @Bean("persistanceUnit")
-    @PersistenceContext(name = "persistance-unit", type = PersistenceContextType.TRANSACTION)
+    @PersistenceContext(name = "postgresql-persistance-unit", type = PersistenceContextType.TRANSACTION)
     public Persistence persistanceUnit(){
         Persistence pers = new Persistence();
         return pers;

@@ -1,12 +1,12 @@
 package com.gabor.party.services;
 
-import com.gabor.party.common.dto.AbstractDTO;
-import com.gabor.party.common.service.AbstractService;
-import com.gabor.party.configurations.DatabaseConfig;
-import com.gabor.party.configurations.EntityManagerFactoryConfig;
-import com.gabor.party.configurations.RepositoryConfiguration;
-import com.gabor.party.main.models.dao.User;
-import com.gabor.party.main.models.dto.UserDTO;
+import com.gabor.partypeps.models.dto.AbstractDTO;
+import com.gabor.partypeps.configurations.DatabaseConfig;
+import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
+import com.gabor.partypeps.configurations.RepositoryConfiguration;
+import com.gabor.partypeps.models.dao.User;
+import com.gabor.partypeps.models.dto.UserDTO;
+import com.gabor.partypeps.services.AbstractService;
 import main.configurations.PartyPepsTestConfiguration;
 import org.junit.After;
 import org.junit.Assert;

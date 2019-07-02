@@ -1,11 +1,11 @@
 package com.gabor.party.database;
 
 
-import com.gabor.party.configurations.DatabaseConfig;
-import com.gabor.party.configurations.EntityManagerFactoryConfig;
-import com.gabor.party.configurations.RepositoryConfiguration;
-import com.gabor.party.main.models.dao.User;
-import com.gabor.party.repositories.UserRepository;
+import com.gabor.partypeps.configurations.DatabaseConfig;
+import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
+import com.gabor.partypeps.configurations.RepositoryConfiguration;
+import com.gabor.partypeps.models.dao.User;
+import com.gabor.partypeps.repositories.UserRepository;
 import main.configurations.PartyPepsTestConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
