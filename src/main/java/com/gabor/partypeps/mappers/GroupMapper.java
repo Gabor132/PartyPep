@@ -2,7 +2,9 @@ package com.gabor.partypeps.mappers;
 
 import com.gabor.partypeps.models.dao.Group;
 import com.gabor.partypeps.models.dto.GroupDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GroupMapper extends AbstractMapper<Group, GroupDTO> {
 
 

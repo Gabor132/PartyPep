@@ -2,7 +2,9 @@ package com.gabor.partypeps.mappers;
 
 import com.gabor.partypeps.models.dao.Message;
 import com.gabor.partypeps.models.dto.MessageDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MessageMapper extends AbstractMapper<Message, MessageDTO> {
 
     @Override

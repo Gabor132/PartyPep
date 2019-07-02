@@ -1,29 +1,27 @@
-package main.configurations;
+package com.gabor.configurations;
 
-import com.gabor.partypeps.mappers.MessageMapper;
-import com.gabor.partypeps.mappers.UserMapper;
+import com.gabor.partypeps.services.GroupService;
 import com.gabor.partypeps.services.MessageService;
 import com.gabor.partypeps.services.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class PartyPepsTestConfiguration {
+public class ServiceTestConfiguration {
 
     @Bean("userService")
     public UserService userService() {
         return new UserService();
     }
 
-    @Bean("userMapper")
-    public UserMapper userMapper(){ return new UserMapper(); }
-
     @Bean("messageService")
-    public MessageService messageService(){
+    public MessageService messageService() {
         return new MessageService();
     }
 
-    @Bean("messageMapper")
-    public MessageMapper messageMapper() { return new MessageMapper(); }
+    @Bean("groupService")
+    public GroupService groupService() {
+        return new GroupService();
+    }
 
 }

@@ -13,7 +13,6 @@ import java.util.List;
 @RequestMapping(path = "messages")
 public class MessageController extends AbstractController<Message> {
 
-
     @Autowired
     public MessageService messageService;
 

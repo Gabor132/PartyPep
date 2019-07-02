@@ -1,12 +1,12 @@
-package com.gabor.party.database;
+package com.gabor.unit.database;
 
 
+import com.gabor.common.AbstractTest;
 import com.gabor.partypeps.configurations.DatabaseConfig;
 import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
 import com.gabor.partypeps.configurations.RepositoryConfiguration;
 import com.gabor.partypeps.models.dao.User;
 import com.gabor.partypeps.repositories.UserRepository;
-import main.configurations.PartyPepsTestConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,14 +31,12 @@ import java.util.logging.Logger;
 @SpringBootTest(classes = {
         DatabaseConfig.class,
         EntityManagerFactoryConfig.class,
-        RepositoryConfiguration.class,
-        PartyPepsTestConfiguration.class
+        RepositoryConfiguration.class
 })
-public class DatabaseTest implements WebApplicationInitializer {
-
-
+public class DatabaseTest extends AbstractTest {
 
     private final static Logger logger = Logger.getLogger(DatabaseTest.class.toString());
+
     @Resource
     public UserRepository userRepository;
     @Autowired
@@ -75,8 +73,4 @@ public class DatabaseTest implements WebApplicationInitializer {
         Assert.assertTrue(users.size() > 0);
     }
 
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        servletContext.setInitParameter("spring.profiles.active", "IT");
-    }
 }

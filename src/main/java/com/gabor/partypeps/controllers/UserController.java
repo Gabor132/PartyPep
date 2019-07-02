@@ -24,9 +24,6 @@ public class UserController extends AbstractController<User> {
     @Autowired
     public UserService userService;
 
-    @Autowired
-    public MessageService messageService;
-
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<UserDTO> getAllUsers() {
         return userService.findAll();

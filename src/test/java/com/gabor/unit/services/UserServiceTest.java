@@ -1,13 +1,15 @@
-package com.gabor.party.services;
+package com.gabor.unit.services;
 
+import com.gabor.common.AbstractTest;
+import com.gabor.configurations.MapperTestConfiguration;
 import com.gabor.partypeps.models.dto.AbstractDTO;
 import com.gabor.partypeps.configurations.DatabaseConfig;
 import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
 import com.gabor.partypeps.configurations.RepositoryConfiguration;
 import com.gabor.partypeps.models.dao.User;
 import com.gabor.partypeps.models.dto.UserDTO;
-import com.gabor.partypeps.services.AbstractService;
-import main.configurations.PartyPepsTestConfiguration;
+import com.gabor.configurations.ServiceTestConfiguration;
+import com.gabor.partypeps.services.UserService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,7 +17,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.WebApplicationInitializer;
 
@@ -31,15 +32,16 @@ import java.util.logging.Logger;
         DatabaseConfig.class,
         EntityManagerFactoryConfig.class,
         RepositoryConfiguration.class,
-        PartyPepsTestConfiguration.class
+        MapperTestConfiguration.class,
+        ServiceTestConfiguration.class
 })
-@ContextConfiguration(classes = PartyPepsTestConfiguration.class)
-public class UserServiceTest  implements WebApplicationInitializer {
+public class UserServiceTest extends AbstractTest {
 
     private static Logger logger = Logger.getLogger(UserServiceTest.class.toString());
     private static List<User> mockUsersForTest = new LinkedList<>();
+
     @Autowired
-    public AbstractService userService;
+    public UserService userService;
 
     @Before
     public void setUp() {
@@ -88,10 +90,5 @@ public class UserServiceTest  implements WebApplicationInitializer {
 
     @Test
     public void updateUserTest() {
-    }
-
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        servletContext.setInitParameter("spring.profiles.active", "IT");
     }
 }

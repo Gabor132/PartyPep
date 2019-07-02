@@ -2,7 +2,9 @@ package com.gabor.partypeps.mappers;
 
 import com.gabor.partypeps.models.dao.User;
 import com.gabor.partypeps.models.dto.UserDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMapper extends AbstractMapper<User, UserDTO> {
 
 

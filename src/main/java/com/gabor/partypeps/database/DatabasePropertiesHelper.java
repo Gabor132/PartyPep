@@ -10,9 +10,6 @@ public class DatabasePropertiesHelper {
 
 
     private static final String JDBC_PROPERTIES_FILE_NAME = "jdbc.properties";
-    public static final String DB_USER_KEY = "user";
-    public static final String DB_PASSWORD_KEY = "password";
-    public static final String DB_URL_KEY = "url";
 
     public static Properties filterProperties(String profile, Properties properties) {
         Properties newProperties = new Properties();
