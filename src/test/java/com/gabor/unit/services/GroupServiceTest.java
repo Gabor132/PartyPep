@@ -7,11 +7,9 @@ import com.gabor.partypeps.configurations.DatabaseConfig;
 import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
 import com.gabor.partypeps.configurations.RepositoryConfiguration;
 import com.gabor.partypeps.mappers.AbstractMapper;
-import com.gabor.partypeps.models.dao.AbstractEntity;
-import com.gabor.partypeps.models.dao.Message;
-import com.gabor.partypeps.services.MessageService;
-import org.junit.After;
-import org.junit.Before;
+import com.gabor.partypeps.models.dao.Group;
+import com.gabor.partypeps.services.GroupService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
-
-import static org.junit.Assert.*;
 
 /**
  * TODO
@@ -33,10 +29,11 @@ import static org.junit.Assert.*;
         MapperTestConfiguration.class,
         ServiceTestConfiguration.class
 })
-public class MessageServiceTest extends AbstractTest {
+@Ignore
+public class GroupServiceTest extends AbstractTest {
 
     @Autowired
-    public MessageService messageService;
+    public GroupService groupService;
 
     @Test
     public void insert() {
@@ -47,14 +44,18 @@ public class MessageServiceTest extends AbstractTest {
     }
 
     @Test
+    public void findGroupsOfUser() {
+    }
+
+    @Test
     public void getRepository() {
-        JpaRepository<Message, Long> repository = messageService.getRepository();
+        JpaRepository<Group, Long> repository = groupService.getRepository();
         Assert.notNull(repository, "The mapper returned by the service is null");
     }
 
     @Test
     public void getMapper() {
-        AbstractMapper mapper = messageService.getMapper();
+        AbstractMapper mapper = groupService.getMapper();
         Assert.notNull(mapper, "The mapper returned by the service is null");
     }
 }

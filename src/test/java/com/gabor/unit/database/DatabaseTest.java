@@ -47,7 +47,9 @@ public class DatabaseTest extends AbstractTest {
         try (Connection conn = dataSource.getConnection()) {
             Statement statement = conn.createStatement();
             try (ResultSet resultSet = statement.executeQuery("SELECT 1")) {
-                if (resultSet.next() && resultSet.getInt(1) != 1) {
+                if(! resultSet.next()){
+                    Assert.fail();
+                }else if (resultSet.getInt(1) != 1) {
                     Assert.fail();
                 }
             }

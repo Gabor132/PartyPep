@@ -14,7 +14,6 @@ public class GroupDTO extends AbstractDTO {
 
     public List<Long> userIds;
 
-
     public GroupDTO() {
         userIds = new ArrayList<>();
     }
