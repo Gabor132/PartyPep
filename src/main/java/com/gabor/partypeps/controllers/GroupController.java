@@ -16,18 +16,18 @@ public class GroupController extends AbstractController<Group> {
     @Autowired
     public GroupService groupService;
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @GetMapping(path = "/all")
     public List<GroupDTO> getAllGroups() {
         return groupService.findAll();
     }
 
-    @RequestMapping("/{id}")
-    public GroupDTO getGroupById(@RequestParam Long id) {
-        return (GroupDTO) groupService.findById(id);
+    @GetMapping(path = "/{id}")
+    public GroupDTO getGroupById(@PathVariable Long id) {
+        return groupService.findById(id);
     }
 
-    @RequestMapping("/user/{id}")
-    public List<GroupDTO> getGroupsByUserId(@RequestParam Long id) {
+    @GetMapping(path = "/user/{id}")
+    public List<GroupDTO> getGroupsByUserId(@PathVariable Long id) {
         return groupService.findGroupsOfUser(id);
     }
 
