@@ -236,16 +236,6 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <skipTests>false</skipTests>
-                    <executions>
-                        <execution>
-                            <id>integration-test</id>
-                            <configuration>
-                                <includes>
-                                    <include>**/*IT.java</include>
-                                </includes>
-                            </configuration>
-                        </execution>
-                    </executions>
                 </configuration>
             </plugin>
             <plugin>
