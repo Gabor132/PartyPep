@@ -1,7 +1,5 @@
 package com.gabor.partypeps.configurations;
 
-import com.gabor.partypeps.database.DatabasePropertiesHelper;
-import com.gabor.partypeps.enums.ProfilesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,11 +32,30 @@ public class EntityManagerFactoryConfig {
         entityManager.setPackagesToScan("com.gabor.partypeps.models.dao");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManager.setJpaVendorAdapter(vendorAdapter);
-        entityManager.setJpaProperties(additionalProperties());
-        Properties prop = DatabasePropertiesHelper.getJDBCProperties(true, ProfilesEnum.DEV);
-        String persistanceUnitName = prop.getProperty("persistance.unit");
-        entityManager.setPersistenceUnitName(persistanceUnitName);
+        entityManager.setJpaProperties(additionalPropertiesDEV());
+        entityManager.setPersistenceUnitName("dev-persistance-unit");
         return entityManager;
+    }
+
+    private Properties additionalPropertiesDEV() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
+        properties.setProperty("hibernate.show_sql", "false");
+        properties.setProperty("hibernate.format_sql", "false");
+        properties.setProperty("hibernate.use_sql_comments", "false");
+        properties.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false");
+        //
+        // Set DB Drop, Create and Data scripts
+        //
+        properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
+        properties.setProperty("javax.persistence.schema-generation.create-source", "script");
+        properties.setProperty("javax.persistence.schema-generation.create-script-source", "sql_scripts/0.0.1/create.sql");
+        properties.setProperty("javax.persistence.schema-generation.drop-source", "script");
+        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "sql_scripts/0.0.1/drop.sql");
+        properties.setProperty("javax.persistence.sql-load-script-source", "sql_scripts/0.0.1/data.sql");
+
+        return properties;
     }
 
     @Bean("entityManagerFactory")
@@ -50,11 +67,29 @@ public class EntityManagerFactoryConfig {
         entityManager.setPackagesToScan("com.gabor.partypeps.models.dao");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManager.setJpaVendorAdapter(vendorAdapter);
-        entityManager.setJpaProperties(additionalProperties());
-        Properties prop = DatabasePropertiesHelper.getJDBCProperties(true, ProfilesEnum.IT);
-        String persistanceUnitName = prop.getProperty("persistance.unit");
-        entityManager.setPersistenceUnitName(persistanceUnitName);
+        entityManager.setJpaProperties(additionalPropertiesIT());
+        entityManager.setPersistenceUnitName("it-persistance-unit");
         return entityManager;
+    }
+
+    private Properties additionalPropertiesIT() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
+        properties.setProperty("hibernate.show_sql", "false");
+        properties.setProperty("hibernate.format_sql", "false");
+        properties.setProperty("hibernate.use_sql_comments", "false");
+        properties.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false");
+        //
+        // Set DB Drop, Create and Data scripts
+        //
+        properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
+        properties.setProperty("javax.persistence.schema-generation.create-source", "script");
+        properties.setProperty("javax.persistence.schema-generation.create-script-source", "sql_scripts/0.0.1/create.sql");
+        properties.setProperty("javax.persistence.schema-generation.drop-source", "script");
+        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "sql_scripts/0.0.1/drop.sql");
+        properties.setProperty("javax.persistence.sql-load-script-source", "sql_scripts/0.0.1/data.sql");
+        return properties;
     }
 
     @Bean("entityManagerFactory")
@@ -66,31 +101,28 @@ public class EntityManagerFactoryConfig {
         entityManager.setPackagesToScan("com.gabor.partypeps.models.dao");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManager.setJpaVendorAdapter(vendorAdapter);
-        entityManager.setJpaProperties(additionalProperties());
-        Properties prop = DatabasePropertiesHelper.getJDBCProperties(true, ProfilesEnum.PROD);
-        String persistanceUnitName = prop.getProperty("persistance.unit");
-        entityManager.setPersistenceUnitName(persistanceUnitName);
+        entityManager.setPersistenceUnitName("prod-persistance-unit");
+        entityManager.setJpaProperties(additionalPropertiesPROD());
         return entityManager;
     }
 
-    private Properties additionalProperties(){
+    private Properties additionalPropertiesPROD() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("hibernate.format_sql", "true");
-        properties.setProperty("hibernate.use_sql_comments", "true");
+        properties.setProperty("hibernate.show_sql", "false");
+        properties.setProperty("hibernate.format_sql", "false");
+        properties.setProperty("hibernate.use_sql_comments", "false");
         properties.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false");
         //
         // Set DB Drop, Create and Data scripts
         //
         properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
         properties.setProperty("javax.persistence.schema-generation.create-source", "script");
-        properties.setProperty("javax.persistence.schema-generation.create-script-source", "META-INF/postgresql_scripts/create.sql");
+        properties.setProperty("javax.persistence.schema-generation.create-script-source", "sql_scripts/0.0.1/create.sql");
         properties.setProperty("javax.persistence.schema-generation.drop-source", "script");
-        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "META-INF/postgresql_scripts/drop.sql");
-        properties.setProperty("javax.persistence.sql-load-script-source", "META-INF/postgresql_scripts/data.sql");
-
+        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "sql_scripts/0.0.1/drop.sql");
+        properties.setProperty("javax.persistence.sql-load-script-source", "sql_scripts/0.0.1/data.sql");
         return properties;
     }
 
@@ -102,7 +134,7 @@ public class EntityManagerFactoryConfig {
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 

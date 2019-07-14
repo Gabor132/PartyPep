@@ -2,6 +2,9 @@ package com.gabor.unit.database;
 
 
 import com.gabor.common.AbstractTest;
+import com.gabor.configurations.MapperTestConfiguration;
+import com.gabor.configurations.ServiceTestConfiguration;
+import com.gabor.configurations.UrlTestConfiguration;
 import com.gabor.partypeps.configurations.DatabaseConfig;
 import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
 import com.gabor.partypeps.configurations.RepositoryConfiguration;
@@ -12,12 +15,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.WebApplicationInitializer;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -27,12 +29,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {
         DatabaseConfig.class,
         EntityManagerFactoryConfig.class,
         RepositoryConfiguration.class
 })
+@RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles(value = "DEV")
 public class DatabaseTest extends AbstractTest {
 
     private final static Logger logger = Logger.getLogger(DatabaseTest.class.toString());

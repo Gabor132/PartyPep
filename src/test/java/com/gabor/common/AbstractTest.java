@@ -10,6 +10,5 @@ public class AbstractTest implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        servletContext.setInitParameter("spring.profiles.active", "IT");
     }
 }

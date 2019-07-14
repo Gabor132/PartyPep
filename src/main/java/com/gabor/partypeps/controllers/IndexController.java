@@ -3,8 +3,7 @@ package com.gabor.partypeps.controllers;
 import com.gabor.partypeps.models.dao.AbstractEntity;
 import com.gabor.partypeps.services.AbstractService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * This is the basic controller to get the index page of the application, note: it is @Controller, the @RestController will always
@@ -12,13 +11,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author dragos.gabor
  *
  */
-@Controller(value = "index")
-@RequestMapping(path = "/")
+@Controller
 public class IndexController extends AbstractController<AbstractEntity>{
 	
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	@GetMapping(value = "/")
 	public String index() {
-		return "index.html";
+		return "index";
+	}
+
+	@GetMapping(value="/favicon.ico")
+	public String favicon(){
+		return "";
 	}
 
 	@Override

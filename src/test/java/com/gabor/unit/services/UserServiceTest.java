@@ -1,14 +1,14 @@
 package com.gabor.unit.services;
 
-import com.gabor.common.AbstractTest;
 import com.gabor.configurations.MapperTestConfiguration;
-import com.gabor.partypeps.models.dto.AbstractDTO;
+import com.gabor.configurations.ServiceTestConfiguration;
+import com.gabor.configurations.UrlTestConfiguration;
 import com.gabor.partypeps.configurations.DatabaseConfig;
 import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
 import com.gabor.partypeps.configurations.RepositoryConfiguration;
 import com.gabor.partypeps.models.dao.User;
+import com.gabor.partypeps.models.dto.AbstractDTO;
 import com.gabor.partypeps.models.dto.UserDTO;
-import com.gabor.configurations.ServiceTestConfiguration;
 import com.gabor.partypeps.services.UserService;
 import org.junit.After;
 import org.junit.Assert;
@@ -17,25 +17,25 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.WebApplicationInitializer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {
         DatabaseConfig.class,
         EntityManagerFactoryConfig.class,
         RepositoryConfiguration.class,
         MapperTestConfiguration.class,
-        ServiceTestConfiguration.class
+        ServiceTestConfiguration.class,
+        UrlTestConfiguration.class
 })
-public class UserServiceTest extends AbstractTest {
+@ActiveProfiles(value = "DEV")
+@RunWith(SpringJUnit4ClassRunner.class)
+public class UserServiceTest {
 
     private static Logger logger = Logger.getLogger(UserServiceTest.class.toString());
     private static List<User> mockUsersForTest = new LinkedList<>();

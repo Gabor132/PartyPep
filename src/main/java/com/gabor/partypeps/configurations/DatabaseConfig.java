@@ -1,8 +1,7 @@
 package com.gabor.partypeps.configurations;
 
 import com.gabor.partypeps.database.AbstractDatabaseConfiguration;
-import com.gabor.partypeps.database.DatabasePropertiesHelper;
-import com.gabor.partypeps.enums.ProfilesEnum;
+import com.gabor.partypeps.common.PropertiesHelper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -22,7 +21,7 @@ public class DatabaseConfig implements AbstractDatabaseConfiguration {
     @Profile("DEV")
     @Override
     public DataSource getDataSourceForDEV() {
-        Properties properties = DatabasePropertiesHelper.getJDBCProperties(true, DEV);
+        Properties properties = PropertiesHelper.getJDBCProperties(true, DEV);
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         AbstractDatabaseConfiguration.setupDataSource(dataSource, properties);
         return dataSource;
@@ -32,7 +31,7 @@ public class DatabaseConfig implements AbstractDatabaseConfiguration {
     @Profile("IT")
     @Override
     public DataSource getDataSourceForIT() {
-        Properties properties = DatabasePropertiesHelper.getJDBCProperties(true, IT);
+        Properties properties = PropertiesHelper.getJDBCProperties(true, IT);
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         AbstractDatabaseConfiguration.setupDataSource(dataSource, properties);
         return dataSource;
@@ -42,7 +41,7 @@ public class DatabaseConfig implements AbstractDatabaseConfiguration {
     @Profile("PROD")
     @Override
     public DataSource getDataSourceForPROD() {
-        Properties properties = DatabasePropertiesHelper.getJDBCProperties(true, PROD);
+        Properties properties = PropertiesHelper.getJDBCProperties(true, PROD);
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         AbstractDatabaseConfiguration.setupDataSource(dataSource, properties);
         return dataSource;
