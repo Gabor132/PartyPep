@@ -45,6 +45,7 @@ public class AbstractDatabaseConfigurationTest extends AbstractTest {
         // The fact that we find all the necessary properties as being defined for PROD should be enough for now
         //
         properties.setProperty(AbstractDatabaseConfiguration.fromENVKey, "false");
+        properties.setProperty(AbstractDatabaseConfiguration.driverKey, "org.postgresql.Driver");
         AbstractDatabaseConfiguration.setupDataSource(dataSource, properties);
     }
 
