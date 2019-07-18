@@ -31,7 +31,7 @@ The deployment procedure is like this:
 1. A push to any branch will trigger a CircleCI job that will compile and run all the tests (Unit or Integration).
 2. If the branch that got pushed is Heroku and CircleCI tests pass, then the code is redeployed on the Heroku app that listens to and only to the Heroku branch.
 
-*Observation: The integration tests do not fail the building of the application, only Unit tests will fail the build completely and not allow the automated deployment to heroku.
+  <b>Observation: The Integration Tests do not fail the building of the application, only Unit tests will fail the build completely and not allow the automated deployment to heroku.</b>
 
 Heroku link: https://dashboard.heroku.com/apps/partypeps
 Application link on Heroku: https://partypeps.herokuapp.com/
