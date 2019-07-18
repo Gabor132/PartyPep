@@ -36,19 +36,19 @@ public class GetAllGroupsRequestTestIT extends AbstractControllerRequestTest{
     @Test
     @Override
     public void testStatusCode() {
-        this.defaultGetTestStatusCode();
+        this.testGetStatusCode();
     }
 
     @Test
     @Override
     public void testMessageType() {
-        this.defaultGetTestMessageType();
+        this.testGetMessageType();
     }
 
     @Test
     @Override
     public void testPayload() {
-        Object object = this.defaultGetTestPayload(ArrayList.class);
+        Object object = this.testGetPayload(ArrayList.class);
         if(object instanceof java.util.List) {
             List<GroupDTO> groups = (List<GroupDTO>) object;
             Assert.assertTrue(groups.size() > 0);

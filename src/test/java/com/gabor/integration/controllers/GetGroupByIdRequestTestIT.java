@@ -33,19 +33,19 @@ public class GetGroupByIdRequestTestIT extends AbstractControllerRequestTest{
     @Test
     @Override
     public void testStatusCode() {
-        this.defaultGetTestStatusCode();
+        this.testGetStatusCode();
     }
 
     @Test
     @Override
     public void testMessageType() {
-        this.defaultGetTestMessageType();
+        this.testGetMessageType();
     }
 
     @Test
     @Override
     public void testPayload() {
-        Object object = this.defaultGetTestPayload(GroupDTO.class);
+        Object object = this.testGetPayload(GroupDTO.class);
         Assert.notNull(object, "Object from parsing is null");
         GroupDTO group = (GroupDTO) object;
         Assert.notNull(group, "Object parsed is not a GroupDTO");

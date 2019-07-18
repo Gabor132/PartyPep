@@ -189,8 +189,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <wait>100</wait>
-                    <maxAttempts>180</maxAttempts>
+                    <mainClass>com.gabor.partypeps.PartyPepsApplication</mainClass>
+                    <wait>200</wait>
+                    <maxAttempts>200</maxAttempts>
                 </configuration>
             </plugin>
             <plugin>

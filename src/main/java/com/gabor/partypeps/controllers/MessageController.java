@@ -27,7 +27,7 @@ public class MessageController extends AbstractController<Message> {
     }
 
     @DeleteMapping(path = "/remove/{id}")
-    public boolean removeMessage(@PathVariable Long id) {
+    public Boolean removeMessage(@PathVariable Long id) {
         return messageService.delete(id);
     }
 

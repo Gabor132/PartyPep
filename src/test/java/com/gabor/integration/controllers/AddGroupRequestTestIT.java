@@ -8,7 +8,6 @@ import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
 import com.gabor.partypeps.configurations.RepositoryConfiguration;
 import com.gabor.partypeps.models.dto.AbstractDTO;
 import com.gabor.partypeps.models.dto.GroupDTO;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,20 +44,19 @@ public class AddGroupRequestTestIT extends AbstractControllerRequestTest{
     @Test
     @Override
     public void testStatusCode() {
-        this.defaultPostTestStatusCode(getDto());
+        this.testPostStatusCode(getDto());
     }
 
     @Test
     @Override
     public void testMessageType() {
-        this.defaultPostTestMessageType(getDto());
+        this.testPostMessageType(getDto());
     }
 
     @Test
     @Override
     public void testPayload() {
-        boolean isSuccessful = this.defaultPostTestPayload(GroupDTO.class, getDto());
-        Assert.assertTrue("Addition of new Group failed", isSuccessful);
+        this.testPostPayload(getDto());
     }
 
     @Override

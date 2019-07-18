@@ -36,19 +36,19 @@ public class GetGroupByUserIdRequestTestIT extends AbstractControllerRequestTest
     @Test
     @Override
     public void testStatusCode() {
-        this.defaultGetTestStatusCode();
+        this.testGetStatusCode();
     }
 
     @Test
     @Override
     public void testMessageType() {
-        this.defaultGetTestMessageType();
+        this.testGetMessageType();
     }
 
     @Test
     @Override
     public void testPayload() {
-        Object object = this.defaultGetTestPayload(ArrayList.class);
+        Object object = this.testGetPayload(ArrayList.class);
         if(object instanceof List){
             List<GroupDTO> groups = (List<GroupDTO>) object;
             if(groups.size() > 0){

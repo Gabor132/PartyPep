@@ -37,7 +37,7 @@ public class GroupController extends AbstractController<Group> {
     }
 
     @DeleteMapping(path = "/remove/{id}")
-    public boolean removeGroup(@PathVariable Long id){
+    public Boolean removeGroup(@PathVariable Long id){
         return groupService.delete(id);
     }
 

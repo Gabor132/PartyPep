@@ -33,7 +33,6 @@ public class UserController extends AbstractController<User> {
         return (UserDTO) userService.findById(id);
     }
 
-
     @PostMapping(path = "/add")
     public Long insertUser(@RequestBody UserDTO userDTO) {
         return userService.insert(userDTO);

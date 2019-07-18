@@ -34,19 +34,19 @@ public class GetUserByIdRequestTestIT extends AbstractControllerRequestTest {
     @Test
     @Override
     public void testStatusCode() {
-        this.defaultGetTestStatusCode();
+        this.testGetStatusCode();
     }
 
     @Test
     @Override
     public void testMessageType() {
-        this.defaultGetTestMessageType();
+        this.testGetMessageType();
     }
 
     @Test
     @Override
     public void testPayload() {
-        Object object = this.defaultGetTestPayload(UserDTO.class);
+        Object object = this.testGetPayload(UserDTO.class);
         if(object instanceof UserDTO) {
             UserDTO users = (UserDTO) object;
             Assert.assertEquals("Retrieved user has different ID", 1, users.id);
