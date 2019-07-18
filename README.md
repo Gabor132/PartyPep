@@ -25,11 +25,16 @@ Methodology: Agile as f*ck with a flavour of Kanban Freestyle
 # Continous Integration
 CircleCI is what we use, here is the link https://circleci.com/signup/ sign up and let me know to add you to the team.
 
-# IT Environment
-At the moment, the so called "PROD" does not really exist, but the IT environment does. After the tests pass within CircleCI, 
-there is an Heroku app that listens only to the Heroku git branch and upon a successfull push on the branch, does a deployment.
+# Deployment
+At the moment, the so called "PROD" does not really exist, but the IT environment does.
+The deployment procedure is like this:
+1. A push to any branch will trigger a CircleCI job that will compile and run all the tests (Unit or Integration).
+2. If the branch that got pushed is Heroku and CircleCI tests pass, then the code is redeployed on the Heroku app that listens to and only to the Heroku branch.
+
+*Observation: The integration tests do not fail the building of the application, only Unit tests will fail the build completely and not allow the automated deployment to heroku.
 
 Heroku link: https://dashboard.heroku.com/apps/partypeps
 Application link on Heroku: https://partypeps.herokuapp.com/
+CircleCI link: https://circleci.com/gh/Gabor132/PartyPep
 
 ! If you want to check if the application works, do https://partypeps.herokuapp.com/users/all and see if you get anything
