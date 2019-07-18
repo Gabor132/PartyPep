@@ -36,6 +36,7 @@ public interface AbstractDatabaseConfiguration {
         dataSource.setUsername(getProperty(usernameKey, properties, isFromENV));
         dataSource.setPassword(getProperty(passwordKey, properties, isFromENV));
         dataSource.setUrl(getProperty(urlKey, properties, isFromENV));
+
     }
 
     static String getProperty(String key, Properties properties, boolean isFromEnv) {
