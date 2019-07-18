@@ -33,8 +33,8 @@ The deployment procedure is like this:
 
   <b>Observation: The Integration Tests do not fail the building of the application, only Unit tests will fail the build completely and not allow the automated deployment to heroku.</b>
 
-Heroku link: https://dashboard.heroku.com/apps/partypeps
-Application link on Heroku: https://partypeps.herokuapp.com/
-CircleCI link: https://circleci.com/gh/Gabor132/PartyPep
+Heroku link: https://dashboard.heroku.com/apps/partypeps </br>
+Application link on Heroku: https://partypeps.herokuapp.com/ </br>
+CircleCI link: https://circleci.com/gh/Gabor132/PartyPep </br>
 
 ! If you want to check if the application works, do https://partypeps.herokuapp.com/users/all and see if you get anything
