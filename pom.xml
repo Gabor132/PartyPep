@@ -188,6 +188,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.1.0.RELEASE</version>
                 <configuration>
                     <mainClass>com.gabor.partypeps.PartyPepsApplication</mainClass>
                     <wait>200</wait>
@@ -228,7 +229,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/*IT.java</exclude>
+                        <exclude>**/integration/**/*IT.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
