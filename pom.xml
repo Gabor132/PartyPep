@@ -198,8 +198,8 @@
                 <version>2.1.0.RELEASE</version>
                 <configuration>
                     <mainClass>com.gabor.partypeps.PartyPepsApplication</mainClass>
-                    <wait>200</wait>
-                    <maxAttempts>200</maxAttempts>
+                    <wait>100</wait>
+                    <maxAttempts>180</maxAttempts>
                 </configuration>
             </plugin>
             <plugin>
