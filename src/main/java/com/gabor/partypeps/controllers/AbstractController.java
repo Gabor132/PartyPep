@@ -1,7 +1,7 @@
 package com.gabor.partypeps.controllers;
 
-import com.gabor.partypeps.services.AbstractService;
 import com.gabor.partypeps.models.dao.AbstractEntity;
+import com.gabor.partypeps.services.AbstractService;
 
 public abstract class AbstractController<T extends AbstractEntity> {
 

@@ -32,7 +32,7 @@ public class Group extends AbstractEntity {
     @JsonIgnore
     public List<Message> messages;
 
-    public Group(){
+    public Group() {
         this.groupUsers = new ArrayList<>();
         this.messages = new ArrayList<>();
     }

@@ -1,8 +1,14 @@
 package com.gabor.partypeps.controllers;
 
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@RestController(value = "error")
+@Controller
 public class ErrorController {
+
+    @GetMapping(value = "/error")
+    public String getError() {
+        return "Sorry";
+    }
 
 }

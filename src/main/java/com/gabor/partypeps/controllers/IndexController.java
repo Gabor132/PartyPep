@@ -8,24 +8,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 /**
  * This is the basic controller to get the index page of the application, note: it is @Controller, the @RestController will always
  * return a basic response and not the HTML page
- * @author dragos.gabor
  *
+ * @author dragos.gabor
  */
 @Controller
-public class IndexController extends AbstractController<AbstractEntity>{
-	
-	@GetMapping(value = "/")
-	public String index() {
-		return "index";
-	}
+public class IndexController extends AbstractController<AbstractEntity> {
 
-	@GetMapping(value="/favicon.ico")
-	public String favicon(){
-		return "";
-	}
+    @GetMapping(value = "/")
+    public String index() {
+        return "index";
+    }
 
-	@Override
-	public AbstractService getService() {
-		return null;
-	}
+    @GetMapping(value = "/favicon.ico")
+    public String favicon() {
+        return "";
+    }
+
+    @Override
+    public AbstractService getService() {
+        return null;
+    }
 }

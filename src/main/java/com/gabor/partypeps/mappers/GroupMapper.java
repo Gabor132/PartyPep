@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class GroupMapper extends AbstractMapper<Group, GroupDTO> {
 
 
-
     @Override
     public GroupDTO mapToDTO(Group entity) {
         return new GroupDTO(entity);
@@ -17,7 +16,7 @@ public class GroupMapper extends AbstractMapper<Group, GroupDTO> {
     @Override
     public Group mapToDAO(GroupDTO dto) {
         Group newGroup = new Group();
-        if(dto.id != null) {
+        if (dto.id != null) {
             newGroup.setId(dto.id);
         }
         newGroup.setName(dto.name);

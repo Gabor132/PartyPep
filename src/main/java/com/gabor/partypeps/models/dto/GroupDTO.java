@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 
 public class GroupDTO extends AbstractDTO {
 
-    public Long id;
-
     public String name;
 
     public List<Long> userIds;

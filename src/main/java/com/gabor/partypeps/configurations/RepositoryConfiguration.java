@@ -7,4 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Configuration
 @EnableJpaRepositories("com.gabor.partypeps.repositories")
 @Transactional
-public class RepositoryConfiguration { }
+public class RepositoryConfiguration {
+}

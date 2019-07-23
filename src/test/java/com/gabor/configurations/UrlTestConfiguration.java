@@ -11,21 +11,21 @@ public class UrlTestConfiguration {
 
     @Profile("DEV")
     @Bean("mainURL")
-    public String getDEVURL(){
+    public String getDEVURL() {
         return PropertiesHelper.getURLProperties(true, ProfilesEnum.DEV).getProperty("url");
     }
 
 
     @Profile("IT")
     @Bean("mainURL")
-    public String getITURL(){
+    public String getITURL() {
         return PropertiesHelper.getURLProperties(true, ProfilesEnum.IT).getProperty("url");
     }
 
 
     @Profile("PROD")
     @Bean("mainURL")
-    public String getPRODURL(){
+    public String getPRODURL() {
         return PropertiesHelper.getURLProperties(true, ProfilesEnum.PROD).getProperty("url");
     }
 

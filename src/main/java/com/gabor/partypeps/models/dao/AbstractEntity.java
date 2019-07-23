@@ -1,3 +1,4 @@
 package com.gabor.partypeps.models.dao;
 
-public class AbstractEntity {}
+public class AbstractEntity {
+}

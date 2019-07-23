@@ -16,13 +16,16 @@ public class UserMapper extends AbstractMapper<User, UserDTO> {
     /**
      * For now we do not support simultanious changes to user, groups and invitations
      * Just the ID and name
+     *
      * @param dto
      * @return User
      */
     @Override
     public User mapToDAO(UserDTO dto) {
         User user = new User();
-        user.setId(dto.id);
+        if (dto.id != null) {
+            user.setId(dto.id);
+        }
         user.setName(dto.name);
         user.setPassword(dto.password);
         return user;

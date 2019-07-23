@@ -1,8 +1,6 @@
 package com.gabor.partypeps.services;
 
 import com.gabor.partypeps.mappers.AbstractMapper;
-import com.gabor.partypeps.models.dao.AbstractEntity;
-import com.gabor.partypeps.models.dto.AbstractDTO;
 import com.gabor.partypeps.mappers.GroupMapper;
 import com.gabor.partypeps.models.dao.Group;
 import com.gabor.partypeps.models.dao.User;
@@ -36,15 +34,16 @@ public class GroupService extends AbstractService<Group, GroupDTO> {
 
     /**
      * Function to insert a new DTO Group object into the database
+     *
      * @param dto GroupDTO
      * @return long as the newly added group's ID
      */
     @Override
     public long insert(GroupDTO dto) {
         Group group = groupMapper.mapToDAO(dto);
-        for(Long userId : dto.userIds){
+        for (Long userId : dto.userIds) {
             Optional<User> user = userRepository.findById(userId);
-            if(user.isPresent()){
+            if (user.isPresent()) {
                 group.getGroupUsers().add(user.get());
             }
         }
@@ -64,15 +63,16 @@ public class GroupService extends AbstractService<Group, GroupDTO> {
 
     /**
      * Function that using an User's id, will return all the groups to which he belongs to
+     *
      * @param id Long
      * @return List<GroupDTO>
      */
     public List<GroupDTO> findGroupsOfUser(Long id) {
         UserDTO user = userService.findById(id);
         List<Group> groups = new ArrayList<>();
-        for(Long groupId : user.groupIds){
+        for (Long groupId : user.groupIds) {
             Optional<Group> group = groupRepository.findById(groupId);
-            if(group.isPresent()){
+            if (group.isPresent()) {
                 groups.add(group.get());
             }
         }

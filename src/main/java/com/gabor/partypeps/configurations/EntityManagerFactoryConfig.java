@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -30,8 +29,7 @@ public class EntityManagerFactoryConfig {
                 = new LocalContainerEntityManagerFactoryBean();
         entityManager.setDataSource(dataSource);
         entityManager.setPackagesToScan("com.gabor.partypeps.models.dao");
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        entityManager.setJpaVendorAdapter(vendorAdapter);
+        entityManager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManager.setJpaProperties(additionalPropertiesDEV());
         entityManager.setPersistenceUnitName("dev-persistance-unit");
         return entityManager;
@@ -50,10 +48,10 @@ public class EntityManagerFactoryConfig {
         //
         properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
         properties.setProperty("javax.persistence.schema-generation.create-source", "script");
-        properties.setProperty("javax.persistence.schema-generation.create-script-source", "sql_scripts/0.0.1/create.sql");
+        properties.setProperty("javax.persistence.schema-generation.create-script-source", "META-INF/sql_scripts/0.0.1/create.sql");
         properties.setProperty("javax.persistence.schema-generation.drop-source", "script");
-        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "sql_scripts/0.0.1/drop.sql");
-        properties.setProperty("javax.persistence.sql-load-script-source", "sql_scripts/0.0.1/data.sql");
+        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "META-INF/sql_scripts/0.0.1/drop.sql");
+        properties.setProperty("javax.persistence.sql-load-script-source", "META-INF/sql_scripts/0.0.1/data.sql");
 
         return properties;
     }
@@ -65,8 +63,7 @@ public class EntityManagerFactoryConfig {
                 = new LocalContainerEntityManagerFactoryBean();
         entityManager.setDataSource(dataSource);
         entityManager.setPackagesToScan("com.gabor.partypeps.models.dao");
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        entityManager.setJpaVendorAdapter(vendorAdapter);
+        entityManager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManager.setJpaProperties(additionalPropertiesIT());
         entityManager.setPersistenceUnitName("it-persistance-unit");
         return entityManager;
@@ -85,10 +82,10 @@ public class EntityManagerFactoryConfig {
         //
         properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
         properties.setProperty("javax.persistence.schema-generation.create-source", "script");
-        properties.setProperty("javax.persistence.schema-generation.create-script-source", "sql_scripts/0.0.1/create.sql");
+        properties.setProperty("javax.persistence.schema-generation.create-script-source", "META-INF/sql_scripts/0.0.1/create.sql");
         properties.setProperty("javax.persistence.schema-generation.drop-source", "script");
-        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "sql_scripts/0.0.1/drop.sql");
-        properties.setProperty("javax.persistence.sql-load-script-source", "sql_scripts/0.0.1/data.sql");
+        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "META-INF/sql_scripts/0.0.1/drop.sql");
+        properties.setProperty("javax.persistence.sql-load-script-source", "META-INF/sql_scripts/0.0.1/data.sql");
         return properties;
     }
 
@@ -99,8 +96,7 @@ public class EntityManagerFactoryConfig {
                 = new LocalContainerEntityManagerFactoryBean();
         entityManager.setDataSource(dataSource);
         entityManager.setPackagesToScan("com.gabor.partypeps.models.dao");
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        entityManager.setJpaVendorAdapter(vendorAdapter);
+        entityManager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManager.setPersistenceUnitName("prod-persistance-unit");
         entityManager.setJpaProperties(additionalPropertiesPROD());
         return entityManager;

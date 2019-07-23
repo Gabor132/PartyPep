@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 
 public class UserDTO extends AbstractDTO {
 
-    public long id;
-
     public String name;
 
     public String password;

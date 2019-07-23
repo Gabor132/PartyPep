@@ -4,7 +4,7 @@ public class MessageDTO extends AbstractDTO {
 
     public String text;
 
-    public long sourceUserId;
+    public Long sourceUserId;
 
-    public long groupId;
+    public Long groupId;
 }

@@ -1,7 +1,7 @@
 package com.gabor.partypeps.configurations;
 
-import com.gabor.partypeps.database.AbstractDatabaseConfiguration;
 import com.gabor.partypeps.common.PropertiesHelper;
+import com.gabor.partypeps.database.AbstractDatabaseConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -10,9 +10,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-import static com.gabor.partypeps.enums.ProfilesEnum.DEV;
-import static com.gabor.partypeps.enums.ProfilesEnum.IT;
-import static com.gabor.partypeps.enums.ProfilesEnum.PROD;
+import static com.gabor.partypeps.enums.ProfilesEnum.*;
 
 @Configuration
 public class DatabaseConfig implements AbstractDatabaseConfiguration {

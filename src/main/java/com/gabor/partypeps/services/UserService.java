@@ -1,8 +1,6 @@
 package com.gabor.partypeps.services;
 
 import com.gabor.partypeps.mappers.AbstractMapper;
-import com.gabor.partypeps.models.dao.AbstractEntity;
-import com.gabor.partypeps.models.dto.AbstractDTO;
 import com.gabor.partypeps.mappers.UserMapper;
 import com.gabor.partypeps.models.dao.User;
 import com.gabor.partypeps.models.dto.UserDTO;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService extends AbstractService<User, UserDTO> {
@@ -25,6 +22,7 @@ public class UserService extends AbstractService<User, UserDTO> {
 
     /**
      * Function to insert a new User entity into the database
+     *
      * @param dto UserDTO
      * @return long the ID of the newly created entity
      */

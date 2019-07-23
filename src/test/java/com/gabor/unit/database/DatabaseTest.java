@@ -2,9 +2,6 @@ package com.gabor.unit.database;
 
 
 import com.gabor.common.AbstractTest;
-import com.gabor.configurations.MapperTestConfiguration;
-import com.gabor.configurations.ServiceTestConfiguration;
-import com.gabor.configurations.UrlTestConfiguration;
 import com.gabor.partypeps.configurations.DatabaseConfig;
 import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
 import com.gabor.partypeps.configurations.RepositoryConfiguration;
@@ -16,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
@@ -50,9 +46,9 @@ public class DatabaseTest extends AbstractTest {
         try (Connection conn = dataSource.getConnection()) {
             Statement statement = conn.createStatement();
             try (ResultSet resultSet = statement.executeQuery("SELECT 1")) {
-                if(! resultSet.next()){
+                if (!resultSet.next()) {
                     Assert.fail();
-                }else if (resultSet.getInt(1) != 1) {
+                } else if (resultSet.getInt(1) != 1) {
                     Assert.fail();
                 }
             }

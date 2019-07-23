@@ -1,8 +1,8 @@
 package com.gabor.partypeps.controllers;
 
-import com.gabor.partypeps.services.AbstractService;
 import com.gabor.partypeps.models.dao.Message;
 import com.gabor.partypeps.models.dto.MessageDTO;
+import com.gabor.partypeps.services.AbstractService;
 import com.gabor.partypeps.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ public class MessageController extends AbstractController<Message> {
     @Autowired
     public MessageService messageService;
 
-    @RequestMapping(value = "/all", name = "getAllMesssages", method = RequestMethod.GET)
+    @GetMapping(path = "/all")
     public List<MessageDTO> getAllMessages() {
         return messageService.findAll();
     }

@@ -31,7 +31,7 @@ public class PropertiesHelper {
         return newProperties;
     }
 
-    public static Properties getJDBCProperties(){
+    public static Properties getJDBCProperties() {
         return getJDBCProperties(false, null);
     }
 
@@ -39,11 +39,11 @@ public class PropertiesHelper {
         return getProperties(JDBC_PROPERTIES_FILE_NAME, filtered, profile);
     }
 
-    public static Properties getURLProperties(boolean filtered, ProfilesEnum profile){
+    public static Properties getURLProperties(boolean filtered, ProfilesEnum profile) {
         return getProperties(URL_PROPERTIES_FILE_NAME, filtered, profile);
     }
 
-    public static Properties getProperties(String fileName, boolean filtered, ProfilesEnum profile){
+    public static Properties getProperties(String fileName, boolean filtered, ProfilesEnum profile) {
 
         Properties prop = new Properties();
         try (FileInputStream file = new FileInputStream(fileName)) {

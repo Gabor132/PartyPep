@@ -10,6 +10,7 @@ public class MessageMapper extends AbstractMapper<Message, MessageDTO> {
     @Override
     public MessageDTO mapToDTO(Message entity) {
         MessageDTO dto = new MessageDTO();
+        dto.id = entity.id;
         dto.text = entity.messageText;
         dto.groupId = entity.group.id;
         dto.sourceUserId = entity.sourceUser.id;
