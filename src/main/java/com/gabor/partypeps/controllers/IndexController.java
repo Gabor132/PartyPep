@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController extends AbstractController<AbstractEntity> {
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/", path = "/")
     public String index() {
         return "index";
     }
