@@ -5,6 +5,7 @@ import com.gabor.integration.controllers.interfaces.PostRequestTestInterface;
 import com.gabor.partypeps.enums.RequestPathEnum;
 import com.gabor.partypeps.models.dto.UserDTO;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -25,7 +26,13 @@ public class AddUserRequestTestIT extends AbstractRequestTest implements PostReq
     @Test
     public void testAddUserRequest() {
         HttpResponse response = this.doPostRequest(getDTO());
-        this.testPostStatusCode(response);
+        this.testPostStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
+    }
+
+    @Test
+    public void testAddUserRequestAuthenticated() {
+        HttpResponse response = this.doPostRequest(getDTO(), true);
+        this.testPostStatusCode(HttpStatus.SC_CREATED, response);
         this.testPostMessageType(response);
         this.testPostResponsePayload(response);
     }

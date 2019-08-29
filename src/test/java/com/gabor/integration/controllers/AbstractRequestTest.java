@@ -91,13 +91,25 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return httpResponse;
     }
 
-    final protected HttpResponse doDeleteRequest() {
+    final protected HttpResponse doDeleteRequest(){
+        return doDeleteRequest(false);
+    }
+
+    final protected HttpResponse doDeleteRequest(boolean withCredentials) {
         // Given
         HttpUriRequest request = new HttpDelete(getUrl());
         HttpResponse httpResponse = null;
         try {
+            HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+            if(withCredentials){
+                CredentialsProvider provider = new BasicCredentialsProvider();
+                UsernamePasswordCredentials credentials
+                        = new UsernamePasswordCredentials(getCredential(PropertiesEnum.USERNAME_KEY, "admin"), getCredential(PropertiesEnum.PASSWORD_KEY, "admin"));
+                provider.setCredentials(AuthScope.ANY, credentials);
+                clientBuilder.setDefaultCredentialsProvider(provider);
+            }
             // When
-            httpResponse = HttpClientBuilder.create().build().execute(request);
+            httpResponse = clientBuilder.build().execute(request);
 
         } catch (ClientProtocolException ex) {
             Assert.fail("Client Protocol Exception thrown " + ex.getMessage());
@@ -107,7 +119,11 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return httpResponse;
     }
 
-    final protected HttpResponse doPostRequest(AbstractDTO dto) {
+    final protected HttpResponse doPostRequest(AbstractDTO dto){
+        return doPostRequest(dto, false);
+    }
+
+    final protected HttpResponse doPostRequest(AbstractDTO dto, boolean withCredentials) {
         // Given
         HttpPost request = new HttpPost(getUrl());
         //
@@ -122,8 +138,16 @@ public abstract class AbstractRequestTest extends AbstractTest {
                 request.setHeader("Accept", MimeTypeUtils.APPLICATION_JSON_VALUE);
                 request.setHeader("Content-type", MimeTypeUtils.APPLICATION_JSON_VALUE);
                 try {
+                    HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+                    if(withCredentials){
+                        CredentialsProvider provider = new BasicCredentialsProvider();
+                        UsernamePasswordCredentials credentials
+                                = new UsernamePasswordCredentials(getCredential(PropertiesEnum.USERNAME_KEY, "admin"), getCredential(PropertiesEnum.PASSWORD_KEY, "admin"));
+                        provider.setCredentials(AuthScope.ANY, credentials);
+                        clientBuilder.setDefaultCredentialsProvider(provider);
+                    }
                     // When
-                    httpResponse = HttpClientBuilder.create().build().execute(request);
+                    httpResponse = clientBuilder.build().execute(request);
                 } catch (ClientProtocolException ex) {
                     Assert.fail("Client Protocol Exception thrown " + ex.getMessage());
                 } catch (IOException ex) {

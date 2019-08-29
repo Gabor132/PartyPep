@@ -4,6 +4,7 @@ import com.gabor.common.IntegrationTestConfiguration;
 import com.gabor.partypeps.enums.RequestPathEnum;
 import com.gabor.partypeps.models.dto.MessageDTO;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 
 import java.util.List;
@@ -14,6 +15,12 @@ public class GetAllMessagesRequestTestIT extends AbstractGetRequestTest<MessageD
     @Test
     public void testGetAllMessagesRequest() {
         HttpResponse response = this.doGetRequest();
+        this.testGetStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
+    }
+
+    @Test
+    public void testGetAllMessagesRequestAuthenticated() {
+        HttpResponse response = this.doGetRequest(true);
         this.testGetStatusCode(response);
         this.testGetMessageType(response);
         this.testGetResponsePayload(MessageDTO.class, List.class, response);

@@ -6,6 +6,7 @@ import com.gabor.partypeps.enums.RequestPathEnum;
 import com.gabor.partypeps.models.dto.AbstractDTO;
 import com.gabor.partypeps.models.dto.GroupDTO;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -26,7 +27,13 @@ public class AddGroupRequestTestIT extends AbstractRequestTest implements PostRe
     @Test
     public void testAddGroupRequest() {
         HttpResponse response = this.doPostRequest(getDTO());
-        this.testPostStatusCode(response);
+        this.testPostStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
+    }
+
+    @Test
+    public void testAddGroupRequestAuthenticated() {
+        HttpResponse response = this.doPostRequest(getDTO(), true);
+        this.testPostStatusCode(HttpStatus.SC_CREATED, response);
         this.testPostMessageType(response);
         this.testPostResponsePayload(response);
     }
