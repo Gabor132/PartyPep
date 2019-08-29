@@ -11,11 +11,11 @@ import java.util.Properties;
 @Configuration
 public interface AbstractDatabaseConfiguration {
 
-    String fromENVKey = "isFromEnv";
-    String driverKey = "driver";
-    String usernameKey = "user";
-    String passwordKey = "password";
-    String urlKey = "url";
+    String FROM_ENV_KEY = "isFromEnv";
+    String DRIVER_KEY = "driver";
+    String USERNAME_KEY = "user";
+    String PASSWORD_KEY = "password";
+    String URL_KEY = "url";
 
 
     @Bean("dataSource")
@@ -31,11 +31,11 @@ public interface AbstractDatabaseConfiguration {
     DataSource getDataSourceForPROD();
 
     static void setupDataSource(DriverManagerDataSource dataSource, Properties properties) {
-        boolean isFromENV = Boolean.parseBoolean(properties.getProperty(fromENVKey));
-        dataSource.setDriverClassName(getProperty(driverKey, properties, isFromENV));
-        dataSource.setUsername(getProperty(usernameKey, properties, isFromENV));
-        dataSource.setPassword(getProperty(passwordKey, properties, isFromENV));
-        dataSource.setUrl(getProperty(urlKey, properties, isFromENV));
+        boolean isFromENV = Boolean.parseBoolean(properties.getProperty(FROM_ENV_KEY));
+        dataSource.setDriverClassName(getProperty(DRIVER_KEY, properties, isFromENV));
+        dataSource.setUsername(getProperty(USERNAME_KEY, properties, isFromENV));
+        dataSource.setPassword(getProperty(PASSWORD_KEY, properties, isFromENV));
+        dataSource.setUrl(getProperty(URL_KEY, properties, isFromENV));
 
     }
 

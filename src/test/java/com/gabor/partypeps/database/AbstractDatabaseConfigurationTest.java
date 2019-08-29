@@ -31,7 +31,7 @@ public class AbstractDatabaseConfigurationTest extends AbstractTest {
         // Replace the isFromEnv value to false so that we don't check in the Environment Variables
         // The fact that we find all the necessary properties as being defined for IT should be enough for now
         //
-        properties.setProperty(AbstractDatabaseConfiguration.fromENVKey, "false");
+        properties.setProperty(AbstractDatabaseConfiguration.FROM_ENV_KEY, "false");
         AbstractDatabaseConfiguration.setupDataSource(dataSource, properties);
     }
 
@@ -44,8 +44,8 @@ public class AbstractDatabaseConfigurationTest extends AbstractTest {
         // Replace the isFromEnv value to false so that we don't check in the Environment Variables
         // The fact that we find all the necessary properties as being defined for PROD should be enough for now
         //
-        properties.setProperty(AbstractDatabaseConfiguration.fromENVKey, "false");
-        properties.setProperty(AbstractDatabaseConfiguration.driverKey, "org.postgresql.Driver");
+        properties.setProperty(AbstractDatabaseConfiguration.FROM_ENV_KEY, "false");
+        properties.setProperty(AbstractDatabaseConfiguration.DRIVER_KEY, "org.postgresql.Driver");
         AbstractDatabaseConfiguration.setupDataSource(dataSource, properties);
     }
 

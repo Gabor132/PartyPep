@@ -3,27 +3,28 @@ package com.gabor.integration.controllers;
 import com.gabor.common.IntegrationTestConfiguration;
 import com.gabor.integration.controllers.interfaces.PostRequestTestInterface;
 import com.gabor.partypeps.enums.RequestPathEnum;
-import com.gabor.partypeps.models.dto.UserDTO;
+import com.gabor.partypeps.models.dto.AbstractDTO;
+import com.gabor.partypeps.models.dto.GroupDTO;
 import org.apache.http.HttpResponse;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-@IntegrationTestConfiguration(path = RequestPathEnum.ADD_USER)
-public class AddUserRequestTestTestIT extends AbstractRequestTest implements PostRequestTestInterface {
+@IntegrationTestConfiguration(path = RequestPathEnum.ADD_GROUP)
+public class AddGroupRequestTestIT extends AbstractRequestTest implements PostRequestTestInterface {
 
     @Override
-    public UserDTO getDTO() {
-        UserDTO user = new UserDTO();
-        user.groupIds = new ArrayList<>();
-        user.invitationIds = new ArrayList<>();
-        user.name = "User de Test";
-        user.password = "ceva parola acolo";
-        return user;
+    public AbstractDTO getDTO() {
+        GroupDTO group = new GroupDTO();
+        group.name = "Banana";
+        group.userIds = new ArrayList<>();
+        group.userIds.add(1L);
+        group.userIds.add(2L);
+        return group;
     }
 
     @Test
-    public void testAddUserRequest() {
+    public void testAddGroupRequest() {
         HttpResponse response = this.doPostRequest(getDTO());
         this.testPostStatusCode(response);
         this.testPostMessageType(response);

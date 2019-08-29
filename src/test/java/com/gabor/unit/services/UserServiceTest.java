@@ -3,8 +3,8 @@ package com.gabor.unit.services;
 import com.gabor.configurations.MapperTestConfiguration;
 import com.gabor.configurations.ServiceTestConfiguration;
 import com.gabor.configurations.UrlTestConfiguration;
-import com.gabor.partypeps.configurations.DatabaseConfig;
-import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
+import com.gabor.partypeps.configurations.DatabaseConfiguration;
+import com.gabor.partypeps.configurations.EntityManagerFactoryConfiguration;
 import com.gabor.partypeps.configurations.RepositoryConfiguration;
 import com.gabor.partypeps.models.dao.User;
 import com.gabor.partypeps.models.dto.AbstractDTO;
@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @SpringBootTest(classes = {
-        DatabaseConfig.class,
-        EntityManagerFactoryConfig.class,
+        DatabaseConfiguration.class,
+        EntityManagerFactoryConfiguration.class,
         RepositoryConfiguration.class,
         MapperTestConfiguration.class,
         ServiceTestConfiguration.class,
@@ -49,10 +49,11 @@ public class UserServiceTest {
         while (i > 0) {
             i--;
             User user = new User();
-            user.setName("Banana" + i);
+            user.setUsername("Banana" + i);
             user.setPassword("Banana" + i);
             user.setInvitations(new ArrayList<>());
             user.setGroups(new ArrayList<>());
+            user.setAuthorities(new ArrayList<>());
             mockUsersForTest.add(user);
         }
     }

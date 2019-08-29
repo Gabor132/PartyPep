@@ -3,24 +3,20 @@ package com.gabor.integration.controllers;
 import com.gabor.common.IntegrationTestConfiguration;
 import com.gabor.integration.controllers.interfaces.PostRequestTestInterface;
 import com.gabor.partypeps.enums.RequestPathEnum;
-import com.gabor.partypeps.models.dto.AbstractDTO;
-import com.gabor.partypeps.models.dto.GroupDTO;
+import com.gabor.partypeps.models.dto.MessageDTO;
 import org.apache.http.HttpResponse;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
-@IntegrationTestConfiguration(path = RequestPathEnum.ADD_GROUP)
-public class AddGroupRequestTestTestIT extends AbstractRequestTest implements PostRequestTestInterface {
+@IntegrationTestConfiguration(path = RequestPathEnum.ADD_MESSAGE)
+public class AddMessageRequestTestIT extends AbstractRequestTest implements PostRequestTestInterface {
 
     @Override
-    public AbstractDTO getDTO() {
-        GroupDTO group = new GroupDTO();
-        group.name = "Banana";
-        group.userIds = new ArrayList<>();
-        group.userIds.add(1L);
-        group.userIds.add(2L);
-        return group;
+    public MessageDTO getDTO() {
+        MessageDTO message = new MessageDTO();
+        message.sourceUserId = 1L;
+        message.text = "Salut";
+        message.groupId = 1L;
+        return message;
     }
 
     @Test
@@ -30,4 +26,5 @@ public class AddGroupRequestTestTestIT extends AbstractRequestTest implements Po
         this.testPostMessageType(response);
         this.testPostResponsePayload(response);
     }
+
 }

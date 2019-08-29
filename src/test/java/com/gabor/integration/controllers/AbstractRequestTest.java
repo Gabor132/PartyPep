@@ -7,38 +7,82 @@ import com.gabor.common.IntegrationTestConfiguration;
 import com.gabor.integration.auxiliar.JSONRetriver;
 import com.gabor.partypeps.common.PropertiesHelper;
 import com.gabor.partypeps.enums.ProfilesEnum;
+import com.gabor.partypeps.enums.RequestPathEnum;
 import com.gabor.partypeps.models.dto.AbstractDTO;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Assert;
 import org.springframework.util.MimeTypeUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Properties;
 import java.util.logging.Logger;
+
+enum PropertiesEnum{
+    FROM_ENV_KEY("isFromEnv"),
+    USERNAME_KEY("username"),
+    PASSWORD_KEY("password");
+    String value;
+    PropertiesEnum(String value){
+        this.value = value;
+    }
+}
 
 public abstract class AbstractRequestTest extends AbstractTest {
 
-    public static Logger logger = Logger.getLogger(AbstractRequestTest.class.getName());
+    protected static Logger logger = Logger.getLogger(AbstractRequestTest.class.getName());
+
+    /////////////////////////// SECURITY CREDENTIALS RETRIEVAL /////////////////////////////////
+
+    private String getCredential(PropertiesEnum key){
+        return getCredential(key, "");
+    }
+
+    private String getCredential(PropertiesEnum key, String defaultValue){
+        Properties properties = PropertiesHelper.getSecurityProperties(true, ProfilesEnum.IT);
+        boolean isFromEnvironment = Boolean.parseBoolean(properties.getProperty(PropertiesEnum.FROM_ENV_KEY.value));
+        String returnValue = isFromEnvironment ? System.getenv(properties.getProperty(key.value)) : properties.getProperty(key.value);
+        if(returnValue == null || returnValue.isEmpty()) {
+            return defaultValue;
+        }
+        return returnValue;
+    }
 
     /////////////////////////// REQUEST METHODS ////////////////////////////////////////////////
 
-    final protected HttpResponse doGetRequest() {
+    final protected HttpResponse doGetRequest(){
+        return doGetRequest(false);
+    }
+
+    final protected HttpResponse doGetRequest(boolean withCredentials) {
         // Given
         HttpUriRequest request = new HttpGet(getUrl());
         HttpResponse httpResponse = null;
         try {
+            HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+            if(withCredentials){
+                CredentialsProvider provider = new BasicCredentialsProvider();
+                UsernamePasswordCredentials credentials
+                        = new UsernamePasswordCredentials(getCredential(PropertiesEnum.USERNAME_KEY, "admin"), getCredential(PropertiesEnum.PASSWORD_KEY, "admin"));
+                provider.setCredentials(AuthScope.ANY, credentials);
+                clientBuilder.setDefaultCredentialsProvider(provider);
+            }
             // When
-            httpResponse = HttpClientBuilder.create().build().execute(request);
+            httpResponse = clientBuilder.build().execute(request);
         } catch (ClientProtocolException ex) {
             Assert.fail("Client Protocol Exception thrown " + ex.getMessage());
         } catch (IOException ex) {
@@ -172,6 +216,14 @@ public abstract class AbstractRequestTest extends AbstractTest {
     }
 
     /////////////////////////// GET URL ////////////////////////////////////////////////
+
+    final private String getLoginUrl(){
+        String mainURL = PropertiesHelper.getURLProperties(true, ProfilesEnum.IT).getProperty("url");
+        String finalURL = mainURL;
+        finalURL = finalURL + RequestPathEnum.LOGIN;
+        logger.info("URL USED IS: " + finalURL);
+        return finalURL;
+    }
 
     final private String getUrl() {
         IntegrationTestConfiguration itAnnotation = this.getClass().getAnnotation(IntegrationTestConfiguration.class);

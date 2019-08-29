@@ -14,7 +14,8 @@ public enum RequestPathEnum {
     ADD_MESSAGE("messages/add"),
     REMOVE_USER_BY_ID("users/remove/{id}"),
     REMOVE_GROUP_BY_ID("groups/remove/{id}"),
-    REMOVE_MESSAGE_BY_ID("messages/remove/{id}");
+    REMOVE_MESSAGE_BY_ID("messages/remove/{id}"),
+    LOGIN("login");
     private String value;
 
     RequestPathEnum(String value) {

@@ -13,7 +13,7 @@ import java.util.Properties;
 import static com.gabor.partypeps.enums.ProfilesEnum.*;
 
 @Configuration
-public class DatabaseConfig implements AbstractDatabaseConfiguration {
+public class DatabaseConfiguration implements AbstractDatabaseConfiguration {
 
     @Bean("dataSource")
     @Profile("DEV")

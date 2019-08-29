@@ -20,6 +20,14 @@ public class UserService extends AbstractService<User, UserDTO> {
     @Autowired
     public UserRepository userRepository;
 
+    public UserDTO findUserByUsername(String username){
+        User user = userRepository.findByUsername(username);
+        if(user == null){
+            return null;
+        }
+        return userMapper.mapToDTO(user);
+    }
+
     /**
      * Function to insert a new User entity into the database
      *

@@ -14,6 +14,7 @@ public class PropertiesHelper {
 
     private static final String JDBC_PROPERTIES_FILE_NAME = "jdbc.properties";
     private static final String URL_PROPERTIES_FILE_NAME = "url.properties";
+    private static final String SECURITY_PROPERTIES_FILE_NAME = "security.properties";
 
     public static Properties filterProperties(ProfilesEnum profile, Properties properties) {
         Properties newProperties = new Properties();
@@ -41,6 +42,10 @@ public class PropertiesHelper {
 
     public static Properties getURLProperties(boolean filtered, ProfilesEnum profile) {
         return getProperties(URL_PROPERTIES_FILE_NAME, filtered, profile);
+    }
+
+    public static Properties getSecurityProperties(boolean filtered, ProfilesEnum profile){
+        return getProperties(SECURITY_PROPERTIES_FILE_NAME, filtered, profile);
     }
 
     public static Properties getProperties(String fileName, boolean filtered, ProfilesEnum profile) {

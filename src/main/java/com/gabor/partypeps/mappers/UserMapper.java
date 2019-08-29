@@ -26,7 +26,7 @@ public class UserMapper extends AbstractMapper<User, UserDTO> {
         if (dto.id != null) {
             user.setId(dto.id);
         }
-        user.setName(dto.name);
+        user.setUsername(dto.name);
         user.setPassword(dto.password);
         return user;
     }

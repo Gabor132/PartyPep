@@ -5,6 +5,7 @@ import com.gabor.partypeps.models.dto.GroupDTO;
 import com.gabor.partypeps.services.AbstractService;
 import com.gabor.partypeps.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,11 +33,13 @@ public class GroupController extends AbstractController<Group> {
     }
 
     @PostMapping(path = "/add")
+    @ResponseStatus(HttpStatus.CREATED)
     public Long addGroup(@RequestBody GroupDTO groupDto) {
         return groupService.insert(groupDto);
     }
 
     @DeleteMapping(path = "/remove/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Boolean removeGroup(@PathVariable Long id) {
         return groupService.delete(id);
     }

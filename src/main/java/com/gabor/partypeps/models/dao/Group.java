@@ -18,7 +18,7 @@ public class Group extends AbstractEntity {
     @Column(name = "NAME")
     public String name;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USERS_GROUPS",
             joinColumns = @JoinColumn(name = "GROUP_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))

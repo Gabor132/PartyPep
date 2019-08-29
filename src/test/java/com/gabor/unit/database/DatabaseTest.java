@@ -2,8 +2,8 @@ package com.gabor.unit.database;
 
 
 import com.gabor.common.AbstractTest;
-import com.gabor.partypeps.configurations.DatabaseConfig;
-import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
+import com.gabor.partypeps.configurations.DatabaseConfiguration;
+import com.gabor.partypeps.configurations.EntityManagerFactoryConfiguration;
 import com.gabor.partypeps.configurations.RepositoryConfiguration;
 import com.gabor.partypeps.models.dao.User;
 import com.gabor.partypeps.repositories.UserRepository;
@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @SpringBootTest(classes = {
-        DatabaseConfig.class,
-        EntityManagerFactoryConfig.class,
+        DatabaseConfiguration.class,
+        EntityManagerFactoryConfiguration.class,
         RepositoryConfiguration.class
 })
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -60,7 +60,7 @@ public class DatabaseTest extends AbstractTest {
     @Test
     public void databaseBasicInsert() {
         User user = new User();
-        user.setName("UserToInsert");
+        user.setUsername("UserToInsert");
         user.setPassword("password");
         user.setGroups(new ArrayList<>());
         user.setInvitations(new ArrayList<>());

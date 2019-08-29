@@ -3,8 +3,8 @@ package com.gabor.common;
 import com.gabor.configurations.MapperTestConfiguration;
 import com.gabor.configurations.ServiceTestConfiguration;
 import com.gabor.configurations.UrlTestConfiguration;
-import com.gabor.partypeps.configurations.DatabaseConfig;
-import com.gabor.partypeps.configurations.EntityManagerFactoryConfig;
+import com.gabor.partypeps.configurations.DatabaseConfiguration;
+import com.gabor.partypeps.configurations.EntityManagerFactoryConfiguration;
 import com.gabor.partypeps.configurations.RepositoryConfiguration;
 import com.gabor.partypeps.enums.RequestPathEnum;
 import org.junit.runner.RunWith;
@@ -20,8 +20,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest(classes = {
-        DatabaseConfig.class,
-        EntityManagerFactoryConfig.class,
+        DatabaseConfiguration.class,
+        EntityManagerFactoryConfiguration.class,
         RepositoryConfiguration.class,
         MapperTestConfiguration.class,
         ServiceTestConfiguration.class,
@@ -35,4 +35,10 @@ public @interface IntegrationTestConfiguration {
     boolean hasId() default false;
 
     long id() default 1;
+
+    boolean withCredentials() default false;
+
+    String username() default "admin";
+
+    String password() default "admin";
 }
