@@ -1,4 +1,4 @@
-package com.gabor.partypeps.configurations.Security;
+package com.gabor.partypeps.security.entrypoints;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

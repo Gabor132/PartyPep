@@ -1,10 +1,14 @@
-package com.gabor.partypeps.configurations.Security;
+package com.gabor.partypeps.configurations;
 
+import com.gabor.partypeps.security.entrypoints.DigestRestAuthenticationEntryPoint;
+import com.gabor.partypeps.security.handlers.AuthenticationFailureHandler;
+import com.gabor.partypeps.security.handlers.AuthenticationSuccessHandler;
 import com.gabor.partypeps.services.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,11 +19,11 @@ import org.springframework.security.web.authentication.www.DigestAuthenticationF
 import javax.sql.DataSource;
 
 /**
- * The Spring Security Configuration Class
+ * The Spring security Configuration Class
  */
 @Configuration
 @EnableWebSecurity
-@ComponentScan("com.gabor.partypeps.configurations.Security")
+@ComponentScan({"com.gabor.partypeps.configurations", "com.gabor.partypeps.security"})
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
@@ -38,6 +42,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public DataSource dataSource;
 
+    @Bean("authenticationManager")
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception{
+        return super.authenticationManagerBean();
+    }
+
     @Bean
     public DigestAuthenticationFilter digestAuthenticationFilter(){
         DigestAuthenticationFilter filter = new DigestAuthenticationFilter();
@@ -50,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .addFilter(digestAuthenticationFilter())
+                //.addFilter(digestAuthenticationFilter())
                 .authorizeRequests()
                 .antMatchers("^/login.*").permitAll()
                 .antMatchers("/*/**").authenticated()

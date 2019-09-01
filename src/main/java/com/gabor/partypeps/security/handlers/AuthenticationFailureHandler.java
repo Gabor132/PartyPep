@@ -1,4 +1,4 @@
-package com.gabor.partypeps.configurations.Security;
+package com.gabor.partypeps.security.handlers;
 
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;

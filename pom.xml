@@ -22,6 +22,8 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-security.version>4.0.3.RELEASE</spring-security.version>
+        <tomcat.version>8.5.37</tomcat.version>
+        <webapp-runner.version>9.0.20.1</webapp-runner.version>
     </properties>
 
     <dependencies>
@@ -82,11 +84,6 @@
             <version>5.1.8.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>5.1.4.RELEASE</version>
@@ -116,9 +113,19 @@
             <version>${spring-security.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>2.3.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
+            <version>1.0.10.RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.jsimone</groupId>
             <artifactId>webapp-runner</artifactId>
-            <version>9.0.17.0</version>
+            <version>${webapp-runner.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
