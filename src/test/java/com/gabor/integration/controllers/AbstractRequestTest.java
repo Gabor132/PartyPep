@@ -5,43 +5,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gabor.common.AbstractTest;
 import com.gabor.common.IntegrationTestConfiguration;
 import com.gabor.integration.auxiliar.JSONRetriver;
+import com.gabor.integration.controllers.enums.PropertiesEnum;
+import com.gabor.integration.security.SecurityToken;
 import com.gabor.partypeps.common.PropertiesHelper;
 import com.gabor.partypeps.enums.ProfilesEnum;
+import com.gabor.partypeps.enums.RequestPathEnum;
 import com.gabor.partypeps.models.dto.AbstractDTO;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
+import org.apache.http.*;
 import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.junit.Assert;
-import org.springframework.security.web.header.Header;
 import org.springframework.util.MimeTypeUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
-
-enum PropertiesEnum{
-    FROM_ENV_KEY("isFromEnv"),
-    USERNAME_KEY("username"),
-    PASSWORD_KEY("password");
-    String value;
-    PropertiesEnum(String value){
-        this.value = value;
-    }
-}
 
 public abstract class AbstractRequestTest extends AbstractTest {
 
@@ -49,14 +44,14 @@ public abstract class AbstractRequestTest extends AbstractTest {
 
     /////////////////////////// SECURITY CREDENTIALS RETRIEVAL /////////////////////////////////
 
-    private String getCredential(PropertiesEnum key){
+    protected static String getCredential(PropertiesEnum key){
         return getCredential(key, "");
     }
 
-    private String getCredential(PropertiesEnum key, String defaultValue){
+    protected static String getCredential(PropertiesEnum key, String defaultValue){
         Properties properties = PropertiesHelper.getSecurityProperties(true, ProfilesEnum.IT);
-        boolean isFromEnvironment = Boolean.parseBoolean(properties.getProperty(PropertiesEnum.FROM_ENV_KEY.value));
-        String returnValue = isFromEnvironment ? System.getenv(properties.getProperty(key.value)) : properties.getProperty(key.value);
+        boolean isFromEnvironment = Boolean.parseBoolean(properties.getProperty(PropertiesEnum.FROM_ENV_KEY.getValue()));
+        String returnValue = isFromEnvironment ? System.getenv(properties.getProperty(key.getValue())) : properties.getProperty(key.getValue());
         if(returnValue == null || returnValue.isEmpty()) {
             return defaultValue;
         }
@@ -65,37 +60,35 @@ public abstract class AbstractRequestTest extends AbstractTest {
 
     /////////////////////////// OAUTH2 TOKEN HANDLING //////////////////////////////////////////
 
-    private String getAccessTokenUrl(){
-        String ACCESS_TOKEN_URL = "/oauth/token";
+    private String getTokenUrl(){
+        String ACCESS_TOKEN_URL = RequestPathEnum.GET_ACCESS_TOKEN.getUrl();
         return getUrl(ACCESS_TOKEN_URL);
     }
 
-    private String getRefreshTokenUrl(){
-        String REFRESH_TOKEN_URL = "/oauth/refresh_token";
-        return getUrl(REFRESH_TOKEN_URL);
+    protected final SecurityToken extractAccessToken(HttpResponse response){
+        Object responseObject = JSONRetriver.retrieveClass(SecurityToken.class, response.getEntity());
+        return (SecurityToken) responseObject;
     }
 
-    /**
-     * TODO: Handle the OAUTH2 Tokens
-     * @return
-     */
-    private String getAccessToken(){
+    protected final HttpResponse doAccessTokenPostRequest(){
         // Given
-        HttpUriRequest request = new HttpGet(getAccessTokenUrl());
+        HttpPost request = new HttpPost(getTokenUrl());
         HttpResponse httpResponse = null;
         try {
             HttpClientBuilder clientBuilder = HttpClientBuilder.create();
-            CredentialsProvider provider = new BasicCredentialsProvider();
-            UsernamePasswordCredentials credentials
-                    = new UsernamePasswordCredentials("partypeps", "dGakldj192038");
-            provider.setCredentials(AuthScope.ANY, credentials);
-            ArrayList<Header> headers = new ArrayList<>();
-            headers.add(new Header("grant_type", "password"));
-            headers.add(new Header("client_id", "partypeps"));
-            headers.add(new Header("username", getCredential(PropertiesEnum.USERNAME_KEY, "admin")));
-            headers.add(new Header("password", getCredential(PropertiesEnum.PASSWORD_KEY, "admin")));
-            clientBuilder.setDefaultCredentialsProvider(provider);
-            // When
+            //
+            // Set the Basic Credentials for the Token Request
+            attachBasicCredentialsToRequest(clientBuilder, request);
+            //
+            // Map JSON for Token Credentials
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("grant_type", "password"));
+            params.add(new BasicNameValuePair("client_id", "partypeps"));
+            params.add(new BasicNameValuePair("username", getCredential(PropertiesEnum.USERNAME_KEY, "admin")));
+            params.add(new BasicNameValuePair("password", getCredential(PropertiesEnum.PASSWORD_KEY, "admin")));
+            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params);
+            request.setEntity(entity);
+            // To Request
             httpResponse = clientBuilder.build().execute(request);
 
         } catch (ClientProtocolException ex) {
@@ -103,37 +96,94 @@ public abstract class AbstractRequestTest extends AbstractTest {
         } catch (IOException ex) {
             Assert.fail("IO Exception thrown " + ex.getMessage());
         }
-        return "";
+        return httpResponse;
     }
 
-    /**
-     * TODO: Handle the OAUTH2 Refresh Tokens
-     * @return
-     */
-    private String getRefreshToken(){
-        return "";
+    protected final HttpResponse doRefreshTokenPostRequest(String refresh_token){
+        // Given
+        HttpPost request = new HttpPost(getTokenUrl());
+        HttpResponse httpResponse = null;
+        try {
+            HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+            //
+            // Set the Basic Credentials for the Token Request
+            attachBasicCredentialsToRequest(clientBuilder, request);
+            //
+            // Map JSON for Token Credentials
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("grant_type", "refresh_token"));
+            params.add(new BasicNameValuePair("refresh_token", refresh_token));
+            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params);
+            request.setEntity(entity);
+
+            // To Request
+            httpResponse = clientBuilder.build().execute(request);
+
+        } catch (ClientProtocolException ex) {
+            Assert.fail("Client Protocol Exception thrown " + ex.getMessage());
+        } catch (IOException ex) {
+            Assert.fail("IO Exception thrown " + ex.getMessage());
+        }
+        return httpResponse;
+    }
+
+    private String getAnyAccessToken(){
+        HttpResponse response = doAccessTokenPostRequest();
+        Assert.assertNotNull(response);
+        SecurityToken token = extractAccessToken(response);
+        logger.info("Got token: " + token.access_token);
+        return token.access_token;
+    }
+
+    private String getAnyRefreshToken(){
+        HttpResponse response = doAccessTokenPostRequest();
+        Assert.assertNotNull(response);
+        return extractAccessToken(response).refresh_token;
     }
 
     /////////////////////////// REQUEST METHODS ////////////////////////////////////////////////
 
-    final HttpResponse doGetRequest(){
+    private void attachBasicCredentialsToRequest(HttpClientBuilder clientBuilder, HttpRequest request){
+        try {
+            CredentialsProvider provider = new BasicCredentialsProvider();
+            UsernamePasswordCredentials credentials
+                    = new UsernamePasswordCredentials("partypeps", "dGakldj192038");
+            provider.setCredentials(AuthScope.ANY, credentials);
+            request.addHeader(new BasicScheme().authenticate(credentials, request, null));
+            clientBuilder.setDefaultCredentialsProvider(provider);
+        } catch (AuthenticationException ex){
+            Assert.fail("Failed to attach Authentication segment to request" + ex.getMessage());
+        }
+    }
+
+    private void attachOAuthCredentialsToRequest(HttpRequest request, String accessToken){
+        if(accessToken == null || accessToken.isEmpty()) {
+            request.setHeader("Authorization", "Bearer " + accessToken);
+        }
+    }
+
+    protected final HttpResponse doGetRequest(){
         return doGetRequest(false);
     }
 
-    final HttpResponse doGetRequest(boolean withCredentials) {
+    protected final HttpResponse doGetRequest(boolean withCredentials){
+        String accessToken = null;
+        if(withCredentials){
+            SecurityToken token = extractAccessToken(doAccessTokenPostRequest());
+            accessToken = token.access_token;
+        }
+        return doGetRequest(withCredentials, accessToken);
+    }
+
+    protected final HttpResponse doGetRequest(boolean withCredentials, String accessToken) {
         // Given
         HttpUriRequest request = new HttpGet(getUrl());
         HttpResponse httpResponse = null;
         try {
             HttpClientBuilder clientBuilder = HttpClientBuilder.create();
             if(withCredentials){
-                CredentialsProvider provider = new BasicCredentialsProvider();
-                UsernamePasswordCredentials credentials
-                        = new UsernamePasswordCredentials(getCredential(PropertiesEnum.USERNAME_KEY, "admin"), getCredential(PropertiesEnum.PASSWORD_KEY, "admin"));
-                provider.setCredentials(AuthScope.ANY, credentials);
-                clientBuilder.setDefaultCredentialsProvider(provider);
+                attachOAuthCredentialsToRequest(request, accessToken);
             }
-            // When
             httpResponse = clientBuilder.build().execute(request);
         } catch (ClientProtocolException ex) {
             Assert.fail("Client Protocol Exception thrown " + ex.getMessage());
@@ -147,20 +197,19 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return doDeleteRequest(false);
     }
 
-    final HttpResponse doDeleteRequest(boolean withCredentials) {
+    final HttpResponse doDeleteRequest(boolean withCredentials){
+        return doDeleteRequest(withCredentials, getAnyAccessToken());
+    }
+
+    final HttpResponse doDeleteRequest(boolean withCredentials, String accessToken) {
         // Given
         HttpUriRequest request = new HttpDelete(getUrl());
         HttpResponse httpResponse = null;
         try {
             HttpClientBuilder clientBuilder = HttpClientBuilder.create();
             if(withCredentials){
-                CredentialsProvider provider = new BasicCredentialsProvider();
-                UsernamePasswordCredentials credentials
-                        = new UsernamePasswordCredentials(getCredential(PropertiesEnum.USERNAME_KEY, "admin"), getCredential(PropertiesEnum.PASSWORD_KEY, "admin"));
-                provider.setCredentials(AuthScope.ANY, credentials);
-                clientBuilder.setDefaultCredentialsProvider(provider);
+                attachOAuthCredentialsToRequest(request, accessToken);
             }
-            // When
             httpResponse = clientBuilder.build().execute(request);
 
         } catch (ClientProtocolException ex) {
@@ -175,7 +224,11 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return doPostRequest(dto, false);
     }
 
-    final HttpResponse doPostRequest(AbstractDTO dto, boolean withCredentials) {
+    final HttpResponse doPostRequest(AbstractDTO dto, boolean withCredentials){
+        return doPostRequest(dto, withCredentials, getAnyAccessToken());
+    }
+
+    final HttpResponse doPostRequest(AbstractDTO dto, boolean withCredentials, String accessToken) {
         // Given
         HttpPost request = new HttpPost(getUrl());
         //
@@ -187,18 +240,13 @@ public abstract class AbstractRequestTest extends AbstractTest {
             try {
                 HttpEntity entity = new StringEntity(mapper.writeValueAsString(dto));
                 request.setEntity(entity);
-                request.setHeader("Accept", MimeTypeUtils.APPLICATION_JSON_VALUE);
-                request.setHeader("Content-type", MimeTypeUtils.APPLICATION_JSON_VALUE);
+                request.addHeader("Accept", MimeTypeUtils.APPLICATION_JSON_VALUE);
+                request.addHeader("Content-type", MimeTypeUtils.APPLICATION_JSON_VALUE);
                 try {
                     HttpClientBuilder clientBuilder = HttpClientBuilder.create();
                     if(withCredentials){
-                        CredentialsProvider provider = new BasicCredentialsProvider();
-                        UsernamePasswordCredentials credentials
-                                = new UsernamePasswordCredentials(getCredential(PropertiesEnum.USERNAME_KEY, "admin"), getCredential(PropertiesEnum.PASSWORD_KEY, "admin"));
-                        provider.setCredentials(AuthScope.ANY, credentials);
-                        clientBuilder.setDefaultCredentialsProvider(provider);
+                        attachOAuthCredentialsToRequest(request, accessToken);
                     }
-                    // When
                     httpResponse = clientBuilder.build().execute(request);
                 } catch (ClientProtocolException ex) {
                     Assert.fail("Client Protocol Exception thrown " + ex.getMessage());
@@ -216,55 +264,21 @@ public abstract class AbstractRequestTest extends AbstractTest {
 
     /////////////////////////// STATUS CODE ////////////////////////////////////////////////
 
-    final void testGetStatusCode(HttpResponse response) {
-        this.testGetStatusCode(HttpStatus.SC_OK, response);
+    protected final void testResponseStatusCode(HttpResponse response){
+        testResponseStatusCode(HttpStatus.SC_OK, response);
     }
 
-    final void testGetStatusCode(int desiredStatusCode, HttpResponse response) {
-        Assert.assertEquals("Checking status failed", desiredStatusCode, response.getStatusLine().getStatusCode());
-    }
-
-    final void testDeleteStatusCode(HttpResponse response) {
-        this.testDeleteStatusCode(HttpStatus.SC_OK, response);
-    }
-
-    final void testDeleteStatusCode(int desiredStatusCode, HttpResponse response) {
-        Assert.assertEquals("Checking status failed", desiredStatusCode, response.getStatusLine().getStatusCode());
-    }
-
-    final void testPostStatusCode(HttpResponse response) {
-        this.testPostStatusCode(HttpStatus.SC_OK, response);
-    }
-
-    final void testPostStatusCode(int desiredStatusCode, HttpResponse response) {
+    protected final void testResponseStatusCode(int desiredStatusCode, HttpResponse response){
         Assert.assertEquals("Checking status failed", desiredStatusCode, response.getStatusLine().getStatusCode());
     }
 
     /////////////////////////// MESSAGE TYPE ////////////////////////////////////////////////
 
-    final void testGetMessageType(HttpResponse response) {
-        this.testGetMessageType(MimeTypeUtils.APPLICATION_JSON_VALUE, response);
+    protected final void testResponseMessageType(HttpResponse response){
+        testResponseMessageType(MimeTypeUtils.APPLICATION_JSON_VALUE, response);
     }
 
-    final void testGetMessageType(String desiredType, HttpResponse response) {
-        String mimeType = ContentType.getOrDefault(response.getEntity()).getMimeType();
-        Assert.assertEquals("Content type is not of desired type", desiredType, mimeType);
-    }
-
-    final void testDeleteMessageType(HttpResponse response) {
-        this.testDeleteMessageType(MimeTypeUtils.APPLICATION_JSON_VALUE, response);
-    }
-
-    final void testDeleteMessageType(String desiredType, HttpResponse response) {
-        String mimeType = ContentType.getOrDefault(response.getEntity()).getMimeType();
-        Assert.assertEquals("Content type is not of desired type", desiredType, mimeType);
-    }
-
-    final void testPostMessageType(HttpResponse response) {
-        this.testPostMessageType(MimeTypeUtils.APPLICATION_JSON_VALUE, response);
-    }
-
-    final void testPostMessageType(String desiredType, HttpResponse response) {
+    protected final void testResponseMessageType(String desiredType, HttpResponse response){
         String mimeType = ContentType.getOrDefault(response.getEntity()).getMimeType();
         Assert.assertEquals("Content type is not of desired type", desiredType, mimeType);
     }
@@ -291,6 +305,20 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return responseObject;
     }
 
+    /////////////////////////// TOKEN //////////////////////////////////////////////////
+
+    protected void testSecurityToken(SecurityToken token){
+        Assert.assertNotNull("Token is null",token);
+        //
+        // Check the Token
+        Assert.assertNotNull( "Not a valid token, access_token is empty", token.access_token);
+        Assert.assertNotNull( "Not a valid token, refresh_token is empty", token.refresh_token);
+        Assert.assertNotNull( "Not a valid token, expires_in is empty", token.expires_in);
+        Assert.assertNotNull( "Not a valid token, token_type is empty", token.token_type);
+        Assert.assertNotNull( "Not a valid token, scope is empty", token.scope);
+        Assert.assertNotNull( "Not a valid token, jti is empty", token.jti);
+    }
+
     /////////////////////////// GET URL ////////////////////////////////////////////////
 
     private String getUrl(){
@@ -299,7 +327,7 @@ public abstract class AbstractRequestTest extends AbstractTest {
 
     private String getUrl(String url) {
         String finalURL = PropertiesHelper.getURLProperties(true, ProfilesEnum.IT).getProperty("url");
-        if(url != null && ! url.isEmpty()) {
+        if(url == null || url.isEmpty()) {
             IntegrationTestConfiguration itAnnotation = this.getClass().getAnnotation(IntegrationTestConfiguration.class);
             finalURL = finalURL + itAnnotation.path().getUrl();
             if (itAnnotation.hasId()) {

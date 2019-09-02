@@ -12,14 +12,14 @@ public class RemoveUserByIdRequestTestIT extends AbstractRequestTest {
     @Test
     public void testDeleteUserById() {
         HttpResponse response = this.doDeleteRequest();
-        this.testDeleteStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
+        this.testResponseStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
     }
 
     @Test
     public void testDeleteUserByIdAuthenticated() {
         HttpResponse response = this.doDeleteRequest(true);
-        this.testDeleteStatusCode(response);
-        this.testDeleteMessageType(response);
+        this.testResponseStatusCode(response);
+        this.testResponseMessageType(response);
         this.testDeleteResponsePayload(response);
     }
 }

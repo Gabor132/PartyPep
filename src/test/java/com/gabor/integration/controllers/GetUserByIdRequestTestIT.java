@@ -14,15 +14,15 @@ public class GetUserByIdRequestTestIT extends AbstractGetRequestTest {
     @Test
     public void testGetUserById() {
         HttpResponse response = this.doGetRequest();
-        this.testGetStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
+        testResponseStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
     }
 
     @Test
     public void testGetUserByIdAuthenticated(){
-        HttpResponse response = this.doGetRequest(true);
-        this.testGetStatusCode(response);
-        this.testGetMessageType(response);
-        this.testGetResponsePayload(UserDTO.class, response);
+        HttpResponse response = doGetRequest(true);
+        testResponseStatusCode(response);
+        testResponseMessageType(response);
+        testGetResponsePayload(UserDTO.class, response);
     }
 
 

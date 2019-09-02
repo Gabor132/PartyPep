@@ -15,15 +15,15 @@ public class GetAllGroupsRequestTestIT extends AbstractGetRequestTest<GroupDTO> 
     @Test
     public void testGetAllGroups() {
         HttpResponse response = this.doGetRequest();
-        this.testGetStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
+        this.testResponseStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
     }
 
 
     @Test
     public void testGetAllGroupsAuthenticated() {
         HttpResponse response = this.doGetRequest(true);
-        this.testGetStatusCode(response);
-        this.testGetMessageType(response);
+        this.testResponseStatusCode(response);
+        this.testResponseMessageType(response);
         this.testGetResponsePayload(GroupDTO.class, List.class, response);
     }
 

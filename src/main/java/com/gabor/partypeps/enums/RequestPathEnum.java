@@ -15,7 +15,9 @@ public enum RequestPathEnum {
     REMOVE_USER_BY_ID("users/remove/{id}"),
     REMOVE_GROUP_BY_ID("groups/remove/{id}"),
     REMOVE_MESSAGE_BY_ID("messages/remove/{id}"),
-    LOGIN("login");
+    GET_ACCESS_TOKEN("oauth/token"),
+    REFRESH_ACCESS_TOKEN("oauth/token"),
+    CHECK_ACCESS_TOKEN("oauth/check_token");
     private String value;
 
     RequestPathEnum(String value) {

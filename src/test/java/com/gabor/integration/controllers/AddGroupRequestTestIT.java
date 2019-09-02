@@ -27,14 +27,14 @@ public class AddGroupRequestTestIT extends AbstractRequestTest implements PostRe
     @Test
     public void testAddGroupRequest() {
         HttpResponse response = this.doPostRequest(getDTO());
-        this.testPostStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
+        this.testResponseStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
     }
 
     @Test
     public void testAddGroupRequestAuthenticated() {
         HttpResponse response = this.doPostRequest(getDTO(), true);
-        this.testPostStatusCode(HttpStatus.SC_CREATED, response);
-        this.testPostMessageType(response);
+        this.testResponseStatusCode(HttpStatus.SC_CREATED, response);
+        this.testResponseMessageType(response);
         this.testPostResponsePayload(response);
     }
 }

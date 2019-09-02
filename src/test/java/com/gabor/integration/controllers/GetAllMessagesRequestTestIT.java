@@ -15,14 +15,14 @@ public class GetAllMessagesRequestTestIT extends AbstractGetRequestTest<MessageD
     @Test
     public void testGetAllMessagesRequest() {
         HttpResponse response = this.doGetRequest();
-        this.testGetStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
+        this.testResponseStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
     }
 
     @Test
     public void testGetAllMessagesRequestAuthenticated() {
         HttpResponse response = this.doGetRequest(true);
-        this.testGetStatusCode(response);
-        this.testGetMessageType(response);
+        this.testResponseStatusCode(response);
+        this.testResponseMessageType(response);
         this.testGetResponsePayload(MessageDTO.class, List.class, response);
     }
 }

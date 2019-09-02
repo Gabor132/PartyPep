@@ -222,7 +222,7 @@
                 <configuration>
                     <mainClass>com.gabor.partypeps.PartyPepsApplication</mainClass>
                     <wait>100</wait>
-                    <maxAttempts>180</maxAttempts>
+                    <maxAttempts>1800</maxAttempts>
                 </configuration>
             </plugin>
             <plugin>
