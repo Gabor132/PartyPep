@@ -23,9 +23,6 @@ public class SecurityAccessTokenTestIT extends AbstractRequestTest {
         // Retrieve the Response as a Security Token
         SecurityToken securityToken = extractAccessToken(response);
         testSecurityToken(securityToken);
-        //
-        //
-        logger.info("Received during test, token: " + securityToken);
     }
 
     @Test
@@ -34,6 +31,7 @@ public class SecurityAccessTokenTestIT extends AbstractRequestTest {
         // First get the normal Access Token
         HttpResponse response = doAccessTokenPostRequest();
         SecurityToken securityToken = extractAccessToken(response);
+        testSecurityToken(securityToken);
         //
         // Do the call to get a new Access Token using the refresh token
         response = doRefreshTokenPostRequest(securityToken.refresh_token);
@@ -47,6 +45,5 @@ public class SecurityAccessTokenTestIT extends AbstractRequestTest {
         // Retrieve the response as a SecurityToken
         securityToken = extractAccessToken(response);
         testSecurityToken(securityToken);
-        logger.info("Received during test, refresh token: " + securityToken);
     }
 }

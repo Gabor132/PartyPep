@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gabor.common.AbstractTest;
 import com.gabor.common.IntegrationTestConfiguration;
 import com.gabor.integration.auxiliar.JSONRetriver;
-import com.gabor.integration.controllers.enums.PropertiesEnum;
+import com.gabor.partypeps.enums.PropertiesEnum;
 import com.gabor.integration.security.SecurityToken;
 import com.gabor.partypeps.common.PropertiesHelper;
 import com.gabor.partypeps.enums.ProfilesEnum;
@@ -42,13 +42,17 @@ public abstract class AbstractRequestTest extends AbstractTest {
 
     protected static Logger logger = Logger.getLogger(AbstractRequestTest.class.getName());
 
+    private static Properties securityProperties = PropertiesHelper.getSecurityProperties(true, ProfilesEnum.IT);
+
     /////////////////////////// SECURITY CREDENTIALS RETRIEVAL /////////////////////////////////
 
-    protected static String getCredential(PropertiesEnum key){
-        return getCredential(key, "");
-    }
-
-    protected static String getCredential(PropertiesEnum key, String defaultValue){
+    /**
+     * Function used to get the Security properties from the security.properties file or from the environment using the file
+     * @param key
+     * @param defaultValue
+     * @return String representing the desired property value
+     */
+    static String getCredential(PropertiesEnum key, String defaultValue){
         Properties properties = PropertiesHelper.getSecurityProperties(true, ProfilesEnum.IT);
         boolean isFromEnvironment = Boolean.parseBoolean(properties.getProperty(PropertiesEnum.FROM_ENV_KEY.getValue()));
         String returnValue = isFromEnvironment ? System.getenv(properties.getProperty(key.getValue())) : properties.getProperty(key.getValue());
@@ -58,21 +62,47 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return returnValue;
     }
 
-    /////////////////////////// OAUTH2 TOKEN HANDLING //////////////////////////////////////////
+    //////////////////////////// BASIC AUTHENTICATION ///////////////////////////////////////////
 
-    private String getTokenUrl(){
-        String ACCESS_TOKEN_URL = RequestPathEnum.GET_ACCESS_TOKEN.getUrl();
-        return getUrl(ACCESS_TOKEN_URL);
+    /**
+     * Function used to attach the BASIC Authentication header to a request. Used only by the Access/Refresh Token requests from now on.
+     * @param clientBuilder
+     * @param request
+     */
+    private void attachBasicCredentialsToRequest(HttpClientBuilder clientBuilder, HttpRequest request){
+        try {
+            CredentialsProvider provider = new BasicCredentialsProvider();
+            UsernamePasswordCredentials credentials
+                    = new UsernamePasswordCredentials(
+                    PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_CLIENT_ID),
+            PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_SECRET));
+            provider.setCredentials(AuthScope.ANY, credentials);
+            request.addHeader(new BasicScheme().authenticate(credentials, request, null));
+            clientBuilder.setDefaultCredentialsProvider(provider);
+        } catch (AuthenticationException ex){
+            Assert.fail("Failed to attach Authentication segment to request" + ex.getMessage());
+        }
     }
 
+    /////////////////////////// OAUTH2 TOKEN HANDLING //////////////////////////////////////////
+
+    /**
+     * Given a JSON, will return a SecurityToken object containing the JWT structure
+     * @param response
+     * @return SecurityToken - JWT structure
+     */
     protected final SecurityToken extractAccessToken(HttpResponse response){
         Object responseObject = JSONRetriver.retrieveClass(SecurityToken.class, response.getEntity());
         return (SecurityToken) responseObject;
     }
 
+    /**
+     * Function used to do the generic Access Token POST Request
+     * @return HttpResponse
+     */
     protected final HttpResponse doAccessTokenPostRequest(){
         // Given
-        HttpPost request = new HttpPost(getTokenUrl());
+        HttpPost request = new HttpPost(getUrl(RequestPathEnum.GET_ACCESS_TOKEN.getUrl()));
         HttpResponse httpResponse = null;
         try {
             HttpClientBuilder clientBuilder = HttpClientBuilder.create();
@@ -83,9 +113,9 @@ public abstract class AbstractRequestTest extends AbstractTest {
             // Map JSON for Token Credentials
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("grant_type", "password"));
-            params.add(new BasicNameValuePair("client_id", "partypeps"));
-            params.add(new BasicNameValuePair("username", getCredential(PropertiesEnum.USERNAME_KEY, "admin")));
-            params.add(new BasicNameValuePair("password", getCredential(PropertiesEnum.PASSWORD_KEY, "admin")));
+            params.add(new BasicNameValuePair("client_id",  PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_CLIENT_ID)));
+            params.add(new BasicNameValuePair("username",  PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_TEST_USERNAME)));
+            params.add(new BasicNameValuePair("password",  PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_TEST_PASSWORD)));
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params);
             request.setEntity(entity);
             // To Request
@@ -99,9 +129,14 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return httpResponse;
     }
 
+    /**
+     * Function used to do the generic Refresh Token POST Request
+     * @param refresh_token
+     * @return HttpResponse
+     */
     protected final HttpResponse doRefreshTokenPostRequest(String refresh_token){
         // Given
-        HttpPost request = new HttpPost(getTokenUrl());
+        HttpPost request = new HttpPost(getUrl(RequestPathEnum.GET_ACCESS_TOKEN.getUrl()));
         HttpResponse httpResponse = null;
         try {
             HttpClientBuilder clientBuilder = HttpClientBuilder.create();
@@ -127,7 +162,12 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return httpResponse;
     }
 
-    private String getAnyAccessToken(){
+    /**
+     * Quick function that returns the access_token value from a JSON Web Token (JWT),
+     * this function also does the request and conversion to the SecurityToken structure
+     * @return String (Access Token) to be used in further requests for Authorization
+     */
+    private String getAccessToken(){
         HttpResponse response = doAccessTokenPostRequest();
         Assert.assertNotNull(response);
         SecurityToken token = extractAccessToken(response);
@@ -135,54 +175,39 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return token.access_token;
     }
 
-    private String getAnyRefreshToken(){
-        HttpResponse response = doAccessTokenPostRequest();
-        Assert.assertNotNull(response);
-        return extractAccessToken(response).refresh_token;
-    }
-
     /////////////////////////// REQUEST METHODS ////////////////////////////////////////////////
 
-    private void attachBasicCredentialsToRequest(HttpClientBuilder clientBuilder, HttpRequest request){
-        try {
-            CredentialsProvider provider = new BasicCredentialsProvider();
-            UsernamePasswordCredentials credentials
-                    = new UsernamePasswordCredentials("partypeps", "dGakldj192038");
-            provider.setCredentials(AuthScope.ANY, credentials);
-            request.addHeader(new BasicScheme().authenticate(credentials, request, null));
-            clientBuilder.setDefaultCredentialsProvider(provider);
-        } catch (AuthenticationException ex){
-            Assert.fail("Failed to attach Authentication segment to request" + ex.getMessage());
-        }
-    }
-
-    private void attachOAuthCredentialsToRequest(HttpRequest request, String accessToken){
-        if(accessToken == null || accessToken.isEmpty()) {
-            request.setHeader("Authorization", "Bearer " + accessToken);
-        }
-    }
-
-    protected final HttpResponse doGetRequest(){
+    /**
+     * Function used to do a GET Request directed at the tested API
+     * @return HttpResponse
+     */
+    final HttpResponse doGetRequest(){
         return doGetRequest(false);
     }
 
-    protected final HttpResponse doGetRequest(boolean withCredentials){
-        String accessToken = null;
-        if(withCredentials){
-            SecurityToken token = extractAccessToken(doAccessTokenPostRequest());
-            accessToken = token.access_token;
-        }
-        return doGetRequest(withCredentials, accessToken);
+    /**
+     * Function used to do a GET Request directed at the tested API
+     * @param withCredentials - default false
+     * @return HttpResponse
+     */
+    final HttpResponse doGetRequest(boolean withCredentials){
+        return doGetRequest(withCredentials, withCredentials ? getAccessToken() : null);
     }
 
-    protected final HttpResponse doGetRequest(boolean withCredentials, String accessToken) {
+    /**
+     * Function used to do a GET Request directed at the tested API
+     * @param withCredentials - default is false
+     * @param accessToken - default is null
+     * @return HttpResponse
+     */
+    final HttpResponse doGetRequest(boolean withCredentials, String accessToken) {
         // Given
         HttpUriRequest request = new HttpGet(getUrl());
         HttpResponse httpResponse = null;
         try {
             HttpClientBuilder clientBuilder = HttpClientBuilder.create();
             if(withCredentials){
-                attachOAuthCredentialsToRequest(request, accessToken);
+                request.addHeader("Authorization", "Bearer " + accessToken);
             }
             httpResponse = clientBuilder.build().execute(request);
         } catch (ClientProtocolException ex) {
@@ -193,14 +218,29 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return httpResponse;
     }
 
+    /**
+     * Function used to do a DELETE Request directed at the tested API
+     * @return HttpResponse
+     */
     final HttpResponse doDeleteRequest(){
         return doDeleteRequest(false);
     }
 
+    /**
+     * Function used to do a DELETE Request directed at the tested API
+     * @param withCredentials - default false
+     * @return HttpResponse
+     */
     final HttpResponse doDeleteRequest(boolean withCredentials){
-        return doDeleteRequest(withCredentials, getAnyAccessToken());
+        return doDeleteRequest(withCredentials, withCredentials ? getAccessToken() : null);
     }
 
+    /**
+     * Function used to do a DELETE Request directed at the tested API
+     * @param withCredentials - default false
+     * @param accessToken - default null
+     * @return HttpResponse
+     */
     final HttpResponse doDeleteRequest(boolean withCredentials, String accessToken) {
         // Given
         HttpUriRequest request = new HttpDelete(getUrl());
@@ -208,7 +248,7 @@ public abstract class AbstractRequestTest extends AbstractTest {
         try {
             HttpClientBuilder clientBuilder = HttpClientBuilder.create();
             if(withCredentials){
-                attachOAuthCredentialsToRequest(request, accessToken);
+                request.addHeader("Authorization", "Bearer " + accessToken);
             }
             httpResponse = clientBuilder.build().execute(request);
 
@@ -220,14 +260,32 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return httpResponse;
     }
 
+    /**
+     * Function used to do a POST Request directed at the tested API
+     * @param dto - Object to be transformed to JSON and sent
+     * @return HttpResponse
+     */
     final HttpResponse doPostRequest(AbstractDTO dto){
         return doPostRequest(dto, false);
     }
 
+    /**
+     * Function used to do a POST Request directed at the tested API
+     * @param dto - Object to be transformed to JSON and sent
+     * @param withCredentials - default false
+     * @return HttpResponse
+     */
     final HttpResponse doPostRequest(AbstractDTO dto, boolean withCredentials){
-        return doPostRequest(dto, withCredentials, getAnyAccessToken());
+        return doPostRequest(dto, withCredentials, withCredentials ? getAccessToken() : null);
     }
 
+    /**
+     * Function used to do a POST Request directed at the tested API
+     * @param dto - Object to be transformed to JSON and sent
+     * @param withCredentials - default false
+     * @param accessToken - default null
+     * @return HttpResponse
+     */
     final HttpResponse doPostRequest(AbstractDTO dto, boolean withCredentials, String accessToken) {
         // Given
         HttpPost request = new HttpPost(getUrl());
@@ -245,7 +303,7 @@ public abstract class AbstractRequestTest extends AbstractTest {
                 try {
                     HttpClientBuilder clientBuilder = HttpClientBuilder.create();
                     if(withCredentials){
-                        attachOAuthCredentialsToRequest(request, accessToken);
+                        request.addHeader("Authorization", "Bearer " + accessToken);
                     }
                     httpResponse = clientBuilder.build().execute(request);
                 } catch (ClientProtocolException ex) {
@@ -262,7 +320,7 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return httpResponse;
     }
 
-    /////////////////////////// STATUS CODE ////////////////////////////////////////////////
+    /////////////////////////// STATUS CODE TESTING ////////////////////////////////////////////////
 
     protected final void testResponseStatusCode(HttpResponse response){
         testResponseStatusCode(HttpStatus.SC_OK, response);
@@ -272,7 +330,7 @@ public abstract class AbstractRequestTest extends AbstractTest {
         Assert.assertEquals("Checking status failed", desiredStatusCode, response.getStatusLine().getStatusCode());
     }
 
-    /////////////////////////// MESSAGE TYPE ////////////////////////////////////////////////
+    /////////////////////////// MESSAGE TYPE TESTING ////////////////////////////////////////////////
 
     protected final void testResponseMessageType(HttpResponse response){
         testResponseMessageType(MimeTypeUtils.APPLICATION_JSON_VALUE, response);
@@ -283,7 +341,7 @@ public abstract class AbstractRequestTest extends AbstractTest {
         Assert.assertEquals("Content type is not of desired type", desiredType, mimeType);
     }
 
-    /////////////////////////// PAYLOAD ////////////////////////////////////////////////
+    /////////////////////////// PAYLOAD TESTING ////////////////////////////////////////////////
 
     Object getGetResponsePayload(Class className, HttpResponse response) {
         return JSONRetriver.retrieveClass(className, response.getEntity());
@@ -305,7 +363,7 @@ public abstract class AbstractRequestTest extends AbstractTest {
         return responseObject;
     }
 
-    /////////////////////////// TOKEN //////////////////////////////////////////////////
+    /////////////////////////// TOKEN TESTING //////////////////////////////////////////////////
 
     protected void testSecurityToken(SecurityToken token){
         Assert.assertNotNull("Token is null",token);
@@ -321,12 +379,24 @@ public abstract class AbstractRequestTest extends AbstractTest {
 
     /////////////////////////// GET URL ////////////////////////////////////////////////
 
+
+    /**
+     * Function used to get the proper URL to use upon a tests HTTP Requests
+     * (either it is given, or it is taken from the @IntegrationTestConfiguration annotation)
+     * @return String - the URL to be used for the Requests
+     */
     private String getUrl(){
         return getUrl(null);
     }
 
+    /**
+     * Function used to get the proper URL to use upon a tests HTTP Requests
+     * (either it is given, or it is taken from the @IntegrationTestConfiguration annotation)
+     * @param url - default null
+     * @return String - the URL to be used for the Requests
+     */
     private String getUrl(String url) {
-        String finalURL = PropertiesHelper.getURLProperties(true, ProfilesEnum.IT).getProperty("url");
+        String finalURL = PropertiesHelper.getURLProperties(true, ProfilesEnum.IT).getProperty(PropertiesEnum.URL_URL.getValue());
         if(url == null || url.isEmpty()) {
             IntegrationTestConfiguration itAnnotation = this.getClass().getAnnotation(IntegrationTestConfiguration.class);
             finalURL = finalURL + itAnnotation.path().getUrl();

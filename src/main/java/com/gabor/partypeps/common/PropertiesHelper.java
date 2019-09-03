@@ -2,6 +2,7 @@ package com.gabor.partypeps.common;
 
 import com.gabor.partypeps.database.AbstractDatabaseConfiguration;
 import com.gabor.partypeps.enums.ProfilesEnum;
+import com.gabor.partypeps.enums.PropertiesEnum;
 
 import java.io.FileInputStream;
 import java.util.Enumeration;
@@ -12,9 +13,9 @@ import java.util.logging.Logger;
 public class PropertiesHelper {
 
 
-    private static final String JDBC_PROPERTIES_FILE_NAME = "jdbc.properties";
-    private static final String URL_PROPERTIES_FILE_NAME = "url.properties";
-    private static final String SECURITY_PROPERTIES_FILE_NAME = "security.properties";
+    public static final String JDBC_PROPERTIES_FILE_NAME = "jdbc.properties";
+    public static final String URL_PROPERTIES_FILE_NAME = "url.properties";
+    public static final String SECURITY_PROPERTIES_FILE_NAME = "security.properties";
 
     public static Properties filterProperties(ProfilesEnum profile, Properties properties) {
         Properties newProperties = new Properties();
@@ -30,10 +31,6 @@ public class PropertiesHelper {
             }
         }
         return newProperties;
-    }
-
-    public static Properties getJDBCProperties() {
-        return getJDBCProperties(false, null);
     }
 
     public static Properties getJDBCProperties(boolean filtered, ProfilesEnum profile) {
@@ -60,5 +57,29 @@ public class PropertiesHelper {
             Logger.getLogger(AbstractDatabaseConfiguration.class.getName()).log(Level.SEVERE, e.getMessage());
         }
         return prop;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static String getProperty(String fileName, ProfilesEnum profileEnum, PropertiesEnum propertyKey){
+        return getProperty(getProperties(fileName, true, profileEnum), propertyKey);
+    }
+
+    public static String getProperty(Properties properties, PropertiesEnum propertyKey){
+        return getProperty(properties, propertyKey.getValue());
+    }
+
+    public static String getProperty(Properties properties, String propertyKey){
+        return getProperty(properties, propertyKey, "");
+    }
+
+    public static String getProperty(Properties properties, String propertyKey, String defaultValue){
+        boolean isFromEnv = Boolean.parseBoolean(properties.getProperty(PropertiesEnum.FROM_ENV_KEY.getValue(), "false"));
+        String value = isFromEnv ? System.getenv(properties.getProperty(propertyKey)) : properties.getProperty(propertyKey);
+        return value == null || value.isEmpty() ? defaultValue : value;
+    }
+
+    public static String getProperty(String key, Properties properties, boolean isFromEnv) {
+        return isFromEnv ? System.getenv(properties.getProperty(key)) : properties.getProperty(key);
     }
 }

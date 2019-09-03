@@ -3,6 +3,7 @@ package com.gabor.partypeps.database;
 import com.gabor.common.AbstractTest;
 import com.gabor.partypeps.common.PropertiesHelper;
 import com.gabor.partypeps.enums.ProfilesEnum;
+import com.gabor.partypeps.enums.PropertiesEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -31,7 +32,7 @@ public class AbstractDatabaseConfigurationTest extends AbstractTest {
         // Replace the isFromEnv value to false so that we don't check in the Environment Variables
         // The fact that we find all the necessary properties as being defined for IT should be enough for now
         //
-        properties.setProperty(AbstractDatabaseConfiguration.FROM_ENV_KEY, "false");
+        properties.setProperty(PropertiesEnum.FROM_ENV_KEY.getValue(), "false");
         AbstractDatabaseConfiguration.setupDataSource(dataSource, properties);
     }
 
@@ -44,8 +45,8 @@ public class AbstractDatabaseConfigurationTest extends AbstractTest {
         // Replace the isFromEnv value to false so that we don't check in the Environment Variables
         // The fact that we find all the necessary properties as being defined for PROD should be enough for now
         //
-        properties.setProperty(AbstractDatabaseConfiguration.FROM_ENV_KEY, "false");
-        properties.setProperty(AbstractDatabaseConfiguration.DRIVER_KEY, "org.postgresql.Driver");
+        properties.setProperty(PropertiesEnum.FROM_ENV_KEY.getValue(), "false");
+        properties.setProperty(PropertiesEnum.JDBC_DRIVER.getValue(), "org.postgresql.Driver");
         AbstractDatabaseConfiguration.setupDataSource(dataSource, properties);
     }
 

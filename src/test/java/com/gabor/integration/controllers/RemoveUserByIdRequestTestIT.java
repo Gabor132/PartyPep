@@ -6,7 +6,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 
-@IntegrationTestConfiguration(path = RequestPathEnum.REMOVE_USER_BY_ID, hasId = true, id = 1)
+@IntegrationTestConfiguration(path = RequestPathEnum.REMOVE_USER_BY_ID, hasId = true, id = 2)
 public class RemoveUserByIdRequestTestIT extends AbstractRequestTest {
 
     @Test

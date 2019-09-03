@@ -2,6 +2,7 @@ package com.gabor.partypeps.configurations;
 
 import com.gabor.partypeps.common.PropertiesHelper;
 import com.gabor.partypeps.enums.ProfilesEnum;
+import com.gabor.partypeps.enums.PropertiesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,16 +28,12 @@ import java.util.Properties;
 @ComponentScan({"com.gabor.partypeps.configurations", "com.gabor.partypeps.security"})
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-    private static String SIGNING_KEY = "signingKey";
-
     private Properties getSecurityProperties(){
         return PropertiesHelper.getSecurityProperties(true, ProfilesEnum.DEV);
     }
 
     private String getSigningKey(Properties securityProperties){
-        boolean isFromEnv = Boolean.parseBoolean(securityProperties.getProperty("isFromEnv"));
-        return isFromEnv ? System.getenv(securityProperties.getProperty(SIGNING_KEY)) :
-                securityProperties.getProperty(SIGNING_KEY);
+        return PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_SIGNING_KEY);
     }
 
     private final String signingKey = getSigningKey(getSecurityProperties());
@@ -81,11 +78,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("partypeps")
-                /**
-                 * TODO: MOVE THIS .secret TO A CONFIG/ENV VALUE
-                 */
-                .secret("dGakldj192038")
+                .withClient(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_CLIENT_ID))
+                .secret(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_SECRET))
                 .authorizedGrantTypes("password", "refresh_token")
                 .refreshTokenValiditySeconds(3600 * 24)
                 .scopes("partypeps", "read", "write", "trust")
