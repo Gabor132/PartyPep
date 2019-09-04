@@ -59,10 +59,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //.addFilter(digestAuthenticationFilter())
+                .addFilter(digestAuthenticationFilter())
                 .authorizeRequests()
-                .antMatchers("^/login.*").permitAll()
                 .antMatchers("/*/**").authenticated()
+                .antMatchers("/check/**").permitAll()
                 .antMatchers("/admin/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .and()
