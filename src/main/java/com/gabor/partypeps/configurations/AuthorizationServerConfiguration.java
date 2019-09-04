@@ -29,7 +29,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         return PropertiesHelper.getSecurityProperties(true, ProfilesEnum.PROD);
     }
 
-
     public static Properties securityProperties = getSecurityProperties();
 
     private String getSigningKey(Properties securityProperties){
