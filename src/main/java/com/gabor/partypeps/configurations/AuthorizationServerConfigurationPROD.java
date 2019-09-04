@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 import java.util.Properties;
 
-@Profile("PROD")
+@Profile("PROD | default")
 @Configuration
 @EnableAuthorizationServer
 @ComponentScan({"com.gabor.partypeps.configurations", "com.gabor.partypeps.security"})
