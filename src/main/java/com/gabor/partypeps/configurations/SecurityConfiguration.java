@@ -26,7 +26,6 @@ import javax.sql.DataSource;
 @ComponentScan({"com.gabor.partypeps.configurations", "com.gabor.partypeps.security"})
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-
     @Autowired
     public AuthenticationSuccessHandler authenticationSuccessHandler;
 

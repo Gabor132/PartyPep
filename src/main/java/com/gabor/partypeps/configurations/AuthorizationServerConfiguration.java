@@ -4,10 +4,7 @@ import com.gabor.partypeps.common.PropertiesHelper;
 import com.gabor.partypeps.enums.ProfilesEnum;
 import com.gabor.partypeps.enums.PropertiesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,20 +25,21 @@ import java.util.Properties;
 @ComponentScan({"com.gabor.partypeps.configurations", "com.gabor.partypeps.security"})
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-    private Properties getSecurityProperties(){
-        return PropertiesHelper.getSecurityProperties(true, ProfilesEnum.DEV);
+    private static Properties getSecurityProperties(){
+        return PropertiesHelper.getSecurityProperties(true, ProfilesEnum.PROD);
     }
+
+
+    public static Properties securityProperties = getSecurityProperties();
 
     private String getSigningKey(Properties securityProperties){
         return PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_SIGNING_KEY);
     }
 
-    private final String signingKey = getSigningKey(getSecurityProperties());
-
     @Bean
     public JwtAccessTokenConverter accessTokenConverter(){
         final JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-        accessTokenConverter.setSigningKey(getSigningKey(getSecurityProperties()));
+        accessTokenConverter.setSigningKey(getSigningKey(securityProperties));
         return accessTokenConverter;
     }
 
@@ -78,8 +76,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_CLIENT_ID))
-                .secret(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_SECRET))
+                .withClient(PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_CLIENT_ID))
+                .secret(PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_SECRET))
                 .authorizedGrantTypes("password", "refresh_token")
                 .refreshTokenValiditySeconds(3600 * 24)
                 .scopes("partypeps", "read", "write", "trust")
