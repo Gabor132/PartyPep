@@ -24,7 +24,7 @@ public class UrlTestConfiguration {
     }
 
 
-    @Profile("PROD")
+    @Profile("PROD | default")
     @Bean("mainURL")
     public String getPRODURL() {
         return PropertiesHelper.getURLProperties(true, ProfilesEnum.PROD).getProperty(PropertiesEnum.URL_URL.getValue());

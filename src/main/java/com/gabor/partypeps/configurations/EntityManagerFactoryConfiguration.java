@@ -90,7 +90,7 @@ public class EntityManagerFactoryConfiguration {
     }
 
     @Bean("entityManagerFactory")
-    @Profile("PROD")
+    @Profile("PROD | default")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryPROD() {
         LocalContainerEntityManagerFactoryBean entityManager
                 = new LocalContainerEntityManagerFactoryBean();

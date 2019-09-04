@@ -22,7 +22,7 @@ public interface AbstractDatabaseConfiguration {
     DataSource getDataSourceForIT();
 
     @Bean("dataSource")
-    @Profile("PROD")
+    @Profile("PROD | default")
     DataSource getDataSourceForPROD();
 
     static void setupDataSource(DriverManagerDataSource dataSource, Properties properties) {

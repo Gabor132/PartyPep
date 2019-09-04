@@ -36,7 +36,7 @@ public class DatabaseConfiguration implements AbstractDatabaseConfiguration {
     }
 
     @Bean("dataSource")
-    @Profile("PROD")
+    @Profile("PROD | default")
     @Override
     public DataSource getDataSourceForPROD() {
         Properties properties = PropertiesHelper.getJDBCProperties(true, PROD);
