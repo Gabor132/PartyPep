@@ -70,7 +70,7 @@ public abstract class AuthorizationServerConfiguration extends AuthorizationServ
             .authenticationManager(authenticationManager)
             .accessTokenConverter(accessTokenConverter())
             .userDetailsService(userDetailsService)
-            .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
+            .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS);
     }
 
     @Override
