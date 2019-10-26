@@ -40,6 +40,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/check/**").permitAll()
                 .antMatchers("/admin/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+<<<<<<< HEAD
+=======
+                .and()
+                .httpBasic()
+                .and()
+                .formLogin()
+                    .successHandler(authenticationSuccessHandler)
+                    .failureHandler(authenticationFailureHandler)
+>>>>>>> parent of 0c37aa4... Fixed some issues on Security referring to asking for a token to some requests that should permit all.
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable();
