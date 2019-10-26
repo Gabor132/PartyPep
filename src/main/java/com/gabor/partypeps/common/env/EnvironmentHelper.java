@@ -1,4 +1,4 @@
-package com.gabor.partypeps.common;
+package com.gabor.partypeps.common.env;
 
 import com.gabor.partypeps.enums.ProfilesEnum;
 

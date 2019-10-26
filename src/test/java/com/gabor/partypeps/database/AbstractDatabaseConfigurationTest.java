@@ -1,7 +1,7 @@
 package com.gabor.partypeps.database;
 
 import com.gabor.common.AbstractTest;
-import com.gabor.partypeps.common.PropertiesHelper;
+import com.gabor.partypeps.common.props.PropertiesHelper;
 import com.gabor.partypeps.enums.ProfilesEnum;
 import com.gabor.partypeps.enums.PropertiesEnum;
 import org.junit.Test;

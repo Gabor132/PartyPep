@@ -7,7 +7,7 @@ import com.gabor.common.IntegrationTestConfiguration;
 import com.gabor.integration.auxiliar.JSONRetriver;
 import com.gabor.partypeps.enums.PropertiesEnum;
 import com.gabor.integration.security.SecurityToken;
-import com.gabor.partypeps.common.PropertiesHelper;
+import com.gabor.partypeps.common.props.PropertiesHelper;
 import com.gabor.partypeps.enums.ProfilesEnum;
 import com.gabor.partypeps.enums.RequestPathEnum;
 import com.gabor.partypeps.models.dto.AbstractDTO;

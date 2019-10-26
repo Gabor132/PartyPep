@@ -1,4 +1,4 @@
-package com.gabor.partypeps.configurations;
+package com.gabor.partypeps.configurations.security;
 
 import com.gabor.partypeps.services.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @ComponentScan({"com.gabor.partypeps.configurations", "com.gabor.partypeps.security"})
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public UserSecurityService userDetailsService;

@@ -1,4 +1,4 @@
-package com.gabor.partypeps.configurations;
+package com.gabor.partypeps.configurations.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,12 +20,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 @EnableWebSecurity
 @EnableGlobalMethodSecurity
 @ComponentScan({"com.gabor.partypeps.configurations", "com.gabor.partypeps.security"})
-public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+public class OAuthResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
 
-    public ResourceServerConfiguration(){
+    public OAuthResourceServerConfiguration(){
         super();
     }
 

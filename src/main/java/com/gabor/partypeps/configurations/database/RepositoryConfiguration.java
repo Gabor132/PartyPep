@@ -1,4 +1,4 @@
-package com.gabor.partypeps.configurations;
+package com.gabor.partypeps.configurations.database;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;

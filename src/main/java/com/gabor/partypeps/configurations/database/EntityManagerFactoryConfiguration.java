@@ -1,4 +1,4 @@
-package com.gabor.partypeps.configurations;
+package com.gabor.partypeps.configurations.database;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

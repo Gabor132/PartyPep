@@ -1,4 +1,4 @@
-package com.gabor.partypeps.common;
+package com.gabor.partypeps.common.props;
 
 import com.gabor.partypeps.database.AbstractDatabaseConfiguration;
 import com.gabor.partypeps.enums.ProfilesEnum;

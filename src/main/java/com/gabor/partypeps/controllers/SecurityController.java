@@ -1,7 +1,7 @@
 package com.gabor.partypeps.controllers;
 
-import com.gabor.partypeps.common.EnvironmentHelper;
-import com.gabor.partypeps.common.PropertiesHelper;
+import com.gabor.partypeps.common.env.EnvironmentHelper;
+import com.gabor.partypeps.common.props.PropertiesHelper;
 import com.gabor.partypeps.enums.PropertiesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

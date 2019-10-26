@@ -1,14 +1,15 @@
-package com.gabor.partypeps.common;
+package com.gabor.partypeps.common.env;
 
 import com.gabor.partypeps.enums.ProfilesEnum;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Profile("PROD | default")
+@Profile("DEV")
 @Component
-public class EnvironmentHelperPROD extends EnvironmentHelper {
+public class EnvironmentHelperDEV extends EnvironmentHelper{
+
     @Override
     public ProfilesEnum getEnvironment() {
-        return ProfilesEnum.PROD;
+        return ProfilesEnum.DEV;
     }
 }

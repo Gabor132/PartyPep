@@ -1,7 +1,7 @@
-package com.gabor.partypeps.configurations;
+package com.gabor.partypeps.configurations.security;
 
-import com.gabor.partypeps.common.EnvironmentHelper;
-import com.gabor.partypeps.common.PropertiesHelper;
+import com.gabor.partypeps.common.env.EnvironmentHelper;
+import com.gabor.partypeps.common.props.PropertiesHelper;
 import com.gabor.partypeps.enums.PropertiesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,9 +27,9 @@ import java.util.logging.Logger;
 @Configuration
 @EnableAuthorizationServer
 @ComponentScan({"com.gabor.partypeps.configurations", "com.gabor.partypeps.security"})
-public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+public class OAuthAuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-    protected static Logger logger = Logger.getLogger(AuthorizationServerConfiguration.class.getName());
+    protected static Logger logger = Logger.getLogger(OAuthAuthorizationServerConfiguration.class.getName());
 
     @Autowired
     private EnvironmentHelper environmentHelper;
@@ -38,7 +38,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         return PropertiesHelper.getSecurityProperties(true, environmentHelper.getEnvironment());
     }
 
-    public AuthorizationServerConfiguration(){
+    public OAuthAuthorizationServerConfiguration(){
         super();
     }
 

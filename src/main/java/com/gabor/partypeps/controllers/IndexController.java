@@ -1,6 +1,6 @@
 package com.gabor.partypeps.controllers;
 
-import com.gabor.partypeps.common.PropertiesHelper;
+import com.gabor.partypeps.common.props.PropertiesHelper;
 import com.gabor.partypeps.enums.ProfilesEnum;
 import com.gabor.partypeps.models.dao.AbstractEntity;
 import com.gabor.partypeps.services.AbstractService;

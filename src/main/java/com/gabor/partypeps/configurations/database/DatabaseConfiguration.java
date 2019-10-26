@@ -1,6 +1,6 @@
-package com.gabor.partypeps.configurations;
+package com.gabor.partypeps.configurations.database;
 
-import com.gabor.partypeps.common.PropertiesHelper;
+import com.gabor.partypeps.common.props.PropertiesHelper;
 import com.gabor.partypeps.database.AbstractDatabaseConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

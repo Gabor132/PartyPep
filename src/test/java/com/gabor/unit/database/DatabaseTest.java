@@ -2,9 +2,9 @@ package com.gabor.unit.database;
 
 
 import com.gabor.common.AbstractTest;
-import com.gabor.partypeps.configurations.DatabaseConfiguration;
-import com.gabor.partypeps.configurations.EntityManagerFactoryConfiguration;
-import com.gabor.partypeps.configurations.RepositoryConfiguration;
+import com.gabor.partypeps.configurations.database.DatabaseConfiguration;
+import com.gabor.partypeps.configurations.database.EntityManagerFactoryConfiguration;
+import com.gabor.partypeps.configurations.database.RepositoryConfiguration;
 import com.gabor.partypeps.models.dao.User;
 import com.gabor.partypeps.repositories.UserRepository;
 import org.junit.Assert;

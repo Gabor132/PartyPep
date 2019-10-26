@@ -1,6 +1,6 @@
 package com.gabor.partypeps.database;
 
-import com.gabor.partypeps.common.PropertiesHelper;
+import com.gabor.partypeps.common.props.PropertiesHelper;
 import com.gabor.partypeps.enums.PropertiesEnum;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
