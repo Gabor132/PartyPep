@@ -83,11 +83,9 @@ public abstract class AuthorizationServerConfiguration extends AuthorizationServ
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_CLIENT_ID))
-<<<<<<< HEAD
+
                 .secret(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_CLIENT_SECRET))
-=======
-                .secret(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_SECRET))
->>>>>>> parent of 0c37aa4... Fixed some issues on Security referring to asking for a token to some requests that should permit all.
+
                 .authorizedGrantTypes("password", "refresh_token")
                 .refreshTokenValiditySeconds(3600 * 24)
                 .scopes("partypeps", "read", "write", "trust")
