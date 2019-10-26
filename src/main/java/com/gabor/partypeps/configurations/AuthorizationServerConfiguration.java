@@ -34,7 +34,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Autowired
     private EnvironmentHelper environmentHelper;
 
-    protected Properties getSecurityProperties(){
+    protected Properties getSecurityProperties() {
         return PropertiesHelper.getSecurityProperties(true, environmentHelper.getEnvironment());
     }
 
@@ -82,7 +82,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
             .authenticationManager(authenticationManager)
             .accessTokenConverter(accessTokenConverter())
             .userDetailsService(userDetailsService)
-            .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS);
+            .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
     }
 
     @Override
@@ -99,7 +99,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Override
     public void configure(final AuthorizationServerSecurityConfigurer security) throws Exception{
-        security.checkTokenAccess("permitAll()");
+        security
+            .checkTokenAccess("permitAll()")
+            .tokenKeyAccess("permitAll()")
+            .allowFormAuthenticationForClients()
+            .realm("PartyPeps");
         super.configure(security);
     }
 

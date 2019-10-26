@@ -14,7 +14,7 @@ import java.io.IOException;
 public class CorsFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException { }
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -22,7 +22,9 @@ public class CorsFilter implements Filter {
         //
         // Setting headers on the response so that applications from a different origin (Hostname, Domain, Port) can utilize the api
         //
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        // TODO: Change so that the only allowed origins are the Heroku links for PROD and localhost for DEV
+        //
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8090");
         response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, WWW-Authenticate, Authorization, Origin, Content-Type, Version");
@@ -31,6 +33,8 @@ public class CorsFilter implements Filter {
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         if(! request.getMethod().equals("OPTIONS")){
             filterChain.doFilter(servletRequest, servletResponse);
+        }else{
+            response.setStatus(HttpServletResponse.SC_OK);
         }
     }
 

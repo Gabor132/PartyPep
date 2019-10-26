@@ -113,7 +113,6 @@ public abstract class AbstractRequestTest extends AbstractTest {
             // Map JSON for Token Credentials
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("grant_type", "password"));
-            params.add(new BasicNameValuePair("client_id",  PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_CLIENT_ID)));
             params.add(new BasicNameValuePair("username",  PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_TEST_USERNAME)));
             params.add(new BasicNameValuePair("password",  PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_TEST_PASSWORD)));
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params);
