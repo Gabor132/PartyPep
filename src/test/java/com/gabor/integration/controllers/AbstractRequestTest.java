@@ -75,7 +75,7 @@ public abstract class AbstractRequestTest extends AbstractTest {
             UsernamePasswordCredentials credentials
                     = new UsernamePasswordCredentials(
                     PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_CLIENT_ID),
-            PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_SECRET));
+            PropertiesHelper.getProperty(securityProperties, PropertiesEnum.SECURITY_CLIENT_SECRET));
             provider.setCredentials(AuthScope.ANY, credentials);
             request.addHeader(new BasicScheme().authenticate(credentials, request, null));
             clientBuilder.setDefaultCredentialsProvider(provider);

@@ -1,15 +1,19 @@
 package com.gabor.partypeps.configurations;
 
+import com.gabor.partypeps.common.EnvironmentHelper;
 import com.gabor.partypeps.common.PropertiesHelper;
 import com.gabor.partypeps.enums.PropertiesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
@@ -20,11 +24,19 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-public abstract class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+@Configuration
+@EnableAuthorizationServer
+@ComponentScan({"com.gabor.partypeps.configurations", "com.gabor.partypeps.security"})
+public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
     protected static Logger logger = Logger.getLogger(AuthorizationServerConfiguration.class.getName());
 
-    protected abstract Properties getSecurityProperties();
+    @Autowired
+    private EnvironmentHelper environmentHelper;
+
+    protected Properties getSecurityProperties(){
+        return PropertiesHelper.getSecurityProperties(true, environmentHelper.getEnvironment());
+    }
 
     public AuthorizationServerConfiguration(){
         super();
@@ -77,7 +89,7 @@ public abstract class AuthorizationServerConfiguration extends AuthorizationServ
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_CLIENT_ID))
-                .secret(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_SECRET))
+                .secret(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_CLIENT_SECRET))
                 .authorizedGrantTypes("password", "refresh_token")
                 .refreshTokenValiditySeconds(3600 * 24)
                 .scopes("partypeps", "read", "write", "trust")
