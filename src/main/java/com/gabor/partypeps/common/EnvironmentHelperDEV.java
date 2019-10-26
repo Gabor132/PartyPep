@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class EnvironmentHelperDEV extends EnvironmentHelper {
 
-
     @Override
     public ProfilesEnum getEnvironment() {
         return ProfilesEnum.DEV;

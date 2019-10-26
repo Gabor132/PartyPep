@@ -12,10 +12,9 @@ public enum PropertiesEnum{
     URL_URL("url"),
     SECURITY_SIGNING_KEY("signingKey"),
     SECURITY_CLIENT_ID("client.id"),
-    SECURITY_SECRET("secret"),
+    SECURITY_CLIENT_SECRET("secret"),
     SECURITY_TEST_USERNAME("test.username"),
-    SECURITY_TEST_PASSWORD("test.password"),
-    SECURITY_ACCEPTED_ORIGINS("accepted.origin");
+    SECURITY_TEST_PASSWORD("test.password");
     String value;
     PropertiesEnum(String value){
         this.value = value;

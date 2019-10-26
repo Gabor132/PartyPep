@@ -1,5 +1,6 @@
 package com.gabor.partypeps.configurations;
 
+import com.gabor.partypeps.common.EnvironmentHelper;
 import com.gabor.partypeps.common.PropertiesHelper;
 import com.gabor.partypeps.enums.PropertiesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,12 @@ public abstract class AuthorizationServerConfiguration extends AuthorizationServ
 
     protected static Logger logger = Logger.getLogger(AuthorizationServerConfiguration.class.getName());
 
-    protected abstract Properties getSecurityProperties();
+    @Autowired
+    private EnvironmentHelper environmentHelper;
+
+    protected Properties getSecurityProperties() {
+        return PropertiesHelper.getSecurityProperties(true, environmentHelper.getEnvironment());
+    }
 
     public AuthorizationServerConfiguration(){
         super();
@@ -77,6 +83,7 @@ public abstract class AuthorizationServerConfiguration extends AuthorizationServ
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_CLIENT_ID))
+                .secret(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_CLIENT_SECRET))
                 .authorizedGrantTypes("password", "refresh_token")
                 .refreshTokenValiditySeconds(3600 * 24)
                 .scopes("partypeps", "read", "write", "trust")
@@ -86,7 +93,11 @@ public abstract class AuthorizationServerConfiguration extends AuthorizationServ
 
     @Override
     public void configure(final AuthorizationServerSecurityConfigurer security) throws Exception{
-        security.checkTokenAccess("permitAll()");
+        security
+            .checkTokenAccess("permitAll()")
+            .tokenKeyAccess("permitAll()")
+            .allowFormAuthenticationForClients()
+            .realm("PartyPeps");
         super.configure(security);
     }
 

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -28,8 +30,11 @@ public class SecurityController {
 
     @GetMapping(path = "/clientId")
     @ResponseBody
-    public String getAPIKey( HttpServletRequest request){
+    public Map<String,String> getAPIKey(HttpServletRequest request){
         Properties properties = PropertiesHelper.getSecurityProperties(true, environment.getEnvironment());
-        return PropertiesHelper.getProperty(properties, PropertiesEnum.SECURITY_CLIENT_ID);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("client_id", PropertiesHelper.getProperty(properties, PropertiesEnum.SECURITY_CLIENT_ID));
+        map.put("client_secret", PropertiesHelper.getProperty(properties, PropertiesEnum.SECURITY_CLIENT_SECRET));
+        return map;
     }
 }
