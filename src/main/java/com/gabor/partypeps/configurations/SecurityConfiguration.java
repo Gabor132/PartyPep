@@ -61,10 +61,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .addFilter(digestAuthenticationFilter())
                 .authorizeRequests()
-                .antMatchers("/*/**").authenticated()
                 .antMatchers("/check/**").permitAll()
-                .antMatchers("/admin/**").authenticated()
+                .antMatchers("/app-security/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/*/**").authenticated()
                 .and()
                 .httpBasic()
                 .and()

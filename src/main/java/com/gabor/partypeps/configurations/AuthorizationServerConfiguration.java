@@ -77,7 +77,6 @@ public abstract class AuthorizationServerConfiguration extends AuthorizationServ
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_CLIENT_ID))
-                .secret(PropertiesHelper.getProperty(getSecurityProperties(), PropertiesEnum.SECURITY_SECRET))
                 .authorizedGrantTypes("password", "refresh_token")
                 .refreshTokenValiditySeconds(3600 * 24)
                 .scopes("partypeps", "read", "write", "trust")

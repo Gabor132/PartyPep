@@ -14,7 +14,8 @@ public enum PropertiesEnum{
     SECURITY_CLIENT_ID("client.id"),
     SECURITY_SECRET("secret"),
     SECURITY_TEST_USERNAME("test.username"),
-    SECURITY_TEST_PASSWORD("test.password");
+    SECURITY_TEST_PASSWORD("test.password"),
+    SECURITY_ACCEPTED_ORIGINS("accepted.origin");
     String value;
     PropertiesEnum(String value){
         this.value = value;

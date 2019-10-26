@@ -17,7 +17,8 @@ public enum RequestPathEnum {
     REMOVE_MESSAGE_BY_ID("messages/remove/{id}"),
     GET_ACCESS_TOKEN("oauth/token"),
     REFRESH_ACCESS_TOKEN("oauth/token"),
-    CHECK_ACCESS_TOKEN("oauth/check_token");
+    CHECK_ACCESS_TOKEN("oauth/check_token"),
+    GET_CLIENT_ID("app-security/clientId");
     private String value;
 
     RequestPathEnum(String value) {

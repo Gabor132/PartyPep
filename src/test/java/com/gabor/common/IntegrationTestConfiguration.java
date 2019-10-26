@@ -34,7 +34,11 @@ public @interface IntegrationTestConfiguration {
 
     boolean hasId() default false;
 
+    boolean hasOtherParameter() default false;
+
     long id() default 1;
+
+    String otherParam() default "";
 
     boolean withCredentials() default false;
 
