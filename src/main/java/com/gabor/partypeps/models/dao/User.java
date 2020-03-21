@@ -23,6 +23,9 @@ public class User extends AbstractEntity implements UserDetails {
     @Column(name = "USERNAME")
     private String username;
 
+    @Column(name = "EMAIL")
+    private String email;
+
     @Column(name = "PASSWORD")
     @JsonIgnore
     private String password;
@@ -66,6 +69,10 @@ public class User extends AbstractEntity implements UserDetails {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 
     public String getPassword() {
         return password;

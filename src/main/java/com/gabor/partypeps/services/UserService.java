@@ -28,6 +28,14 @@ public class UserService extends AbstractService<User, UserDTO> {
         return userMapper.mapToDTO(user);
     }
 
+    public UserDTO findUserByUsernameAndPassword(UserDTO userDTO){
+        User user = userRepository.findByUsernameAndPassword(userDTO.name, userDTO.password);
+        if (user == null){
+            return null;
+        }
+        return userMapper.mapToDTO(user);
+    }
+
     /**
      * Function to insert a new User entity into the database
      *

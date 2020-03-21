@@ -28,6 +28,7 @@ public class UserMapper extends AbstractMapper<User, UserDTO> {
         }
         user.setUsername(dto.name);
         user.setPassword(dto.password);
+        user.setEmail(dto.email);
         return user;
     }
 

@@ -12,6 +12,8 @@ public class UserDTO extends AbstractDTO {
 
     public String name;
 
+    public String email;
+
     public String password;
 
     public List<Long> groupIds;
@@ -27,10 +29,16 @@ public class UserDTO extends AbstractDTO {
     public UserDTO(User user){
         this.id = user.getId();
         this.name = user.getUsername();
+        this.email = user.getEmail();
         this.password = user.getPassword();
         this.invitationIds = user.getInvitations().stream().map(x -> x.getId()).collect(Collectors.toList());
         this.groupIds = user.getGroups().stream().map(x -> x.getId()).collect(Collectors.toList());
         this.authorities = user.getAuthorities().stream().filter(x -> x instanceof Authority).map(x -> (Authority) x).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public UserDTO mutePassword(){
+        this.password = null;
+        return this;
     }
 
 }

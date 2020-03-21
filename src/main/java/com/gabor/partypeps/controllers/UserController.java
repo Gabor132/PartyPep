@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * This is the main controller for all services related with the User data
@@ -25,15 +27,24 @@ public class UserController extends AbstractController<User> {
     public UserService userService;
 
     @GetMapping(path = "/all")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserDTO> getAllUsers() {
-        return userService.findAll();
+        return userService.findAll().stream().map(UserDTO::mutePassword).collect(Collectors.toList());
     }
 
     @GetMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserDTO getUser(@PathVariable Long id) {
-        return (UserDTO) userService.findById(id);
+        return (UserDTO) userService.findById(id).mutePassword();
+    }
+
+    @PostMapping(path = "/get_user_details")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserDTO getUserDetails(@RequestBody UserDTO userDTO){
+        return userService.findUserByUsernameAndPassword(userDTO).mutePassword();
     }
 
     @PostMapping(path = "/add")
