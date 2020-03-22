@@ -1,6 +1,7 @@
 package com.gabor.partypeps.models.dto;
 
 import com.gabor.partypeps.models.dao.Group;
+import com.gabor.partypeps.models.dao.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +11,16 @@ public class GroupDTO extends AbstractDTO {
 
     public String name;
 
-    public List<Long> userIds;
+    public List<String> users_usernames;
 
     public GroupDTO() {
-        userIds = new ArrayList<>();
+        users_usernames = new ArrayList<>();
     }
 
     public GroupDTO(Group group) {
         this.id = group.getId();
         this.name = group.getName();
-        this.userIds = group.getGroupUsers().stream().map(x -> x.getId()).collect(Collectors.toList());
+        this.users_usernames = group.getGroupUsers().stream().map(User::getUsername).collect(Collectors.toList());
     }
 
 }

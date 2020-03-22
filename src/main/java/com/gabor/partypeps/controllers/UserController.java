@@ -36,14 +36,22 @@ public class UserController extends AbstractController<User> {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserDTO getUser(@PathVariable Long id) {
-        return (UserDTO) userService.findById(id).mutePassword();
+        UserDTO foundUser = (UserDTO) userService.findById(id);
+        if(foundUser != null){
+            foundUser = foundUser.mutePassword();
+        }
+        return foundUser;
     }
 
     @PostMapping(path = "/get_user_details")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserDTO getUserDetails(@RequestBody UserDTO userDTO){
-        return userService.findUserByUsername(userDTO.name).mutePassword();
+        UserDTO foundUser = (UserDTO) userService.findUserByUsername(userDTO.name);
+        if(foundUser != null){
+            foundUser = foundUser.mutePassword();
+        }
+        return foundUser;
     }
 
     @PostMapping(path = "/add")
