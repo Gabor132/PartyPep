@@ -5,12 +5,8 @@ import com.gabor.partypeps.models.dto.UserDTO;
 import com.gabor.partypeps.services.AbstractService;
 import com.gabor.partypeps.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.ConstraintViolationException;
 
 /**
  * This is the main controller for all services related with Registering a user
