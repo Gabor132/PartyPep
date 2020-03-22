@@ -1,5 +1,11 @@
 package com.gabor.partypeps.filters;
 
+import com.gabor.partypeps.common.props.PropertiesHelper;
+import com.gabor.partypeps.enums.ProfilesEnum;
+import com.gabor.partypeps.enums.PropertiesEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -16,15 +22,36 @@ public class CorsFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
 
+    @Profile("DEV")
+    @Bean("profileEnum")
+    public ProfilesEnum getENV(){
+        return ProfilesEnum.DEV;
+    }
+    @Profile("IT")
+    @Bean("profileEnum")
+    public ProfilesEnum getIT(){
+        return ProfilesEnum.IT;
+    }
+    @Profile("PROD")
+    @Bean("profileEnum")
+    public ProfilesEnum getProd(){
+        return ProfilesEnum.PROD;
+    }
+
+    @Autowired
+    private ProfilesEnum profilesEnum;
+
+    public String getFrontEndUrl() {
+        return PropertiesHelper.getURLProperties(true, profilesEnum).getProperty(PropertiesEnum.FRONTEND_URL.getValue());
+    }
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
         //
         // Setting headers on the response so that applications from a different origin (Hostname, Domain, Port) can utilize the api
         //
-        // TODO: Change so that the only allowed origins are the Heroku links for PROD and localhost for DEV
-        //
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8090");
+        response.setHeader("Access-Control-Allow-Origin", getFrontEndUrl());
         response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, WWW-Authenticate, Authorization, Origin, Content-Type, Version");
