@@ -19,6 +19,7 @@ public class AddUserRequestTestIT extends AbstractRequestTest implements PostReq
         user.groupIds = new ArrayList<>();
         user.invitationIds = new ArrayList<>();
         user.name = "User de Test";
+        user.email = "Email de test";
         user.password = "ceva parola acolo";
         return user;
     }

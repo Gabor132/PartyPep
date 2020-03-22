@@ -61,6 +61,7 @@ public class DatabaseTest extends AbstractTest {
     public void databaseBasicInsert() {
         User user = new User();
         user.setUsername("UserToInsert");
+        user.setEmail("faceEmailWOw");
         user.setPassword("password");
         user.setGroups(new ArrayList<>());
         user.setInvitations(new ArrayList<>());

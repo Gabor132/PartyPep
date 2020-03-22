@@ -45,17 +45,6 @@ public class UserServiceTest {
 
     @Before
     public void setUp() {
-        int i = 10;
-        while (i > 0) {
-            i--;
-            User user = new User();
-            user.setUsername("Banana" + i);
-            user.setPassword("Banana" + i);
-            user.setInvitations(new ArrayList<>());
-            user.setGroups(new ArrayList<>());
-            user.setAuthorities(new ArrayList<>());
-            mockUsersForTest.add(user);
-        }
     }
 
     @After
@@ -65,6 +54,19 @@ public class UserServiceTest {
 
     @Test
     public void insertAllUsersTest() {
+        mockUsersForTest = new LinkedList<>();
+        int i = 10;
+        while (i > 0) {
+            i--;
+            User user = new User();
+            user.setUsername("Banana" + i);
+            user.setEmail("Banana" + i);
+            user.setPassword("Banana" + i);
+            user.setInvitations(new ArrayList<>());
+            user.setGroups(new ArrayList<>());
+            user.setAuthorities(new ArrayList<>());
+            mockUsersForTest.add(user);
+        }
         for (User user : mockUsersForTest) {
             UserDTO userDto = new UserDTO(user);
             userService.insert(userDto);
