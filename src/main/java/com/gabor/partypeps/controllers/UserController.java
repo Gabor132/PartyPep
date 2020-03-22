@@ -44,7 +44,7 @@ public class UserController extends AbstractController<User> {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserDTO getUserDetails(@RequestBody UserDTO userDTO){
-        return userService.findUserByUsernameAndPassword(userDTO).mutePassword();
+        return userService.findUserByUsername(userDTO.name).mutePassword();
     }
 
     @PostMapping(path = "/add")

@@ -7,7 +7,9 @@ import com.gabor.partypeps.models.dto.UserDTO;
 import com.gabor.partypeps.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import sun.security.util.Password;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,9 @@ public class UserService extends AbstractService<User, UserDTO> {
     @Autowired
     public UserRepository userRepository;
 
+    @Autowired
+    public PasswordEncoder passwordEncoder;
+
     public UserDTO findUserByUsername(String username){
         User user = userRepository.findByUsername(username);
         if(user == null){
@@ -28,9 +33,9 @@ public class UserService extends AbstractService<User, UserDTO> {
         return userMapper.mapToDTO(user);
     }
 
-    public UserDTO findUserByUsernameAndPassword(UserDTO userDTO){
-        User user = userRepository.findByUsernameAndPassword(userDTO.name, userDTO.password);
-        if (user == null){
+    public UserDTO findUserByEmail(String email){
+        User user = userRepository.findByEmail(email);
+        if(user == null){
             return null;
         }
         return userMapper.mapToDTO(user);
@@ -45,6 +50,7 @@ public class UserService extends AbstractService<User, UserDTO> {
     @Override
     public long insert(UserDTO dto) {
         UserDTO userDTO = dto;
+        userDTO.password = passwordEncoder.encode(userDTO.password);
         List<UserDTO> list = new ArrayList<>();
         list.add(userDTO);
         return userRepository.save(userMapper.mapListOfDAO(list).get(0)).getId();

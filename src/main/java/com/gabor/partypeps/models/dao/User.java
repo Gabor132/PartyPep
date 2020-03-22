@@ -7,6 +7,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.Constraint;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,12 +23,18 @@ public class User extends AbstractEntity implements UserDetails {
     @Column(name = "ID")
     public long id;
 
+    @NotNull
+    @NotEmpty
     @Column(name = "USERNAME")
     private String username;
 
+    @NotNull
+    @NotEmpty
     @Column(name = "EMAIL")
     private String email;
 
+    @NotNull
+    @NotEmpty
     @Column(name = "PASSWORD")
     @JsonIgnore
     private String password;

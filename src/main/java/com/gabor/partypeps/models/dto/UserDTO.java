@@ -4,6 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gabor.partypeps.models.dao.Authority;
 import com.gabor.partypeps.models.dao.User;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

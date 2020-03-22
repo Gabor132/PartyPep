@@ -2,11 +2,12 @@ package com.gabor.partypeps.mappers;
 
 import com.gabor.partypeps.models.dao.User;
 import com.gabor.partypeps.models.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper extends AbstractMapper<User, UserDTO> {
-
 
     @Override
     public UserDTO mapToDTO(User entity) {
