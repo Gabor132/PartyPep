@@ -22,18 +22,21 @@ public class CorsFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
 
-    @Profile("DEV")
+
     @Bean("profileEnum")
+    @Profile("DEV")
     public ProfilesEnum getENV(){
         return ProfilesEnum.DEV;
     }
-    @Profile("IT")
+
     @Bean("profileEnum")
+    @Profile("IT")
     public ProfilesEnum getIT(){
         return ProfilesEnum.IT;
     }
-    @Profile("PROD")
+
     @Bean("profileEnum")
+    @Profile("PROD | default")
     public ProfilesEnum getProd(){
         return ProfilesEnum.PROD;
     }
