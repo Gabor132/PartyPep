@@ -1,11 +1,9 @@
 package com.gabor.partypeps.filters;
 
+import com.gabor.partypeps.common.env.EnvironmentHelper;
 import com.gabor.partypeps.common.props.PropertiesHelper;
-import com.gabor.partypeps.enums.ProfilesEnum;
 import com.gabor.partypeps.enums.PropertiesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -22,30 +20,12 @@ public class CorsFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
 
-
-    @Bean("profileEnum")
-    @Profile("DEV")
-    public ProfilesEnum getENV(){
-        return ProfilesEnum.DEV;
-    }
-
-    @Bean("profileEnum")
-    @Profile("IT")
-    public ProfilesEnum getIT(){
-        return ProfilesEnum.IT;
-    }
-
-    @Bean("profileEnum")
-    @Profile("PROD | default")
-    public ProfilesEnum getProd(){
-        return ProfilesEnum.PROD;
-    }
-
     @Autowired
-    private ProfilesEnum profilesEnum;
+    private EnvironmentHelper environmentHelper;
+
 
     public String getFrontEndUrl() {
-        return PropertiesHelper.getURLProperties(true, profilesEnum).getProperty(PropertiesEnum.FRONTEND_URL.getValue());
+        return PropertiesHelper.getURLProperties(true, environmentHelper.getEnvironment()).getProperty(PropertiesEnum.FRONTEND_URL.getValue());
     }
 
     @Override
