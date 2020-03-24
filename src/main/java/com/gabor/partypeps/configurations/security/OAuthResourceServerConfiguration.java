@@ -1,5 +1,6 @@
 package com.gabor.partypeps.configurations.security;
 
+import com.gabor.partypeps.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.web.session.SessionManagementFilter;
 
 @Configuration
 @EnableResourceServer
@@ -46,9 +48,12 @@ public class OAuthResourceServerConfiguration extends ResourceServerConfigurerAd
         authenticationManagerBuilder.authenticationProvider(authenticationProvider());
     }
 
+    @Autowired
+    public CorsFilter corsFilter;
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http
+        http.addFilterBefore(corsFilter, SessionManagementFilter.class)
             .authorizeRequests()
                 .antMatchers("/app-security/clientId").permitAll()
                 .antMatchers("/auxiliar/**").permitAll()
