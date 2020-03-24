@@ -115,10 +115,10 @@ public class EntityManagerFactoryConfiguration {
         //
         properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
         properties.setProperty("javax.persistence.schema-generation.create-source", "script");
-        properties.setProperty("javax.persistence.schema-generation.create-script-source", "sql_scripts/0.0.1/create.sql");
+        properties.setProperty("javax.persistence.schema-generation.create-script-source", "META-INF/sql_scripts/0.0.1/create.sql");
         properties.setProperty("javax.persistence.schema-generation.drop-source", "script");
-        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "sql_scripts/0.0.1/drop.sql");
-        properties.setProperty("javax.persistence.sql-load-script-source", "sql_scripts/0.0.1/data.sql");
+        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "META-INF/sql_scripts/0.0.1/drop.sql");
+        properties.setProperty("javax.persistence.sql-load-script-source", "META-INF/sql_scripts/0.0.1/data.sql");
         return properties;
     }
 
