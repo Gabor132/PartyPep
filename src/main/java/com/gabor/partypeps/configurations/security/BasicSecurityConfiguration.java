@@ -1,5 +1,6 @@
 package com.gabor.partypeps.configurations.security;
 
+import com.gabor.partypeps.filters.CorsFilter;
 import com.gabor.partypeps.services.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.session.SessionManagementFilter;
 
 /**
  * The Spring security Configuration Class
@@ -29,11 +31,14 @@ public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
+    public CorsFilter corsFilter;
+
+    @Autowired
     public AuthenticationProvider authenticationProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.addFilterBefore(corsFilter, SessionManagementFilter.class)
                 .authorizeRequests()
                 .antMatchers("/check/**").permitAll()
                 .antMatchers("/admin/**").authenticated()
