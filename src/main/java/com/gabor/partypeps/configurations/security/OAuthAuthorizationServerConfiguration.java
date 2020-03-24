@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +27,7 @@ import java.util.logging.Logger;
 
 @Configuration
 @EnableAuthorizationServer
+@Order(2)
 @ComponentScan({"com.gabor.partypeps.configurations", "com.gabor.partypeps.security"})
 public class OAuthAuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
