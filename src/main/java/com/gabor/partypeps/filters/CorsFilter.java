@@ -37,7 +37,7 @@ public class CorsFilter implements Filter {
         //
         // Setting headers on the response so that applications from a different origin (Hostname, Domain, Port) can utilize the api
         //
-        response.setHeader("Access-Control-Allow-Origin", getFrontEndUrl() + ", " + getBackEndUrl());
+        response.setHeader("Access-Control-Allow-Origin", getFrontEndUrl());
         response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, WWW-Authenticate, Authorization, Origin, Content-Type, Version");
