@@ -50,8 +50,9 @@ public class OAuthResourceServerConfiguration extends ResourceServerConfigurerAd
     public void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            .antMatchers("/app-security/clientId").permitAll()
-            .antMatchers("/register/**").permitAll()
+                .antMatchers("/app-security/clientId").permitAll()
+                .antMatchers("/auxiliar/**").permitAll()
+                .antMatchers("/register/**").permitAll()
             .anyRequest().authenticated().and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .csrf().disable();
