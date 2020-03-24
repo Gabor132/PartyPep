@@ -104,7 +104,7 @@ public class EntityManagerFactoryConfiguration {
 
     private Properties additionalPropertiesPROD() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
         properties.setProperty("hibernate.show_sql", "false");
         properties.setProperty("hibernate.format_sql", "false");
