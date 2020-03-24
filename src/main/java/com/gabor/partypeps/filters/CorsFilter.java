@@ -27,13 +27,17 @@ public class CorsFilter implements Filter {
         return PropertiesHelper.getURLProperties(true, environmentHelper.getEnvironment()).getProperty(PropertiesEnum.FRONTEND_URL.getValue());
     }
 
+    public String getBackEndUrl() {
+        return PropertiesHelper.getURLProperties(true, environmentHelper.getEnvironment()).getProperty(PropertiesEnum.BACKEND_URL.getValue());
+    }
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
         //
         // Setting headers on the response so that applications from a different origin (Hostname, Domain, Port) can utilize the api
         //
-        response.setHeader("Access-Control-Allow-Origin", getFrontEndUrl());
+        response.setHeader("Access-Control-Allow-Origin", getFrontEndUrl() + ", " + getBackEndUrl());
         response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, WWW-Authenticate, Authorization, Origin, Content-Type, Version");
