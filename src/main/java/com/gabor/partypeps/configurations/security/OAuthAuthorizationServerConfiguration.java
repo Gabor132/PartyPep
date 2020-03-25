@@ -21,6 +21,9 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -106,6 +109,13 @@ public class OAuthAuthorizationServerConfiguration extends AuthorizationServerCo
             .tokenKeyAccess("permitAll()")
             .allowFormAuthenticationForClients()
             .realm("PartyPeps");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.applyPermitDefaultValues();
+        // Maybe there's a way to use config from AuthorizationServerEndpointsConfigurer endpoints?
+        source.registerCorsConfiguration("/oauth/token", config);
+        CorsFilter filter = new CorsFilter(source);
+        security.addTokenEndpointAuthenticationFilter(filter);
         super.configure(security);
     }
 
