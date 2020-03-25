@@ -18,9 +18,9 @@ public class AddGroupRequestTestIT extends AbstractRequestTest implements PostRe
     public AbstractDTO getDTO() {
         GroupDTO group = new GroupDTO();
         group.name = "Banana";
-        group.users_usernames = new ArrayList<>();
-        group.users_usernames.add("Banani");
-        group.users_usernames.add("admin");
+        group.usersUsernames = new ArrayList<>();
+        group.usersUsernames.add("Banani");
+        group.usersUsernames.add("admin");
         return group;
     }
 

@@ -41,7 +41,7 @@ public class GroupService extends AbstractService<Group, GroupDTO> {
     @Override
     public long insert(GroupDTO dto) {
         Group group = groupMapper.mapToDAO(dto);
-        for (String username : dto.users_usernames) {
+        for (String username : dto.usersUsernames) {
             User user = userRepository.findByUsername(username);
             group.getGroupUsers().add(user);
         }

@@ -11,16 +11,16 @@ public class GroupDTO extends AbstractDTO {
 
     public String name;
 
-    public List<String> users_usernames;
+    public List<String> usersUsernames;
 
     public GroupDTO() {
-        users_usernames = new ArrayList<>();
+        usersUsernames = new ArrayList<>();
     }
 
     public GroupDTO(Group group) {
         this.id = group.getId();
         this.name = group.getName();
-        this.users_usernames = group.getGroupUsers().stream().map(User::getUsername).collect(Collectors.toList());
+        this.usersUsernames = group.getGroupUsers().stream().map(User::getUsername).collect(Collectors.toList());
     }
 
 }
