@@ -64,7 +64,7 @@ public class DatabaseTest extends AbstractTest {
         user.setEmail("faceEmailWOw");
         user.setPassword("password");
         user.setGroups(new ArrayList<>());
-        user.setInvitations(new ArrayList<>());
+        user.setSubscriptions(new ArrayList<>());
         user = userRepository.save(user);
         Assert.assertNotEquals(user.getId(), 0.0);
     }

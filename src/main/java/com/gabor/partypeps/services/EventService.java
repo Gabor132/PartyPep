@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class EventService extends AbstractService<Event, EventDTO>  {
 
@@ -23,12 +26,16 @@ public class EventService extends AbstractService<Event, EventDTO>  {
     @Autowired
     public UserRepository userRepository;
 
+    public List<EventDTO> getUserEvents(String username){
+        return this.findAll().stream().filter(event -> event.subscribedUsers.contains(username)).collect(Collectors.toList());
+    }
+
     @Override
     public long insert(EventDTO dto) {
         Event event = eventMapper.mapToDAO(dto);
-        for (String username : dto.invitedUsers) {
+        for (String username : dto.subscribedUsers) {
             User user = userRepository.findByUsername(username);
-            event.getInvitees().add(user);
+            event.getSubscribers().add(user);
         }
         return eventRepository.save(event).getId();
     }

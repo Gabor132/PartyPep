@@ -73,9 +73,7 @@ public class GroupService extends AbstractService<Group, GroupDTO> {
         List<Group> groups = new ArrayList<>();
         for (Long groupId : user.groupIds) {
             Optional<Group> group = groupRepository.findById(groupId);
-            if (group.isPresent()) {
-                groups.add(group.get());
-            }
+            group.ifPresent(groups::add);
         }
         return groupMapper.mapListOfDTO(groups);
     }

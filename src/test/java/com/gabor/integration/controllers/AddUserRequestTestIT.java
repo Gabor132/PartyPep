@@ -17,10 +17,13 @@ public class AddUserRequestTestIT extends AbstractRequestTest implements PostReq
     public UserDTO getDTO() {
         UserDTO user = new UserDTO();
         user.groupIds = new ArrayList<>();
-        user.invitationIds = new ArrayList<>();
+        user.subscriptions = new ArrayList<>();
         user.name = "User de Test";
         user.email = "Email de test";
         user.password = "ceva parola acolo";
+        user.authorities = new ArrayList<>();
+        user.following = new ArrayList<>();
+        user.followers = new ArrayList<>();
         return user;
     }
 

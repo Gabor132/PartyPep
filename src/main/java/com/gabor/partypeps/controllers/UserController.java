@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * This is the main controller for all services related with the User data
@@ -28,30 +28,29 @@ public class UserController extends AbstractController<User> {
     @GetMapping(path = "/all")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserDTO> getAllUsers() {
-        return userService.findAll().stream().map(UserDTO::mutePassword).collect(Collectors.toList());
+    public List<UserDTO> getAllUsers(Principal principal) {
+        return userService.findAllButNotMe(principal.getName());
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{username}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserDTO getUser(@PathVariable Long id) {
-        UserDTO foundUser = (UserDTO) userService.findById(id);
-        if(foundUser != null){
-            foundUser = foundUser.mutePassword();
-        }
-        return foundUser;
+    public UserDTO getUser(@PathVariable String username) {
+        return userService.findUserByUsername(username);
     }
 
-    @PostMapping(path = "/get_user_details")
+    @GetMapping(path = "/peps")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserDTO getUserDetails(@RequestBody UserDTO userDTO){
-        UserDTO foundUser = (UserDTO) userService.findUserByUsername(userDTO.name);
-        if(foundUser != null){
-            foundUser = foundUser.mutePassword();
-        }
-        return foundUser;
+    public List<UserDTO> getFollowers(Principal principal) {
+        return userService.findMyFriends(principal.getName());
+    }
+
+    @GetMapping(path = "/get_user_details")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserDTO getUserDetails(Principal principal){
+        return userService.findMyselfByUsername(principal.getName());
     }
 
     @PostMapping(path = "/add")
@@ -61,11 +60,25 @@ public class UserController extends AbstractController<User> {
         return userService.insert(userDTO);
     }
 
-    @DeleteMapping(path = "/remove/{id}")
+    @PutMapping(path = "/follow")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Boolean deleteUser(@PathVariable Long id) {
-        return userService.delete(id);
+    public Boolean followUser(Principal principal, @RequestBody String followedUsername) {
+        return userService.followUser(principal.getName(), followedUsername);
+    }
+
+    @DeleteMapping(path = "/unfollow/{followedUsername}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Boolean unfollowUser(Principal principal, @PathVariable String followedUsername) {
+        return userService.unfollowUser(principal.getName(), followedUsername);
+    }
+
+    @DeleteMapping(path = "/remove/myself/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Boolean deleteUser(Principal principal, @PathVariable Long id) {
+        return userService.suicide(principal.getName(), id);
     }
 
     @Override

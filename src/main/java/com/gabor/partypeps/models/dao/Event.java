@@ -25,9 +25,9 @@ public class Event extends AbstractEntity {
     private String location;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "INVITATIONS", joinColumns = @JoinColumn(name = "EVENT_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))
+    @JoinTable(name = "SUBSCRIPTIONS", joinColumns = @JoinColumn(name = "EVENT_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))
     @JsonIgnore
-    private List<User> invitees = null;
+    private List<User> subscribers = null;
 
     public long getId() {
         return id;
@@ -61,12 +61,12 @@ public class Event extends AbstractEntity {
         this.location = location;
     }
 
-    public List<User> getInvitees() {
-        return invitees;
+    public List<User> getSubscribers() {
+        return subscribers;
     }
 
-    public void setInvitees(List<User> invitees) {
-        this.invitees = invitees;
+    public void setSubscribers(List<User> subscribers) {
+        this.subscribers = subscribers;
     }
 
 }

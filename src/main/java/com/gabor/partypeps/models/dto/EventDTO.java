@@ -16,7 +16,7 @@ public class EventDTO extends AbstractDTO{
 
     public String location;
 
-    public List<String> invitedUsers;
+    public List<String> subscribedUsers;
 
     public EventDTO(){}
 
@@ -26,7 +26,7 @@ public class EventDTO extends AbstractDTO{
         DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy hh:mm");
         this.startOfEvent = dateFormat.format(event.getStartOfEvent());
         this.name = event.getName();
-        this.invitedUsers = event.getInvitees().stream().map(User::getUsername).collect(Collectors.toList());
+        this.subscribedUsers = event.getSubscribers().stream().map(User::getUsername).collect(Collectors.toList());
     }
 
 }

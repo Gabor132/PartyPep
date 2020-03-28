@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController(value = "events")
@@ -27,5 +28,12 @@ public class EventController extends AbstractController<Event> {
     @ResponseBody
     public List<EventDTO> getAllEvents() {
         return eventService.findAll();
+    }
+
+    @GetMapping(path = "/myevents")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<EventDTO> getMyEvents(Principal principal){
+        return eventService.getUserEvents(principal.getName());
     }
 }

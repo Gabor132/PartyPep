@@ -402,6 +402,9 @@ public abstract class AbstractRequestTest extends AbstractTest {
             if (itAnnotation.hasId()) {
                 long id = itAnnotation.id();
                 finalURL = finalURL.replace("{id}", Long.toString(id));
+            }else if(itAnnotation.hasName()){
+                String name = itAnnotation.name();
+                finalURL = finalURL.replace("{name}", name);
             }
         }else{
             finalURL = finalURL + url;

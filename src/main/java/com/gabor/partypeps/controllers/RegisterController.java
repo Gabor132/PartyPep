@@ -32,7 +32,7 @@ public class RegisterController extends AbstractController<User> {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public boolean checkUser(@RequestBody UserDTO user){
-        UserDTO foundUser = userService.findUserByUsername(user.name);
+        UserDTO foundUser = userService.findMyselfByUsername(user.name);
         return foundUser == null;
     }
 

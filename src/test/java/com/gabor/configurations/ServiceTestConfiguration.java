@@ -1,5 +1,6 @@
 package com.gabor.configurations;
 
+import com.gabor.partypeps.services.EventService;
 import com.gabor.partypeps.services.GroupService;
 import com.gabor.partypeps.services.MessageService;
 import com.gabor.partypeps.services.UserService;
@@ -16,6 +17,9 @@ public class ServiceTestConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean("eventService")
+    public EventService eventService() { return new EventService(); }
+
     @Bean("userService")
     public UserService userService() {
         return new UserService();
@@ -30,5 +34,6 @@ public class ServiceTestConfiguration {
     public GroupService groupService() {
         return new GroupService();
     }
+
 
 }

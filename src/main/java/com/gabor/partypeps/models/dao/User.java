@@ -38,6 +38,17 @@ public class User extends AbstractEntity implements UserDetails {
     @JsonIgnore
     private String password;
 
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(value= FetchMode.SUBSELECT)
+    @JoinColumn(name = "FOLLOWED_ID")
+    private List<Follow> followers;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(value= FetchMode.SUBSELECT)
+    @JoinColumn(name = "FOLLOWER_ID")
+    private List<Follow> following;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value= FetchMode.SUBSELECT)
     @JoinTable(name = "USERS_GROUPS", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "GROUP_ID", referencedColumnName = "ID"))
@@ -45,9 +56,9 @@ public class User extends AbstractEntity implements UserDetails {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value= FetchMode.SUBSELECT)
-    @JoinTable(name = "INVITATIONS", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "EVENT_ID", referencedColumnName = "ID"))
+    @JoinTable(name = "SUBSCRIPTIONS", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "EVENT_ID", referencedColumnName = "ID"))
     @JsonIgnore
-    private List<Event> invitations;
+    private List<Event> subscriptions;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value= FetchMode.SUBSELECT)
@@ -90,6 +101,22 @@ public class User extends AbstractEntity implements UserDetails {
         this.password = password;
     }
 
+    public List<Follow> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<Follow> followers) {
+        this.followers = followers;
+    }
+
+    public List<Follow> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<Follow> following) {
+        this.following = following;
+    }
+
     public List<Group> getGroups() {
         if (groups == null) {
             groups = new ArrayList<>();
@@ -101,15 +128,15 @@ public class User extends AbstractEntity implements UserDetails {
         this.groups = groups;
     }
 
-    public List<Event> getInvitations() {
-        if (invitations == null) {
-            invitations = new ArrayList<>();
+    public List<Event> getSubscriptions() {
+        if (subscriptions == null) {
+            subscriptions = new ArrayList<>();
         }
-        return invitations;
+        return subscriptions;
     }
 
-    public void setInvitations(List<Event> invitations) {
-        this.invitations = invitations;
+    public void setSubscriptions(List<Event> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 
     public void setEnabled(boolean enabled) {
