@@ -1,5 +1,6 @@
 package com.gabor.partypeps.services;
 
+import com.gabor.partypeps.enums.AuthorityEnum;
 import com.gabor.partypeps.mappers.AbstractMapper;
 import com.gabor.partypeps.mappers.UserMapper;
 import com.gabor.partypeps.models.dao.Follow;
@@ -9,6 +10,7 @@ import com.gabor.partypeps.repositories.FollowRepository;
 import com.gabor.partypeps.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,10 +77,9 @@ public class UserService extends AbstractService<User, UserDTO> {
      */
     @Override
     public long insert(UserDTO dto) {
-        UserDTO userDTO = dto;
-        userDTO.password = passwordEncoder.encode(userDTO.password);
+        dto.password = passwordEncoder.encode(dto.password);
         List<UserDTO> list = new ArrayList<>();
-        list.add(userDTO);
+        list.add(dto);
         return userRepository.save(userMapper.mapListOfDAO(list).get(0)).getId();
     }
 
@@ -114,10 +115,13 @@ public class UserService extends AbstractService<User, UserDTO> {
     }
 
     @Transactional
-    public Boolean suicide(String username, Long id){
+    public Boolean removeUser(String username, Long id){
         User myself = userRepository.findByUsername(username);
-        if(myself.getId() == id) {
-            return this.delete(id);
+        if(myself.getId() != id && myself.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).contains(AuthorityEnum.ADMIN.toString())) {
+            myself.getFollowers().forEach(follow -> followRepository.deleteFollow(follow.getId()));
+            myself.getFollowing().forEach(follow -> followRepository.deleteFollow(follow.getId()));
+            userRepository.delete(myself);
+            return true;
         }
         return false;
     }

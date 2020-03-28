@@ -20,11 +20,11 @@ public class Follow extends AbstractEntity{
     @Column(name = "ID")
     public long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
     @JoinColumn(name = "FOLLOWER_ID")
     private User follower;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
     @JoinColumn(name = "FOLLOWED_ID")
     private User followed;
 

@@ -1,5 +1,6 @@
 package com.gabor.partypeps.configurations.security;
 
+import com.gabor.partypeps.enums.AuthorityEnum;
 import com.gabor.partypeps.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -58,6 +59,7 @@ public class OAuthResourceServerConfiguration extends ResourceServerConfigurerAd
                 .antMatchers("/app-security/clientId").permitAll()
                 .antMatchers("/auxiliar/**").permitAll()
                 .antMatchers("/register/**").permitAll()
+                .antMatchers("/users/remove/**").hasAuthority(AuthorityEnum.ADMIN.toString())
             .anyRequest().authenticated().and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .csrf().disable();

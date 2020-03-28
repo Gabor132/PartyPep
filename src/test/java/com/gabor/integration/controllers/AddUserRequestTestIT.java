@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-@IntegrationTestConfiguration(path = RequestPathEnum.ADD_USER)
+@IntegrationTestConfiguration(path = RequestPathEnum.REGISTER_USER)
 public class AddUserRequestTestIT extends AbstractRequestTest implements PostRequestTestInterface {
 
     @Override
@@ -30,14 +30,7 @@ public class AddUserRequestTestIT extends AbstractRequestTest implements PostReq
     @Test
     public void testAddUserRequest() {
         HttpResponse response = this.doPostRequest(getDTO());
-        this.testResponseStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
+        this.testResponseStatusCode(HttpStatus.SC_CREATED, response);
     }
 
-    @Test
-    public void testAddUserRequestAuthenticated() {
-        HttpResponse response = this.doPostRequest(getDTO(), true);
-        this.testResponseStatusCode(HttpStatus.SC_CREATED, response);
-        this.testResponseMessageType(response);
-        this.testPostResponsePayload(response);
-    }
 }

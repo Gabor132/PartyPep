@@ -16,7 +16,6 @@ public class UserDTO extends AbstractDTO {
 
     public String email;
 
-    @JsonIgnore
     public String password;
 
     public List<String> followers;

@@ -53,13 +53,6 @@ public class UserController extends AbstractController<User> {
         return userService.findMyselfByUsername(principal.getName());
     }
 
-    @PostMapping(path = "/add")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public Long insertUser(@RequestBody UserDTO userDTO) {
-        return userService.insert(userDTO);
-    }
-
     @PutMapping(path = "/follow")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -74,11 +67,11 @@ public class UserController extends AbstractController<User> {
         return userService.unfollowUser(principal.getName(), followedUsername);
     }
 
-    @DeleteMapping(path = "/remove/myself/{id}")
+    @DeleteMapping(path = "/remove/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Boolean deleteUser(Principal principal, @PathVariable Long id) {
-        return userService.suicide(principal.getName(), id);
+        return userService.removeUser(principal.getName(), id);
     }
 
     @Override
