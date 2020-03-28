@@ -18,16 +18,22 @@ public class MessageController extends AbstractController<Message> {
     @Autowired
     public MessageService messageService;
 
-    @GetMapping(path = "/all")
+    @GetMapping(path = "/private/{withRead}")
     @ResponseBody
-    public List<MessageDTO> getAllMessages(Principal principal) {
-        return messageService.findAllMyMessages(principal.getName(), true);
+    public List<MessageDTO> getPrivateMessages(Principal principal, @PathVariable Boolean withRead) {
+        return messageService.findMyPrivateMessages(principal.getName(), withRead);
     }
 
-    @GetMapping(path = "/all/unread")
+    @GetMapping(path = "/group/{withRead}")
     @ResponseBody
-    public List<MessageDTO> getAllUnreadMessages(Principal principal) {
-        return messageService.findAllMyMessages(principal.getName());
+    public List<MessageDTO> getGroupMessages(Principal principal, @PathVariable Boolean withRead) {
+        return messageService.findMyGroupMessages(principal.getName(), withRead);
+    }
+
+    @GetMapping(path = "/all/{withRead}")
+    @ResponseBody
+    public List<MessageDTO> getAllMessages(Principal principal, @PathVariable Boolean withRead) {
+        return messageService.findAllMyMessages(principal.getName(), withRead);
     }
 
     @PostMapping(path = "/add")

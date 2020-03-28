@@ -8,6 +8,8 @@ public class MessageDTO extends AbstractDTO {
 
     public String sourceUsername;
 
+    public String receiverUsername;
+
     public String groupName;
 
     public boolean isRead;
@@ -18,7 +20,8 @@ public class MessageDTO extends AbstractDTO {
         this.id = message.getId();
         this.text = message.getMessageText();
         this.sourceUsername = message.getSourceUser().getUsername();
-        this.groupName = message.getGroup().name;
+        this.receiverUsername = message.getReceiverUser() != null ? message.getReceiverUser().getUsername() : null;
+        this.groupName = message.getGroup() != null ? message.getGroup().name : null;
         this.isRead = message.getRead();
     }
 }

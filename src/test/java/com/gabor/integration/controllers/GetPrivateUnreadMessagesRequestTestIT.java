@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import java.util.List;
 
-@IntegrationTestConfiguration(path = RequestPathEnum.GET_ALL_MESSAGES, hasBoolean = true)
-public class GetAllUnreadMessagesRequestTestIT extends AbstractGetRequestTest<MessageDTO> {
+@IntegrationTestConfiguration(path = RequestPathEnum.GET_PRIVATE_MESSAGES, hasBoolean = true)
+public class GetPrivateUnreadMessagesRequestTestIT extends AbstractGetRequestTest<MessageDTO> {
 
     @Test
     public void testGetAllUnreadMessagesRequest() {

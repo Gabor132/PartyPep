@@ -4,8 +4,9 @@ public enum RequestPathEnum {
 
     GET_ALL_USERS("users/all"),
     GET_ALL_GROUPS("groups/all"),
-    GET_ALL_MESSAGES("messages/all"),
-    GET_ALL_UNREAD_MESSAGES("messages/all/unread"),
+    GET_ALL_MESSAGES("messages/all/{boolean}"),
+    GET_PRIVATE_MESSAGES("messages/private/{boolean}"),
+    GET_GROUP_MESSAGES("messages/group/{boolean}"),
     GET_USER_BY_ID("users/{id}"),
     GET_USER_BY_NAME("users/{name}"),
     GET_GROUP_BY_ID("groups/{id}"),

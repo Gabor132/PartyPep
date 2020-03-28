@@ -405,6 +405,9 @@ public abstract class AbstractRequestTest extends AbstractTest {
             }else if(itAnnotation.hasName()){
                 String name = itAnnotation.name();
                 finalURL = finalURL.replace("{name}", name);
+            }else if(itAnnotation.hasBoolean()){
+                boolean booleanValue = itAnnotation.booleanValue();
+                finalURL = finalURL.replace("{boolean}", Boolean.toString(booleanValue));
             }
         }else{
             finalURL = finalURL + url;

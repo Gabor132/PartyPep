@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-@IntegrationTestConfiguration(path = RequestPathEnum.GET_ALL_MESSAGES)
+@IntegrationTestConfiguration(path = RequestPathEnum.GET_ALL_MESSAGES, hasBoolean = true, booleanValue = true)
 public class GetAllReadMessagesRequestTestIT extends AbstractGetRequestTest<MessageDTO> {
 
     @Test

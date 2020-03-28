@@ -40,6 +40,10 @@ public @interface IntegrationTestConfiguration {
 
     String name() default "";
 
+    boolean hasBoolean() default false;
+
+    boolean booleanValue() default false;
+
     boolean withCredentials() default false;
 
     String username() default "admin";
