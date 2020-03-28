@@ -10,16 +10,16 @@ import org.junit.Test;
 import java.util.List;
 
 @IntegrationTestConfiguration(path = RequestPathEnum.GET_ALL_MESSAGES)
-public class GetAllMessagesRequestTestIT extends AbstractGetRequestTest<MessageDTO> {
+public class GetAllReadMessagesRequestTestIT extends AbstractGetRequestTest<MessageDTO> {
 
     @Test
-    public void testGetAllMessagesRequest() {
+    public void testGetAllReadMessagesRequest() {
         HttpResponse response = this.doGetRequest();
         this.testResponseStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
     }
 
     @Test
-    public void testGetAllMessagesRequestAuthenticated() {
+    public void testGetAllReadMessagesRequestAuthenticated() {
         HttpResponse response = this.doGetRequest(true);
         this.testResponseStatusCode(response);
         this.testResponseMessageType(response);
