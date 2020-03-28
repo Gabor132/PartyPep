@@ -38,8 +38,9 @@ public class UserService extends AbstractService<User, UserDTO> {
     }
 
     @Transactional
-    public UserDTO findUserByUsername(String hisUsername){
-        return userMapper.mapToDTO(userRepository.findByUsername(hisUsername));
+    public UserDTO findUserByUsername(String myUsername, String hisUsername){
+        UserDTO myself = this.findMyselfByUsername(myUsername);
+        return userMapper.mapToDTO(userRepository.findByUsername(hisUsername)).setupActions(myself);
     }
 
     @Transactional
@@ -96,7 +97,7 @@ public class UserService extends AbstractService<User, UserDTO> {
     public Boolean followUser(String followerUsername, String followedUsername){
         User followerUser = userRepository.findByUsername(followerUsername);
         User followedUser = userRepository.findByUsername(followedUsername);
-        followRepository.save(new Follow(followerUser, followedUser, false));
+        followRepository.saveAndFlush(new Follow(followerUser, followedUser, false));
         return true;
     }
 
@@ -108,6 +109,7 @@ public class UserService extends AbstractService<User, UserDTO> {
             Follow toDeleteFollowFromDB = followRepository.findById(foundFollow.get(0).getId()).get();
             return 1 == followRepository.deleteFollow(toDeleteFollowFromDB.getId());
         }
+        followRepository.flush();
         return true;
     }
 

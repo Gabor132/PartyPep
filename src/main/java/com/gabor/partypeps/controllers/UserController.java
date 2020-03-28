@@ -35,8 +35,8 @@ public class UserController extends AbstractController<User> {
     @GetMapping(path = "/{username}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserDTO getUser(@PathVariable String username) {
-        return userService.findUserByUsername(username);
+    public UserDTO getUser(Principal principal, @PathVariable String username) {
+        return userService.findUserByUsername(principal.getName(), username);
     }
 
     @GetMapping(path = "/peps")
