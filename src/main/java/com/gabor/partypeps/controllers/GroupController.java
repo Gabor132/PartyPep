@@ -35,7 +35,7 @@ public class GroupController extends AbstractController<Group> {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<GroupDTO> getGroupsByUserId(@PathVariable Long id) {
-        return groupService.findGroupsOfUser(id);
+        return groupService.findGroupsOfAUser(id);
     }
 
     @PostMapping(path = "/add")

@@ -113,6 +113,7 @@ public class UserServiceTest {
         }
         for (User user : mockUsersForTest) {
             UserDTO userDto = new UserDTO(user);
+            userDto.password = user.getPassword();
             userService.insert(userDto);
         }
     }

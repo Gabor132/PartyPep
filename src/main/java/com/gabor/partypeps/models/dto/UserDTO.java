@@ -42,7 +42,6 @@ public class UserDTO extends AbstractDTO {
         this.id = user.getId();
         this.name = user.getUsername();
         this.email = user.getEmail();
-        this.password = user.getPassword();
         this.followers = user.getFollowers().stream().map(follow -> follow.getFollower().getUsername()).collect(Collectors.toList());
         this.following = user.getFollowing().stream().map(follow -> follow.getFollowed().getUsername()).collect(Collectors.toList());
         this.subscriptions = user.getSubscriptions().stream().map(Event::getId).collect(Collectors.toList());

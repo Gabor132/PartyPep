@@ -15,7 +15,9 @@ public class MessageMapper extends AbstractMapper<Message, MessageDTO> {
     @Override
     public Message mapToDAO(MessageDTO dto) {
         Message message = new Message();
-        message.setId(dto.id);
+        if (dto.id != null) {
+            message.setId(dto.id);
+        }
         message.setMessageText(dto.text);;
         message.setRead(dto.isRead);
         /**

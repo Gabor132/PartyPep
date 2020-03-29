@@ -24,6 +24,12 @@ public class MessageController extends AbstractController<Message> {
         return messageService.findMyPrivateMessages(principal.getName(), withRead);
     }
 
+    @GetMapping(path = "/private/user/{username}")
+    @ResponseBody
+    public List<MessageDTO> getPrivateMessagesWithUser(Principal principal, @PathVariable String username){
+        return messageService.findMyPrivateMessagesWithUser(principal.getName(), username);
+    }
+
     @GetMapping(path = "/group/{withRead}")
     @ResponseBody
     public List<MessageDTO> getGroupMessages(Principal principal, @PathVariable Boolean withRead) {
@@ -39,8 +45,8 @@ public class MessageController extends AbstractController<Message> {
     @PostMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public Long addMessage(@RequestBody MessageDTO messageDto) {
-        return messageService.insert(messageDto);
+    public Long addMessage(Principal principal, @RequestBody MessageDTO messageDto) {
+        return messageService.addMessage(principal.getName(), messageDto);
     }
 
     @PostMapping(path = "/read")

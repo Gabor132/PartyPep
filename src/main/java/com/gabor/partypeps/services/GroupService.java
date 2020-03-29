@@ -65,7 +65,7 @@ public class GroupService extends AbstractService<Group, GroupDTO> {
      * @param id Long
      * @return List<GroupDTO>
      */
-    public List<GroupDTO> findGroupsOfUser(Long id) {
+    public List<GroupDTO> findGroupsOfAUser(Long id) {
         UserDTO user = userService.findById(id);
         if(user == null){
             return null;

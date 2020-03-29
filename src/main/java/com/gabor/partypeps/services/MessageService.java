@@ -6,6 +6,7 @@ import com.gabor.partypeps.models.dao.Group;
 import com.gabor.partypeps.models.dao.Message;
 import com.gabor.partypeps.models.dao.User;
 import com.gabor.partypeps.models.dto.MessageDTO;
+import com.gabor.partypeps.repositories.GroupRepository;
 import com.gabor.partypeps.repositories.MessageRepository;
 import com.gabor.partypeps.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class MessageService extends AbstractService<Message, MessageDTO> {
     private UserRepository userRepository;
 
     @Autowired
+    private GroupRepository groupRepository;
+
+    @Autowired
     private MessageMapper messageMapper;
 
     @Transactional
@@ -41,6 +45,14 @@ public class MessageService extends AbstractService<Message, MessageDTO> {
         List<MessageDTO> messages = findMyPrivateMessages(username, withReadMessages);
         messages.addAll(findMyGroupMessages(username, withReadMessages));
         return messages;
+    }
+
+    public List<MessageDTO> findMyPrivateMessagesWithUser(String myUsername, String hisUsername){
+        User myself = userRepository.findByUsername(myUsername);
+        User him = userRepository.findByUsername(hisUsername);
+        List<Message> messages = messageRepository.getConversationBetweenUsers(myself, him);
+        messages.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
+        return messageMapper.mapListOfDTO(messages);
     }
 
     @Transactional
@@ -69,6 +81,42 @@ public class MessageService extends AbstractService<Message, MessageDTO> {
             return messages;
         }).stream().filter(m -> withReadMessages && !m.getRead()).collect(Collectors.toList());
         return messageMapper.mapListOfDTO(groupMessages);
+    }
+
+    @Transactional
+    public long addMessage(String myUsername, MessageDTO messageDTO){
+        if( messageDTO.receiverUsername != null && !messageDTO.receiverUsername.isEmpty() ){
+            return this.addPrivateMessage(myUsername, messageDTO);
+        }else if(( messageDTO.groupName != null && !messageDTO.groupName.isEmpty() )){
+            return this.addGroupMessage(myUsername, messageDTO);
+        }
+        return 0;
+    }
+
+    @Transactional
+    public long addPrivateMessage(String myUsername, MessageDTO messageDto){
+        User myself = userRepository.findByUsername(myUsername);
+        User him = userRepository.findByUsername(messageDto.receiverUsername);
+        if(messageDto.sourceUsername.equals(myUsername)) {
+            Message message = messageMapper.mapToDAO(messageDto);
+            message.setSourceUser(myself);
+            message.setReceiverUser(him);
+            return messageRepository.saveAndFlush(message).getId();
+        }
+        return 0;
+    }
+
+    @Transactional
+    public long addGroupMessage(String myUsername, MessageDTO messageDto){
+        User myself = userRepository.findByUsername(myUsername);
+        Group them = groupRepository.getGroupByName(messageDto.groupName);
+        if(messageDto.sourceUsername.equals(myUsername)) {
+            Message message = messageMapper.mapToDAO(messageDto);
+            message.setSourceUser(myself);
+            message.setGroup(them);
+            return messageRepository.saveAndFlush(message).getId();
+        }
+        return 0;
     }
 
     /**
