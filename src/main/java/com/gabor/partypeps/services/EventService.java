@@ -10,6 +10,7 @@ import com.gabor.partypeps.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ public class EventService extends AbstractService<Event, EventDTO>  {
     @Autowired
     public UserRepository userRepository;
 
+    @Transactional
     public List<EventDTO> getUserEvents(String username){
         return this.findAll().stream().filter(event -> event.subscribedUsers.contains(username)).collect(Collectors.toList());
     }

@@ -11,6 +11,7 @@ import com.gabor.partypeps.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,7 @@ public class GroupService extends AbstractService<Group, GroupDTO> {
      * @param id Long
      * @return List<GroupDTO>
      */
+    @Transactional
     public List<GroupDTO> findGroupsOfAUser(Long id) {
         UserDTO user = userService.findById(id);
         if(user == null){
