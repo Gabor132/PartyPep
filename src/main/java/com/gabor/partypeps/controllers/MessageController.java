@@ -30,6 +30,12 @@ public class MessageController extends AbstractController<Message> {
         return messageService.findMyPrivateMessagesWithUser(principal.getName(), username);
     }
 
+    @GetMapping(path = "/group/group/{groupname}")
+    @ResponseBody
+    public List<MessageDTO> getGroupMessagesWithUser(Principal principal, @PathVariable String groupname){
+        return messageService.findMyGroupMessagesWithGroup(principal.getName(), groupname);
+    }
+
     @GetMapping(path = "/group/{withRead}")
     @ResponseBody
     public List<MessageDTO> getGroupMessages(Principal principal, @PathVariable Boolean withRead) {

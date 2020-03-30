@@ -31,6 +31,14 @@ public class GroupController extends AbstractController<Group> {
         return groupService.findById(id);
     }
 
+
+    @GetMapping(path = "/group/{groupname}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GroupDTO getGroupByName(@PathVariable String groupname) {
+        return groupService.findGroupByName(groupname);
+    }
+
     @GetMapping(path = "/user/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

@@ -80,6 +80,12 @@ public class GroupService extends AbstractService<Group, GroupDTO> {
         return groupMapper.mapListOfDTO(groups);
     }
 
+    @Transactional
+    public GroupDTO findGroupByName(String groupname) {
+        Group group = groupRepository.getGroupByName(groupname);
+        return groupMapper.mapToDTO(group);
+    }
+
     @Override
     public JpaRepository<Group, Long> getRepository() {
         return groupRepository;
