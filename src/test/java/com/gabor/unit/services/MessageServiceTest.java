@@ -40,24 +40,54 @@ public class MessageServiceTest {
      * TODO
      */
     @Test
-    public void insert() {
+    public void findAllMyMessagesTest() {
     }
 
     /**
      * TODO
      */
     @Test
-    public void update() {
+    public void findMyPrivateMessagesTest() {
     }
 
+    /**
+     * TODO
+     */
     @Test
-    public void getRepository() {
+    public void findMyGroupMessagesTest() {
+    }
+
+    /**
+     * TODO
+     */
+    @Test
+    public void insertTest() {
+    }
+
+    /**
+     * TODO
+     */
+    @Test
+    public void updateTest() {
+    }
+
+    /**
+     * TODO
+     */
+    @Test
+    public void readMessagesTest() {
+    }
+
+
+
+    @Test
+    public void getRepositoryTest() {
         JpaRepository<Message, Long> repository = messageService.getRepository();
         Assert.notNull(repository, "The mapper returned by the service is null");
     }
 
     @Test
-    public void getMapper() {
+    public void getMapperTest() {
         AbstractMapper mapper = messageService.getMapper();
         Assert.notNull(mapper, "The mapper returned by the service is null");
     }

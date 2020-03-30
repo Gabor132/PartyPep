@@ -1,6 +1,6 @@
 package com.gabor.partypeps.services;
 
-import com.gabor.partypeps.models.dto.UserDTO;
+import com.gabor.partypeps.repositories.UserRepository;
 import org.postgresql.shaded.com.ongres.scram.common.util.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class UserSecurityService implements UserDetailsService {
 
     @Autowired
-    public UserService userService;
+    public UserRepository userRepository;
 
     private static Logger logger = Logger.getLogger(UserSecurityService.class.getName());
 
@@ -23,12 +23,12 @@ public class UserSecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         logger.info("Load Users by Username for Authentication");
         Preconditions.checkNotNull(username, "username");
-        final UserDTO user = userService.findUserByUsername(username);
+        final com.gabor.partypeps.models.dao.User user = userRepository.findByUsername(username);
         if(user == null){
             logger.warning("Username not found: " + username);
             throw new UsernameNotFoundException("Username was not found: " + username);
         }
         logger.info("Username found: " + username);
-        return new User(user.name,user.password, user.authorities);
+        return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
     }
 }

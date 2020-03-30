@@ -104,7 +104,7 @@ public class EntityManagerFactoryConfiguration {
 
     private Properties additionalPropertiesPROD() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
         properties.setProperty("hibernate.show_sql", "false");
         properties.setProperty("hibernate.format_sql", "false");
@@ -115,10 +115,10 @@ public class EntityManagerFactoryConfiguration {
         //
         properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
         properties.setProperty("javax.persistence.schema-generation.create-source", "script");
-        properties.setProperty("javax.persistence.schema-generation.create-script-source", "sql_scripts/0.0.1/create.sql");
+        properties.setProperty("javax.persistence.schema-generation.create-script-source", "META-INF/sql_scripts/0.0.1/create.sql");
         properties.setProperty("javax.persistence.schema-generation.drop-source", "script");
-        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "sql_scripts/0.0.1/drop.sql");
-        properties.setProperty("javax.persistence.sql-load-script-source", "sql_scripts/0.0.1/data.sql");
+        properties.setProperty("javax.persistence.schema-generation.drop-script-source", "META-INF/sql_scripts/0.0.1/drop.sql");
+        properties.setProperty("javax.persistence.sql-load-script-source", "META-INF/sql_scripts/0.0.1/data.sql");
         return properties;
     }
 

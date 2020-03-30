@@ -1,5 +1,6 @@
 package com.gabor.configurations;
 
+import com.gabor.partypeps.mappers.EventMapper;
 import com.gabor.partypeps.mappers.GroupMapper;
 import com.gabor.partypeps.mappers.MessageMapper;
 import com.gabor.partypeps.mappers.UserMapper;
@@ -23,4 +24,7 @@ public class MapperTestConfiguration {
     public GroupMapper groupMapper() {
         return new GroupMapper();
     }
+
+    @Bean("eventMapper")
+    public EventMapper eventMapper() { return new EventMapper(); }
 }

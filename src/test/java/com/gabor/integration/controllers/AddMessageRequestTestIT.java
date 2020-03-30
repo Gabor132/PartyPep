@@ -14,9 +14,9 @@ public class AddMessageRequestTestIT extends AbstractRequestTest implements Post
     @Override
     public MessageDTO getDTO() {
         MessageDTO message = new MessageDTO();
-        message.sourceUserId = 1L;
+        message.sourceUsername = "banana";
         message.text = "Salut";
-        message.groupId = 1L;
+        message.groupName = "banana";
         return message;
     }
 

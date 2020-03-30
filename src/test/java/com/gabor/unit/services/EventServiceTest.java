@@ -7,8 +7,10 @@ import com.gabor.partypeps.configurations.database.DatabaseConfiguration;
 import com.gabor.partypeps.configurations.database.EntityManagerFactoryConfiguration;
 import com.gabor.partypeps.configurations.database.RepositoryConfiguration;
 import com.gabor.partypeps.mappers.AbstractMapper;
-import com.gabor.partypeps.models.dao.Group;
-import com.gabor.partypeps.services.GroupService;
+import com.gabor.partypeps.models.dao.Event;
+import com.gabor.partypeps.services.EventService;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
-/**
- * TODO
- */
+import java.util.logging.Logger;
+
 @SpringBootTest(classes = {
         DatabaseConfiguration.class,
         EntityManagerFactoryConfiguration.class,
@@ -31,10 +32,29 @@ import org.springframework.util.Assert;
 })
 @ActiveProfiles(value = "DEV")
 @RunWith(SpringJUnit4ClassRunner.class)
-public class GroupServiceTest {
+public class EventServiceTest {
+
+    private static Logger logger = Logger.getLogger(EventServiceTest.class.toString());
 
     @Autowired
-    public GroupService groupService;
+    public EventService eventService;
+
+    @Before
+    public void setUp() {
+    }
+
+    @After
+    public void tearDown() {
+
+    }
+
+
+    /**
+     * TODO
+     */
+    @Test
+    public void getUserEvents() {
+    }
 
     /**
      * TODO
@@ -50,22 +70,16 @@ public class GroupServiceTest {
     public void updateTest() {
     }
 
-    /**
-     * TODO
-     */
-    @Test
-    public void findGroupsOfUserTest() {
-    }
-
     @Test
     public void getRepositoryTest() {
-        JpaRepository<Group, Long> repository = groupService.getRepository();
+        JpaRepository<Event, Long> repository = eventService.getRepository();
         Assert.notNull(repository, "The mapper returned by the service is null");
     }
 
     @Test
     public void getMapperTest() {
-        AbstractMapper mapper = groupService.getMapper();
+        AbstractMapper mapper = eventService.getMapper();
         Assert.notNull(mapper, "The mapper returned by the service is null");
     }
+
 }
