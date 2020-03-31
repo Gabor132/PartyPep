@@ -18,6 +18,12 @@ public class EventDTO extends AbstractDTO{
 
     public List<String> subscribedUsers;
 
+    public boolean canSubscribe;
+
+    public boolean canEdit;
+
+    public boolean canShare;
+
     public EventDTO(){}
 
     public EventDTO(Event event){
@@ -27,6 +33,16 @@ public class EventDTO extends AbstractDTO{
         this.startOfEvent = dateFormat.format(event.getStartOfEvent());
         this.name = event.getName();
         this.subscribedUsers = event.getSubscribers().stream().map(User::getUsername).collect(Collectors.toList());
+    }
+
+    private static boolean isSubscribed(UserDTO myself, EventDTO event) {
+        return event.subscribedUsers.contains(myself.name);
+    }
+
+    public EventDTO setupActions(UserDTO myself){
+        this.canSubscribe =! EventDTO.isSubscribed(myself, this);
+        this.canShare = true;
+        return this;
     }
 
 }
