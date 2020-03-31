@@ -1,5 +1,5 @@
 INSERT INTO USERS(username, password, email) VALUES('admin', 'admin', 'bla1');
-INSERT INTO USERS(username, password, email) VALUES('John', 'askldjal', 'bla2');
+INSERT INTO USERS(username, password, email) VALUES('John', 'admin', 'bla2');
 INSERT INTO USERS(username, password, email) VALUES('Dani', 'askldjal', 'bla3');
 INSERT INTO USERS(username, password, email) VALUES('Banani', 'askldjal', 'bla4');
 INSERT INTO USERS(username, password, email) VALUES('Vasile', 'askldjal', 'bla5');
