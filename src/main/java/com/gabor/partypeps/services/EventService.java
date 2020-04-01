@@ -3,18 +3,19 @@ package com.gabor.partypeps.services;
 import com.gabor.partypeps.mappers.AbstractMapper;
 import com.gabor.partypeps.mappers.EventMapper;
 import com.gabor.partypeps.models.dao.Event;
+import com.gabor.partypeps.models.dao.Group;
 import com.gabor.partypeps.models.dao.User;
 import com.gabor.partypeps.models.dto.EventDTO;
 import com.gabor.partypeps.models.dto.UserDTO;
 import com.gabor.partypeps.repositories.EventRepository;
+import com.gabor.partypeps.repositories.GroupRepository;
 import com.gabor.partypeps.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +29,9 @@ public class EventService extends AbstractService<Event, EventDTO>  {
 
     @Autowired
     public UserRepository userRepository;
+
+    @Autowired
+    public GroupRepository groupRepository;
 
     @Autowired
     public UserService userService;
@@ -64,6 +68,33 @@ public class EventService extends AbstractService<Event, EventDTO>  {
     }
 
     @Transactional
+    public long createEvent(String myUsername, EventDTO eventDTO){
+        Event event = eventMapper.mapToDAO(eventDTO);
+        event.setCreationUser(userRepository.findByUsername(myUsername));
+        HashMap<String, User> invitees = new HashMap<>();
+        if (eventDTO.subscribedUsers != null) {
+            for (String invitation : eventDTO.subscribedUsers) {
+                User user = userRepository.findByUsername(invitation);
+                if (user == null) {
+                    Group group = groupRepository.getGroupByName(invitation);
+                    if (group != null) {
+                        for (User groupUser : group.getGroupUsers()) {
+                            invitees.put(groupUser.getUsername(), groupUser);
+                        }
+                    }
+                } else {
+                    invitees.put(user.getUsername(), user);
+                }
+            }
+        }
+        invitees.put(myUsername, userRepository.findByUsername(myUsername));
+        for (User user : invitees.values()) {
+            event.getSubscribers().add(user);
+        }
+        return eventRepository.saveAndFlush(event).getId();
+    }
+
+    @Transactional
     public Boolean subscribeToEvent(String username, Long eventId){
         User user = userRepository.findByUsername(username);
         Optional<Event> event = eventRepository.findById(eventId);
@@ -85,6 +116,21 @@ public class EventService extends AbstractService<Event, EventDTO>  {
             List<User> toRemove = theEvent.getSubscribers().stream().filter(u -> u.getUsername().equals(username)).collect(Collectors.toList());
             theEvent.getSubscribers().removeAll(toRemove);
             eventRepository.saveAndFlush(theEvent);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public Boolean deleteEvent(String username, Long eventId){
+        Optional<Event> event = eventRepository.findById(eventId);
+        if (event.isPresent()){
+            Event theEvent = event.get();
+            if(theEvent.getCreationUser().getUsername().equals(username)){
+                theEvent.getSubscribers().clear();
+            }
+            theEvent = eventRepository.saveAndFlush(theEvent);
+            eventRepository.deleteById(theEvent.getId());
             return true;
         }
         return false;

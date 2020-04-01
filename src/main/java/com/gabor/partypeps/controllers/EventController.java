@@ -57,4 +57,19 @@ public class EventController extends AbstractController<Event> {
     public Boolean unsubscribeToEvent(Principal principal, @PathVariable Long eventId) {
         return eventService.unsubscribeToEvent(principal.getName(), eventId);
     }
+
+    @PostMapping(path = "/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public Long createEvent(Principal principal, @RequestBody EventDTO eventDto) {
+        return eventService.createEvent(principal.getName(), eventDto);
+    }
+
+
+    @DeleteMapping(path = "/delete/{eventId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Boolean deleteEvent(Principal principal, @PathVariable Long eventId) {
+        return eventService.deleteEvent(principal.getName(), eventId);
+    }
 }

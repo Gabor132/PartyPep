@@ -6,6 +6,7 @@ import com.gabor.partypeps.models.dto.EventDTO;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 
 public class EventMapper extends AbstractMapper<Event, EventDTO>{
 
@@ -23,6 +24,7 @@ public class EventMapper extends AbstractMapper<Event, EventDTO>{
         }
         newEvent.setName(dto.name);
         newEvent.setLocation(dto.location);
+        newEvent.setSubscribers(new LinkedList<>());
         DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy hh:mm");
         try {
             newEvent.setStartOfEvent(dateFormat.parse(dto.startOfEvent));
