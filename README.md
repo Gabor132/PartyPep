@@ -1,4 +1,4 @@
-# PartyPep
+# PartyPeps
 
 A simple Java Spring REST-full application meant to exercise basic programming concepts. From different refactoring methods to testing
 frameworks and continuous integration setups.
@@ -28,7 +28,7 @@ Available on [Google Drive](https://drive.google.com/drive/folders/1jC2TNsvXGO7m
 
 ### Continuous Integration:
 
-For continuous integration we are using [CircleCI](https://circleci.com/signup) 
+For continuous integration we are using [CircleCI](https://circleci.com/signup).
 Sign up and let me know to add you to the team.
 
 
@@ -53,4 +53,4 @@ only unit tests will fail the build completely and not allow the automated deplo
 
 
 
-**If you want to check if the application works, do https://partypeps.herokuapp.com/users/all and see if you get anything**
+***Check if it works: https://partypeps.herokuapp.com/users/all***
