@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -25,29 +26,52 @@ public class UserController extends AbstractController<User> {
     public UserService userService;
 
     @GetMapping(path = "/all")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserDTO> getAllUsers() {
-        return userService.findAll();
+    public List<UserDTO> getAllUsers(Principal principal) {
+        return userService.findAllButNotMe(principal.getName());
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{username}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserDTO getUser(@PathVariable Long id) {
-        return (UserDTO) userService.findById(id);
+    public UserDTO getUser(Principal principal, @PathVariable String username) {
+        return userService.findUserByUsername(principal.getName(), username);
     }
 
-    @PostMapping(path = "/add")
-    @ResponseStatus(HttpStatus.CREATED)
+    @GetMapping(path = "/peps")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Long insertUser(@RequestBody UserDTO userDTO) {
-        return userService.insert(userDTO);
+    public List<UserDTO> getFollowers(Principal principal) {
+        return userService.findMyFriends(principal.getName());
+    }
+
+    @GetMapping(path = "/get_user_details")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserDTO getUserDetails(Principal principal){
+        return userService.findMyselfByUsername(principal.getName());
+    }
+
+    @PutMapping(path = "/follow")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Boolean followUser(Principal principal, @RequestBody String followedUsername) {
+        return userService.followUser(principal.getName(), followedUsername);
+    }
+
+    @DeleteMapping(path = "/unfollow/{followedUsername}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Boolean unfollowUser(Principal principal, @PathVariable String followedUsername) {
+        return userService.unfollowUser(principal.getName(), followedUsername);
     }
 
     @DeleteMapping(path = "/remove/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Boolean deleteUser(@PathVariable Long id) {
-        return userService.delete(id);
+    public Boolean deleteUser(Principal principal, @PathVariable Long id) {
+        return userService.removeUser(principal.getName(), id);
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.gabor.partypeps.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +42,9 @@ public class GroupService extends AbstractService<Group, GroupDTO> {
     @Override
     public long insert(GroupDTO dto) {
         Group group = groupMapper.mapToDAO(dto);
-        for (Long userId : dto.userIds) {
-            Optional<User> user = userRepository.findById(userId);
-            if (user.isPresent()) {
-                group.getGroupUsers().add(user.get());
-            }
+        for (String username : dto.usersUsernames) {
+            User user = userRepository.findByUsername(username);
+            group.getGroupUsers().add(user);
         }
         return groupRepository.save(group).getId();
     }
@@ -67,16 +66,24 @@ public class GroupService extends AbstractService<Group, GroupDTO> {
      * @param id Long
      * @return List<GroupDTO>
      */
-    public List<GroupDTO> findGroupsOfUser(Long id) {
+    @Transactional
+    public List<GroupDTO> findGroupsOfAUser(Long id) {
         UserDTO user = userService.findById(id);
+        if(user == null){
+            return null;
+        }
         List<Group> groups = new ArrayList<>();
         for (Long groupId : user.groupIds) {
             Optional<Group> group = groupRepository.findById(groupId);
-            if (group.isPresent()) {
-                groups.add(group.get());
-            }
+            group.ifPresent(groups::add);
         }
         return groupMapper.mapListOfDTO(groups);
+    }
+
+    @Transactional
+    public GroupDTO findGroupByName(String groupname) {
+        Group group = groupRepository.getGroupByName(groupname);
+        return groupMapper.mapToDTO(group);
     }
 
     @Override

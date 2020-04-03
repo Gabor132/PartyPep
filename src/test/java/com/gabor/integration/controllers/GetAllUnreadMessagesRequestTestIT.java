@@ -9,17 +9,17 @@ import org.junit.Test;
 
 import java.util.List;
 
-@IntegrationTestConfiguration(path = RequestPathEnum.GET_ALL_MESSAGES)
-public class GetAllMessagesRequestTestIT extends AbstractGetRequestTest<MessageDTO> {
+@IntegrationTestConfiguration(path = RequestPathEnum.GET_ALL_MESSAGES, hasBoolean = true)
+public class GetAllUnreadMessagesRequestTestIT extends AbstractGetRequestTest<MessageDTO> {
 
     @Test
-    public void testGetAllMessagesRequest() {
+    public void testGetAllUnreadMessagesRequest() {
         HttpResponse response = this.doGetRequest();
         this.testResponseStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
     }
 
     @Test
-    public void testGetAllMessagesRequestAuthenticated() {
+    public void testGetAllUnreadMessagesRequestAuthenticated() {
         HttpResponse response = this.doGetRequest(true);
         this.testResponseStatusCode(response);
         this.testResponseMessageType(response);

@@ -10,6 +10,8 @@ public enum PropertiesEnum{
     JDBC_PASSWORD("password"),
     JDBC_URL("url"),
     URL_URL("url"),
+    FRONTEND_URL("frontend.url"),
+    BACKEND_URL("backend.url"),
     SECURITY_SIGNING_KEY("signingKey"),
     SECURITY_CLIENT_ID("client.id"),
     SECURITY_CLIENT_SECRET("secret"),

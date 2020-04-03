@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gabor.common.AbstractTest;
 import com.gabor.common.IntegrationTestConfiguration;
 import com.gabor.integration.auxiliar.JSONRetriver;
-import com.gabor.partypeps.enums.PropertiesEnum;
 import com.gabor.integration.security.SecurityToken;
 import com.gabor.partypeps.common.props.PropertiesHelper;
 import com.gabor.partypeps.enums.ProfilesEnum;
+import com.gabor.partypeps.enums.PropertiesEnum;
 import com.gabor.partypeps.enums.RequestPathEnum;
 import com.gabor.partypeps.models.dto.AbstractDTO;
 import org.apache.http.*;
@@ -402,6 +402,12 @@ public abstract class AbstractRequestTest extends AbstractTest {
             if (itAnnotation.hasId()) {
                 long id = itAnnotation.id();
                 finalURL = finalURL.replace("{id}", Long.toString(id));
+            }else if(itAnnotation.hasName()){
+                String name = itAnnotation.name();
+                finalURL = finalURL.replace("{name}", name);
+            }else if(itAnnotation.hasBoolean()){
+                boolean booleanValue = itAnnotation.booleanValue();
+                finalURL = finalURL.replace("{boolean}", Boolean.toString(booleanValue));
             }
         }else{
             finalURL = finalURL + url;

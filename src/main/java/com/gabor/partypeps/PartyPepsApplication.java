@@ -16,5 +16,6 @@ public class PartyPepsApplication {
     public static void main(String[] args) {
         SpringApplication.run(PartyPepsApplication.class, args);
     }
+
 }
 

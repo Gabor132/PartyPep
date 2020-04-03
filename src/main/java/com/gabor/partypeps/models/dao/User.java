@@ -7,6 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,12 +22,32 @@ public class User extends AbstractEntity implements UserDetails {
     @Column(name = "ID")
     public long id;
 
+    @NotNull
+    @NotEmpty
     @Column(name = "USERNAME")
     private String username;
 
+    @NotNull
+    @NotEmpty
+    @Column(name = "EMAIL")
+    private String email;
+
+    @NotNull
+    @NotEmpty
     @Column(name = "PASSWORD")
     @JsonIgnore
     private String password;
+
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(value= FetchMode.SUBSELECT)
+    @JoinColumn(name = "FOLLOWED_ID")
+    private List<Follow> followers;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(value= FetchMode.SUBSELECT)
+    @JoinColumn(name = "FOLLOWER_ID")
+    private List<Follow> following;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value= FetchMode.SUBSELECT)
@@ -34,9 +56,9 @@ public class User extends AbstractEntity implements UserDetails {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value= FetchMode.SUBSELECT)
-    @JoinTable(name = "INVITATIONS", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "EVENT_ID", referencedColumnName = "ID"))
+    @JoinTable(name = "SUBSCRIPTIONS", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "EVENT_ID", referencedColumnName = "ID"))
     @JsonIgnore
-    private List<Event> invitations;
+    private List<Event> subscriptions;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(value= FetchMode.SUBSELECT)
@@ -67,12 +89,32 @@ public class User extends AbstractEntity implements UserDetails {
         this.username = username;
     }
 
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Follow> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<Follow> followers) {
+        this.followers = followers;
+    }
+
+    public List<Follow> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<Follow> following) {
+        this.following = following;
     }
 
     public List<Group> getGroups() {
@@ -86,15 +128,15 @@ public class User extends AbstractEntity implements UserDetails {
         this.groups = groups;
     }
 
-    public List<Event> getInvitations() {
-        if (invitations == null) {
-            invitations = new ArrayList<>();
+    public List<Event> getSubscriptions() {
+        if (subscriptions == null) {
+            subscriptions = new ArrayList<>();
         }
-        return invitations;
+        return subscriptions;
     }
 
-    public void setInvitations(List<Event> invitations) {
-        this.invitations = invitations;
+    public void setSubscriptions(List<Event> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 
     public void setEnabled(boolean enabled) {

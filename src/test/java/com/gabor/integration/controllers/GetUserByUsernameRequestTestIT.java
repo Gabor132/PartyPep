@@ -8,17 +8,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 
-@IntegrationTestConfiguration(path = RequestPathEnum.GET_USER_BY_ID, hasId = true, id = 1)
-public class GetUserByIdRequestTestIT extends AbstractGetRequestTest {
+@IntegrationTestConfiguration(path = RequestPathEnum.GET_USER_BY_NAME, hasName = true, name = "admin")
+public class GetUserByUsernameRequestTestIT extends AbstractGetRequestTest {
 
     @Test
-    public void testGetUserById() {
+    public void testGetUserByUsername() {
         HttpResponse response = this.doGetRequest();
         testResponseStatusCode(HttpStatus.SC_UNAUTHORIZED, response);
     }
 
     @Test
-    public void testGetUserByIdAuthenticated(){
+    public void testGetUserByUsernameAuthenticated(){
         HttpResponse response = doGetRequest(true);
         testResponseStatusCode(response);
         testResponseMessageType(response);

@@ -18,21 +18,32 @@ public class GroupController extends AbstractController<Group> {
     public GroupService groupService;
 
     @GetMapping(path = "/all")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<GroupDTO> getAllGroups() {
         return groupService.findAll();
     }
 
     @GetMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GroupDTO getGroupById(@PathVariable Long id) {
         return groupService.findById(id);
     }
 
+
+    @GetMapping(path = "/group/{groupname}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GroupDTO getGroupByName(@PathVariable String groupname) {
+        return groupService.findGroupByName(groupname);
+    }
+
     @GetMapping(path = "/user/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<GroupDTO> getGroupsByUserId(@PathVariable Long id) {
-        return groupService.findGroupsOfUser(id);
+        return groupService.findGroupsOfAUser(id);
     }
 
     @PostMapping(path = "/add")

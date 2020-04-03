@@ -76,6 +76,7 @@ public abstract class AbstractService<T extends AbstractEntity, S extends Abstra
      * @param repository
      * @return
      */
+    @Transactional
     private boolean genericDelete(Long id, JpaRepository<T, Long> repository) {
         Optional<? extends AbstractEntity> entity = repository.findById(id);
         if (entity.isPresent()) {
