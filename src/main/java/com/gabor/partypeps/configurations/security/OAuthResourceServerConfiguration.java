@@ -56,9 +56,16 @@ public class OAuthResourceServerConfiguration extends ResourceServerConfigurerAd
     public void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(corsFilter, SessionManagementFilter.class)
             .authorizeRequests()
-                .antMatchers("/app-security/clientId").permitAll()
-                .antMatchers("/auxiliar/**").permitAll()
-                .antMatchers("/register/**").permitAll()
+                .antMatchers(
+                    "/app-security/clientId",
+                    "/register/**",
+                    /* Swagger */
+                    "/v2/api-docs",
+                    "/configuration/ui",
+                    "/swagger-resources/**",
+                    "/configuration/security",
+                    "/swagger-ui.html",
+                    "/webjars/**").permitAll()
                 .antMatchers("/users/remove/**").hasAuthority(AuthorityEnum.ADMIN.toString())
             .anyRequest().authenticated().and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
