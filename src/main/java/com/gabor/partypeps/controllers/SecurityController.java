@@ -29,5 +29,4 @@ public class SecurityController {
         client.put("client_secret", PropertiesHelper.getProperty(properties, PropertiesEnum.SECURITY_CLIENT_SECRET));
         return client;
     }
-
 }

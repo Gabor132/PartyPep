@@ -25,6 +25,11 @@ public class UserController extends AbstractController<User> {
     @Autowired
     public UserService userService;
 
+    @Override
+    public AbstractService getService() {
+        return userService;
+    }
+
     @GetMapping(path = "/all")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -72,10 +77,5 @@ public class UserController extends AbstractController<User> {
     @ResponseBody
     public Boolean deleteUser(Principal principal, @PathVariable Long id) {
         return userService.removeUser(principal.getName(), id);
-    }
-
-    @Override
-    public AbstractService getService() {
-        return userService;
     }
 }

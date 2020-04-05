@@ -17,6 +17,11 @@ public class GroupController extends AbstractController<Group> {
     @Autowired
     public GroupService groupService;
 
+    @Override
+    public AbstractService getService() {
+        return new GroupService();
+    }
+
     @GetMapping(path = "/all")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -58,10 +63,5 @@ public class GroupController extends AbstractController<Group> {
     @ResponseBody
     public Boolean removeGroup(@PathVariable Long id) {
         return groupService.delete(id);
-    }
-
-    @Override
-    public AbstractService getService() {
-        return new GroupService();
     }
 }

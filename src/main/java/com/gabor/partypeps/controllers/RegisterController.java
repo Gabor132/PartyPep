@@ -21,6 +21,11 @@ public class RegisterController extends AbstractController<User> {
     @Autowired
     public UserService userService;
 
+    @Override
+    public AbstractService getService() {
+        return userService;
+    }
+
     @PostMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -42,10 +47,5 @@ public class RegisterController extends AbstractController<User> {
     public boolean checkEmail(@RequestBody UserDTO user){
         UserDTO foundUser = userService.findUserByEmail(user.email);
         return foundUser == null;
-    }
-
-    @Override
-    public AbstractService getService() {
-        return userService;
     }
 }

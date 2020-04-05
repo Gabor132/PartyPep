@@ -1,5 +1,6 @@
 package com.gabor.partypeps.configurations.tools;
 
+import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -17,7 +18,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
             .select()
-            .apis(RequestHandlerSelectors.any())
+            .apis(Predicates.not(RequestHandlerSelectors.basePackage("org.springframework")))
             .paths(PathSelectors.any())
             .build();
     }

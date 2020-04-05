@@ -27,14 +27,14 @@ public class IndexController extends AbstractController<AbstractEntity> {
         return "index";
     }
 
-    @GetMapping(value = "/favicon.ico")
-    public String favicon() {
-        return "";
+    @Override
+    public AbstractService getService() {
+        return null;
     }
 
-    private Map<String, String> propertiesToMap(Properties properties){
+    private Map<String, String> propertiesToMap(Properties properties) {
         HashMap<String, String> map = new HashMap<>();
-        for(Object s : properties.keySet()){
+        for (Object s : properties.keySet()) {
             String key = (String) s;
             map.put(key, properties.getProperty(key));
         }
@@ -43,18 +43,13 @@ public class IndexController extends AbstractController<AbstractEntity> {
 
     @GetMapping(value = "/check/security/{profile}")
     @ResponseBody
-    public Map<String, String> checkSecurity(@PathVariable String profile){
+    public Map<String, String> checkSecurity(@PathVariable String profile) {
         return propertiesToMap(PropertiesHelper.getSecurityProperties(true, ProfilesEnum.valueOf(profile)));
     }
 
     @GetMapping(value = "/check/jdbc/{profile}")
     @ResponseBody
-    public Map<String, String> checkJDBC(@PathVariable String profile){
+    public Map<String, String> checkJDBC(@PathVariable String profile) {
         return propertiesToMap(PropertiesHelper.getJDBCProperties(true, ProfilesEnum.valueOf(profile)));
-    }
-
-    @Override
-    public AbstractService getService() {
-        return null;
     }
 }

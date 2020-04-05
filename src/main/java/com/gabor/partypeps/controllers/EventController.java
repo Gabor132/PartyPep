@@ -19,9 +19,7 @@ public class EventController extends AbstractController<Event> {
     public EventService eventService;
 
     @Override
-    public AbstractService getService() {
-        return eventService;
-    }
+    public AbstractService getService() { return eventService; }
 
     @GetMapping(path = "/all")
     @ResponseStatus(HttpStatus.OK)

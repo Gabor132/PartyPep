@@ -18,6 +18,11 @@ public class MessageController extends AbstractController<Message> {
     @Autowired
     public MessageService messageService;
 
+    @Override
+    public AbstractService getService() {
+        return messageService;
+    }
+
     @GetMapping(path = "/private/{withRead}")
     @ResponseBody
     public List<MessageDTO> getPrivateMessages(Principal principal, @PathVariable Boolean withRead) {
@@ -67,10 +72,5 @@ public class MessageController extends AbstractController<Message> {
     @ResponseBody
     public Boolean removeMessage(@PathVariable Long id) {
         return messageService.delete(id);
-    }
-
-    @Override
-    public AbstractService getService() {
-        return messageService;
     }
 }
