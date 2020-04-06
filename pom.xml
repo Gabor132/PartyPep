@@ -11,7 +11,7 @@
 
     <groupId>com.gabor</groupId>
     <artifactId>PartyPeps</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
     <name>PartyPeps</name>
     <packaging>war</packaging>
     <description>Startup project for party peps</description>
@@ -142,6 +142,15 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.3</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>nl.martijndwars</groupId>
+            <artifactId>web-push</artifactId>
+            <version>5.1.0</version>
         </dependency>
     </dependencies>
 

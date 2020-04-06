@@ -21,6 +21,10 @@ public class Event extends AbstractEntity {
     @Column(name = "EVENT_START")
     private Date startOfEvent;
 
+    @ManyToOne
+    @JoinColumn(name = "CREATION_USER", referencedColumnName = "ID")
+    private User creationUser;
+
     @Column(name = "LOCATION")
     private String location;
 
@@ -51,6 +55,14 @@ public class Event extends AbstractEntity {
 
     public void setStartOfEvent(Date startOfEvent) {
         this.startOfEvent = startOfEvent;
+    }
+
+    public User getCreationUser() {
+        return creationUser;
+    }
+
+    public void setCreationUser(User creationUser) {
+        this.creationUser = creationUser;
     }
 
     public String getLocation() {

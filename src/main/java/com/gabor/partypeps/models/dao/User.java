@@ -38,13 +38,17 @@ public class User extends AbstractEntity implements UserDetails {
     @JsonIgnore
     private String password;
 
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(value= FetchMode.SUBSELECT)
+    @JoinColumn(name = "USER_ID")
+    private List<NotificationAuthorization> notificationsList;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Fetch(value= FetchMode.SUBSELECT)
     @JoinColumn(name = "FOLLOWED_ID")
     private List<Follow> followers;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Fetch(value= FetchMode.SUBSELECT)
     @JoinColumn(name = "FOLLOWER_ID")
     private List<Follow> following;
@@ -99,6 +103,14 @@ public class User extends AbstractEntity implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<NotificationAuthorization> getNotificationsList() {
+        return notificationsList;
+    }
+
+    public void setNotificationsList(List<NotificationAuthorization> notificationsList) {
+        this.notificationsList = notificationsList;
     }
 
     public List<Follow> getFollowers() {

@@ -48,6 +48,12 @@ public class MessageController extends AbstractController<Message> {
         return messageService.findAllMyMessages(principal.getName(), withRead);
     }
 
+    @GetMapping(path = "/all/unread/number")
+    @ResponseBody
+    public int getNumberOfAllMessages(Principal principal) {
+        return messageService.findAllMyMessages(principal.getName(), false).size();
+    }
+
     @PostMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
