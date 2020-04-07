@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -98,8 +99,10 @@ public class UserService extends AbstractService<User, UserDTO> {
     public Boolean followUser(String followerUsername, String followedUsername){
         User followerUser = userRepository.findByUsername(followerUsername);
         User followedUser = userRepository.findByUsername(followedUsername);
-        followRepository.saveAndFlush(new Follow(followerUser, followedUser, false));
-        return true;
+        if(! followedUser.getFollowers().stream().filter(f -> f.getFollower().getUsername().equals(followerUsername)).collect(Collectors.toList()).isEmpty()){
+            return false;
+        }
+        return followRepository.saveAndFlush(new Follow(followerUser, followedUser, false)).getId() != null;
     }
 
     @Transactional
@@ -115,13 +118,18 @@ public class UserService extends AbstractService<User, UserDTO> {
     }
 
     @Transactional
-    public Boolean removeUser(String username, Long id){
-        User myself = userRepository.findByUsername(username);
-        if(myself.getId() != id && myself.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).contains(AuthorityEnum.ADMIN.toString())) {
-            myself.getFollowers().forEach(follow -> followRepository.deleteFollow(follow.getId()));
-            myself.getFollowing().forEach(follow -> followRepository.deleteFollow(follow.getId()));
-            userRepository.delete(myself);
-            return true;
+    public Boolean removeUser(String myUsername, Long id){
+        User myself = userRepository.findByUsername(myUsername);
+        // You can only delete yourself or another user if you have the admin authority
+        if(myself.getId() == id || myself.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).contains(AuthorityEnum.ADMIN.toString())) {
+            Optional<User> toDeleteUserMaybe = userRepository.findById(id);
+            if(toDeleteUserMaybe.isPresent()){
+                User toDeleteUser = toDeleteUserMaybe.get();
+                toDeleteUser.getFollowers().forEach(follow -> followRepository.deleteFollow(follow.getId()));
+                toDeleteUser.getFollowing().forEach(follow -> followRepository.deleteFollow(follow.getId()));
+                userRepository.deleteById(id);
+                return true;
+            }
         }
         return false;
     }

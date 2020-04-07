@@ -3,7 +3,6 @@ package com.gabor.partypeps.mappers;
 import com.gabor.partypeps.models.dao.Event;
 import com.gabor.partypeps.models.dto.EventDTO;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
@@ -25,11 +24,12 @@ public class EventMapper extends AbstractMapper<Event, EventDTO>{
         newEvent.setName(dto.name);
         newEvent.setLocation(dto.location);
         newEvent.setSubscribers(new LinkedList<>());
-        DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy hh:mm");
         try {
-            newEvent.setStartOfEvent(dateFormat.parse(dto.startOfEvent));
+            newEvent.setStartOfEvent(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .parse(dto.startOfEvent));
         } catch (ParseException e) {
             e.printStackTrace();
+            return null;
         }
         /**
          * TODO: SET INVITEES

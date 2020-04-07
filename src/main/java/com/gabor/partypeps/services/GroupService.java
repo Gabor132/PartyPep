@@ -83,6 +83,9 @@ public class GroupService extends AbstractService<Group, GroupDTO> {
     @Transactional
     public GroupDTO findGroupByName(String groupname) {
         Group group = groupRepository.getGroupByName(groupname);
+        if(group ==  null){
+            return null;
+        }
         return groupMapper.mapToDTO(group);
     }
 

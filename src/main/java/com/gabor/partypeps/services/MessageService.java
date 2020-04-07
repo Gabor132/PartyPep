@@ -73,7 +73,12 @@ public class MessageService extends AbstractService<Message, MessageDTO> {
     @Transactional
     public List<MessageDTO> findMyPrivateMessages(String username, boolean withReadMessages){
         User user = userRepository.findByUsername(username);
-        List<Message> myMessages = messageRepository.getUserMessages(user).stream().filter(m -> !withReadMessages && !m.getRead() && m.getGroup() == null && !m.getSourceUser().getUsername().equals(username)).collect(Collectors.toList());
+        List<Message> myMessages = null;
+        if(withReadMessages){
+            myMessages = messageRepository.getUserMessages(user).stream().filter(m -> m.getGroup() == null && !m.getSourceUser().getUsername().equals(username)).collect(Collectors.toList());
+        }else{
+            myMessages = messageRepository.getUserMessages(user).stream().filter(m -> !m.getRead() && m.getGroup() == null && !m.getSourceUser().getUsername().equals(username)).collect(Collectors.toList());
+        }
         return messageMapper.mapListOfDTO(myMessages);
     }
 
@@ -89,7 +94,12 @@ public class MessageService extends AbstractService<Message, MessageDTO> {
         List<Message> groupMessages = groups.stream().map(Group::getMessages).reduce(new LinkedList<>(), (messages, messages2) -> {
             messages.addAll(messages2);
             return messages;
-        }).stream().filter(m -> !withReadMessages && !m.getRead()).filter(m -> !m.getSourceUser().getUsername().equals(myUsername)).collect(Collectors.toList());
+        });
+        if(withReadMessages){
+            groupMessages = groupMessages.stream().filter(m -> !m.getSourceUser().getUsername().equals(myUsername)).collect(Collectors.toList());
+        }else{
+            groupMessages = groupMessages.stream().filter(m -> !m.getRead()).filter(m -> !m.getSourceUser().getUsername().equals(myUsername)).collect(Collectors.toList());
+        }
         return messageMapper.mapListOfDTO(groupMessages);
     }
 
@@ -155,7 +165,10 @@ public class MessageService extends AbstractService<Message, MessageDTO> {
     public int readMessages(String username, List<Long> ids){
         User user = userRepository.findByUsername(username);
         List<Message> messages = messageRepository.findAllById(ids);
-        messages = messages.stream().filter(m -> m.getReceiverUser() != null ? m.getSourceUser().getUsername().equals(username) || m.getReceiverUser().getUsername().equals(username) : user.getGroups().stream().map(Group::getName).collect(Collectors.toList()).contains(m.getGroup().getName())).collect(Collectors.toList());
+        messages = messages.stream().filter(m -> m.getReceiverUser() != null ? m.getReceiverUser().getUsername().equals(username) : user.getGroups().stream().map(Group::getName).collect(Collectors.toList()).contains(m.getGroup().getName())).collect(Collectors.toList());
+        if(messages.isEmpty()){
+            return 0;
+        }
         messages.forEach(m -> m.setRead(true));
         return messageRepository.readMessage(messages.stream().map(Message::getId).collect(Collectors.toList()));
     }

@@ -1,6 +1,7 @@
 package com.gabor.partypeps.models.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,6 +20,8 @@ public class Event extends AbstractEntity {
     private String name;
 
     @Column(name = "EVENT_START")
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Date startOfEvent;
 
     @ManyToOne

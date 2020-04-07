@@ -46,7 +46,7 @@ public class NotificationAuthorizationService extends AbstractService<Notificati
         User hisUser = userRepository.findByUsername(hisUsername);
         NotificationAuthorization notificationAuthorization = (NotificationAuthorization) notificationAuthorizationRepository.getNotificationAuthorizationByUser(hisUser);
         /**
-         * TODO
+         * TODO - Notification of users
           */
         return true;
     }

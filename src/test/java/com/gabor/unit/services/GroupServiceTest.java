@@ -8,6 +8,7 @@ import com.gabor.partypeps.configurations.database.EntityManagerFactoryConfigura
 import com.gabor.partypeps.configurations.database.RepositoryConfiguration;
 import com.gabor.partypeps.mappers.AbstractMapper;
 import com.gabor.partypeps.models.dao.Group;
+import com.gabor.partypeps.models.dto.GroupDTO;
 import com.gabor.partypeps.services.GroupService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,9 +19,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
-/**
- * TODO
- */
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 @SpringBootTest(classes = {
         DatabaseConfiguration.class,
         EntityManagerFactoryConfiguration.class,
@@ -37,24 +39,48 @@ public class GroupServiceTest {
     public GroupService groupService;
 
     /**
-     * TODO
+     * Test to check the insertion of new users
      */
     @Test
     public void insertTest() {
+        GroupDTO group = new GroupDTO();
+        group.name = "Viva la Vida";
+        List<String> usernames = new LinkedList<>();
+        group.usersUsernames = usernames;
+        group.usersUsernames.add("Vasile");
+        group.usersUsernames.add("Tricolor");
+        long id = groupService.insert(group);
+        Assert.isTrue(id > 0L, "Group was not created");
+        group = groupService.findById(id);
+        Assert.isTrue(group.name.equals("Viva la Vida"), "Created group is inconsistent with what was inserted");
+        Assert.isTrue(group.usersUsernames.stream().filter(usernames::contains).count() == 2, "Not all desired users were added on the group!");
     }
 
     /**
-     * TODO
-     */
-    @Test
-    public void updateTest() {
-    }
-
-    /**
-     * TODO
+     * Test to check the finding of a user's groups
      */
     @Test
     public void findGroupsOfUserTest() {
+        long myId = 1L;
+        List<String> groupNames = new ArrayList<>();
+        groupNames.add("Nu Plange Ana!");
+        groupNames.add("The fantastic 4rs");
+        List<GroupDTO> groups = groupService.findGroupsOfAUser(myId);
+        Assert.isTrue(groups.size() == 2, "User should've been only in two groups");
+        Assert.isTrue(groups.stream().map(g -> g.name).filter(groupNames::contains).count() == 2, "User does not belong to the correct groups");
+    }
+
+    /**
+     * Test that finding a group by name works
+     */
+    @Test
+    public void findGroupByNameTest(){
+        String groupName = "Nu Plange Ana!";
+        String wrongName = "Plange te rog frumos, Ana!";
+        GroupDTO group = groupService.findGroupByName(groupName);
+        Assert.isTrue(group != null && group.name.equals(groupName), "Did not find the group by name");
+        group = groupService.findGroupByName(wrongName);
+        Assert.isTrue(group == null, "Did find a non existent group");
     }
 
     @Test

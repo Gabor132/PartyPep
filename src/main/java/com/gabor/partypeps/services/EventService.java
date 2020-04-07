@@ -91,7 +91,8 @@ public class EventService extends AbstractService<Event, EventDTO>  {
         for (User user : invitees.values()) {
             event.getSubscribers().add(user);
         }
-        return eventRepository.saveAndFlush(event).getId();
+        event = eventRepository.saveAndFlush(event);
+        return event.getId();
     }
 
     @Transactional
@@ -109,7 +110,6 @@ public class EventService extends AbstractService<Event, EventDTO>  {
 
     @Transactional
     public Boolean unsubscribeToEvent(String username, Long eventId){
-        User user = userRepository.findByUsername(username);
         Optional<Event> event = eventRepository.findById(eventId);
         if (event.isPresent()){
             Event theEvent = event.get();
@@ -137,7 +137,7 @@ public class EventService extends AbstractService<Event, EventDTO>  {
     }
 
     /**
-     * TODO
+     * TODO - Function to update a Event Entity
      * @param dto
      * @return
      */

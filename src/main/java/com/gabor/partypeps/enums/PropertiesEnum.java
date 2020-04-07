@@ -1,8 +1,5 @@
 package com.gabor.partypeps.enums;
 
-/**
- * TODO: MOVE HERE ALL THE DAMN POSSIBLE PROPERTIES FROM ALL THE FILES AND USE THIS ENUM
- */
 public enum PropertiesEnum{
     FROM_ENV_KEY("isFromEnv"),
     JDBC_DRIVER("driver"),

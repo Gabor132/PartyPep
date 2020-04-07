@@ -18,7 +18,7 @@ public class Follow extends AbstractEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    public long id;
+    public Long id;
 
     @ManyToOne(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
     @JoinColumn(name = "FOLLOWER_ID")
@@ -31,11 +31,11 @@ public class Follow extends AbstractEntity{
     @Column(name = "ACCEPTED")
     private Boolean accepted;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
