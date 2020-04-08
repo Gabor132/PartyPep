@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController(value = "groups")
@@ -51,6 +52,13 @@ public class GroupController extends AbstractController<Group> {
     @ResponseBody
     public Long addGroup(@RequestBody GroupDTO groupDto) {
         return groupService.insert(groupDto);
+    }
+
+    @PutMapping(path="/invite/user/{groupId}/{username}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public Long addInvitationToGroup(Principal principal, @PathVariable Long groupId, @PathVariable String username){
+        return groupService.addUserToGroup(principal.getName(), groupId, username);
     }
 
     @DeleteMapping(path = "/remove/{id}")

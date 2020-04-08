@@ -60,6 +60,29 @@ public class GroupService extends AbstractService<Group, GroupDTO> {
         return false;
     }
 
+    @Transactional
+    public Long addUserToGroup(String myUsername, Long groupId, String username){
+        Optional<Group> possibleGroup = groupRepository.findById(groupId);
+        // If the group exists
+        if(possibleGroup.isPresent()){
+            Group group = possibleGroup.get();
+            // And I am in the group
+            if(group.getGroupUsers().stream().anyMatch(u -> u.getUsername().equals(myUsername))){
+                // And the desired user is not in the group
+                if(group.getGroupUsers().stream().noneMatch(u -> u.getUsername().equals(username))){
+                    User user2 = userRepository.findByUsername(username);
+                    // If user exists
+                    if(user2 != null) {
+                        // Add the user in the group
+                        group.getGroupUsers().add(user2);
+                        return groupRepository.saveAndFlush(group).getId();
+                    }
+                }
+            }
+        }
+        return 0L;
+    }
+
     /**
      * Function that using an User's id, will return all the groups to which he belongs to
      *

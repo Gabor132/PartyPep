@@ -57,6 +57,30 @@ public class GroupServiceTest {
     }
 
     /**
+     * Test to check the adding of a user into a group
+     */
+    @Test
+    public void addUserToGroupTest(){
+        String myUsername = "Dani";
+        String hisUsername = "Tricolor";
+        Long groupId = 2L;
+        Long idOfGroup = groupService.addUserToGroup(myUsername, groupId, hisUsername);
+        Assert.isTrue(groupId.equals(idOfGroup), "The adding of the new user to the group did not work");
+        hisUsername = "Herr Banana";
+        idOfGroup = groupService.addUserToGroup(myUsername, groupId, hisUsername);
+        Assert.isTrue(idOfGroup.equals(0L), "The adding of the non existent user to the group worked");
+        groupId = 76L;
+        hisUsername = "Vasile";
+        idOfGroup = groupService.addUserToGroup(myUsername, groupId, hisUsername);
+        Assert.isTrue(idOfGroup.equals(0L), "The adding of the new user to the non existing group worked");
+        myUsername = "Babuta";
+        groupId = 2L;
+        hisUsername = "Pascalake";
+        idOfGroup = groupService.addUserToGroup(myUsername, groupId, hisUsername);
+        Assert.isTrue(idOfGroup.equals(0L), "The adding of the new user to the existing group worked by a non member worked");
+    }
+
+    /**
      * Test to check the finding of a user's groups
      */
     @Test
